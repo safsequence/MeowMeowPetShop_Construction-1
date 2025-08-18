@@ -31,11 +31,11 @@ export default function FeaturedBrands() {
               href={brand.slug.startsWith('/') ? brand.slug : `/brands/${brand.slug}`}
               className="flex-shrink-0 cursor-pointer hover:opacity-80 transition-all duration-300 group hover:scale-105"
             >
-              <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-28 md:h-20 lg:w-32 lg:h-22 bg-white rounded-lg flex items-center justify-center shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow p-3">
+              <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-28 md:h-20 lg:w-32 lg:h-22 bg-white rounded-lg flex items-center justify-center shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow p-2">
                 <img 
                   src={brand.logo} 
                   alt={`${brand.name} logo`}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-cover rounded"
                 />
               </div>
             </Link>
