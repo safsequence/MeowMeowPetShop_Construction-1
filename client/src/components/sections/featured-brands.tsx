@@ -27,18 +27,18 @@ export default function FeaturedBrands() {
             See All
           </Link>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
+        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-6 lg:gap-8">
           {brands.map((brand, index) => (
             <Link 
               key={index} 
               href={brand.slug === 'reflex' ? '/reflex' : `/brands/${brand.slug}`}
-              className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity group"
+              className="flex-shrink-0 cursor-pointer hover:opacity-80 transition-all duration-300 group hover:scale-105"
             >
-              <div className="w-24 h-20 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow p-2">
+              <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-28 md:h-20 lg:w-32 lg:h-22 bg-white rounded-lg flex items-center justify-center shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow p-3">
                 <img 
                   src={brand.logo} 
                   alt={`${brand.name} logo`}
-                  className="max-w-full max-h-full object-contain"
+                  className="w-full h-full object-contain"
                 />
               </div>
             </Link>
