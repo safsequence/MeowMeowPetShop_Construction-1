@@ -5,7 +5,7 @@ export default function FeaturedBrands() {
     { name: 'NEKKO', slug: 'nekko' },
     { name: 'PURINA', slug: 'purina' },
     { name: 'ONE', slug: 'one' },
-    { name: 'Reflex', slug: 'reflex' },
+    { name: 'Reflex', slug: 'brands/reflex' },
     { name: 'Reflex Plus', slug: 'reflex-plus' },
     { name: 'ROYAL CANIN', slug: 'royal-canin' },
     { name: 'Sheba', slug: 'sheba' }

@@ -267,7 +267,7 @@ export const searchableProducts: SearchableProduct[] = [
     brand: 'Reflex',
     price: '৳1,850',
     page: 'Reflex',
-    route: '/reflex',
+    route: '/brands/reflex',
     keywords: ['reflex', 'plus', 'adult', 'cat', 'food', 'chicken', 'premium']
   },
   {
@@ -277,7 +277,7 @@ export const searchableProducts: SearchableProduct[] = [
     brand: 'Reflex',
     price: '৳2,200',
     page: 'Reflex',
-    route: '/reflex',
+    route: '/brands/reflex',
     keywords: ['reflex', 'plus', 'puppy', 'food', 'lamb', 'rice']
   },
   {
@@ -287,7 +287,7 @@ export const searchableProducts: SearchableProduct[] = [
     brand: 'Reflex',
     price: '৳1,650',
     page: 'Reflex',
-    route: '/reflex',
+    route: '/brands/reflex',
     keywords: ['reflex', 'plus', 'kitten', 'food', 'salmon', 'dha']
   },
   {
@@ -297,7 +297,7 @@ export const searchableProducts: SearchableProduct[] = [
     brand: 'Reflex',
     price: '৳2,450',
     page: 'Reflex',
-    route: '/reflex',
+    route: '/brands/reflex',
     keywords: ['reflex', 'plus', 'adult', 'dog', 'food', 'beef']
   },
   {
@@ -307,7 +307,7 @@ export const searchableProducts: SearchableProduct[] = [
     brand: 'Reflex',
     price: '৳2,800',
     page: 'Reflex',
-    route: '/reflex',
+    route: '/brands/reflex',
     keywords: ['reflex', 'grain', 'free', 'cat', 'food', 'turkey']
   },
   {
@@ -317,16 +317,16 @@ export const searchableProducts: SearchableProduct[] = [
     brand: 'Reflex',
     price: '৳2,600',
     page: 'Reflex',
-    route: '/reflex',
+    route: '/brands/reflex',
     keywords: ['reflex', 'senior', 'dog', 'food', 'formula', 'joint']
   }
 ];
 
 export function searchProducts(query: string): SearchableProduct[] {
   if (!query.trim()) return [];
-  
+
   const searchTerm = query.toLowerCase().trim();
-  
+
   return searchableProducts.filter(product => {
     const searchableText = [
       product.name,
@@ -335,7 +335,7 @@ export function searchProducts(query: string): SearchableProduct[] {
       product.page,
       ...product.keywords
     ].join(' ').toLowerCase();
-    
+
     return searchableText.includes(searchTerm);
   }).slice(0, 10); // Limit to 10 results
 }

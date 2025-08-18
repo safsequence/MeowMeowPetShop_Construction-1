@@ -41,7 +41,7 @@ function Router() {
       <Route path="/dog-food" component={DogFoodPage} />
       <Route path="/cat-toys" component={CatToysPage} />
       <Route path="/cat-litter" component={CatLitterPage} />
-      <Route path="/reflex" component={ReflexPage} />
+      <Route path="/brands/reflex" component={ReflexPage} />
       <Route path="/brands/nekko" component={NekkoPage} />
       <Route path="/brands/purina" component={PurinaPage} />
       <Route path="/brands/one" component={OnePage} />
