@@ -1,24 +1,36 @@
+import { Link } from 'wouter';
+
 export default function FeaturedBrands() {
   const brands = [
-    'ROYAL CANIN',
-    'HILLS',
-    'PEDIGREE', 
-    'WHISKAS',
-    'PURINA',
-    'IAMS'
+    { name: 'NEKKO', slug: 'nekko' },
+    { name: 'PURINA', slug: 'purina' },
+    { name: 'ONE', slug: 'one' },
+    { name: 'Reflex', slug: 'reflex' },
+    { name: 'Reflex Plus', slug: 'reflex-plus' },
+    { name: 'ROYAL CANIN', slug: 'royal-canin' },
+    { name: 'Sheba', slug: 'sheba' }
   ];
 
   return (
     <section className="py-8 bg-gray-50">
       <div className="container mx-auto px-4">
-        <h3 className="text-2xl font-bold text-center text-meow-green mb-6">Featured Brands</h3>
-        <div className="flex items-center justify-center space-x-8 overflow-x-auto">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-2xl font-bold text-[#26732d]">FEATURED BRANDS</h3>
+          <Link href="/brands" className="text-sm text-gray-600 hover:text-[#26732d] transition-colors">
+            See All
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 gap-4">
           {brands.map((brand, index) => (
-            <div key={index} className="flex flex-col items-center min-w-32 cursor-pointer hover:opacity-80 transition-opacity">
-              <div className="w-24 h-16 bg-gray-200 rounded-lg flex items-center justify-center mb-2">
-                <span className="text-gray-600 font-bold text-xs text-center">{brand}</span>
+            <Link 
+              key={index} 
+              href={`/brands/${brand.slug}`}
+              className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity group"
+            >
+              <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                <span className="text-gray-800 font-bold text-xs text-center px-2 leading-tight">{brand.name}</span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>

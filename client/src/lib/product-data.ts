@@ -40,6 +40,13 @@ export const productsData: Record<string, Product[]> = {
   'deworming-tablet': [],
   'cat-pouches': [],
   'sunglass': [],
+  // Brand categories
+  'nekko': [],
+  'purina': [],
+  'one': [],
+  'reflex-plus': [],
+  'royal-canin': [],
+  'sheba': [],
   'toys-treats': [
     {
       id: 'tt001',
