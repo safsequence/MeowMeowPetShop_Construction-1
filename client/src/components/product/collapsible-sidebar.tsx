@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Badge } from '@/components/ui/badge'
 import { categories, getProductsByCategory } from '@/lib/product-data'
-import { Menu, X, Cat, Dog, Heart, Gift, ShoppingBag, Stethoscope, Gamepad2, Package, Star } from 'lucide-react'
+import { Menu, X, Cat, Dog, Heart, Gift, ShoppingBag, Stethoscope, Gamepad2, Package, Star, Shield, Pill, Glasses } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface CollapsibleSidebarProps {
@@ -12,15 +12,16 @@ interface CollapsibleSidebarProps {
 }
 
 const categoryIcons = {
-  'cat-food': Cat,
-  'dog-food': Dog,
-  'cat-toys': Gamepad2,
-  'cat-litter': Package,
-  'toys-treats': Gift,
-  'grooming': ShoppingBag,
-  'health-care': Stethoscope,
-  'accessories': Heart,
-  'reflex': Star,
+  'adult-food': Cat,
+  'kitten-food': Cat,
+  'collar': ShoppingBag,
+  'clumping-cat-litter': Package,
+  'cat-litter-accessories': Heart,
+  'harness': Shield,
+  'cat-tick-flea-control': Pill,
+  'deworming-tablet': Pill,
+  'cat-pouches': Gift,
+  'sunglass': Glasses,
 }
 
 export default function CollapsibleSidebar({ selectedCategory, onCategorySelect }: CollapsibleSidebarProps) {
@@ -72,7 +73,7 @@ export default function CollapsibleSidebar({ selectedCategory, onCategorySelect 
           <ScrollArea className="h-[calc(100vh-120px)]">
             <div className="p-4 space-y-2">
               {categories.map((category) => {
-                const Icon = categoryIcons[category.id as keyof typeof categoryIcons]
+                const Icon = categoryIcons[category.id as keyof typeof categoryIcons] || Package
                 const productCount = getProductsByCategory(category.id).length
                 const isSelected = selectedCategory === category.id
 
@@ -115,7 +116,7 @@ export default function CollapsibleSidebar({ selectedCategory, onCategorySelect 
           <div className="hidden lg:block absolute left-0 top-20 w-16 bg-white border-r border-gray-200">
             <div className="py-4 space-y-2">
               {categories.map((category) => {
-                const Icon = categoryIcons[category.id as keyof typeof categoryIcons]
+                const Icon = categoryIcons[category.id as keyof typeof categoryIcons] || Package
                 const isSelected = selectedCategory === category.id
 
                 return (
