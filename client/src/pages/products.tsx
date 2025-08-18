@@ -14,7 +14,7 @@ import { useLocation } from 'wouter'
 
 export default function ProductsPage() {
   const [location] = useLocation()
-  const [selectedCategory, setSelectedCategory] = useState<string>('cat-food')
+  const [selectedCategory, setSelectedCategory] = useState<string>('adult-food')
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('name')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
