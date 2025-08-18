@@ -35,7 +35,8 @@ export default function FeaturedBrands() {
                 <img 
                   src={brand.logo} 
                   alt={`${brand.name} logo`}
-                  className="w-full h-full object-cover rounded"
+                  className="max-w-full max-h-full object-contain"
+                  style={{ imageRendering: 'crisp-edges' }}
                 />
               </div>
             </Link>
