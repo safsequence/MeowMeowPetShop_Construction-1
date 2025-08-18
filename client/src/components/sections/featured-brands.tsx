@@ -1,21 +1,43 @@
+
 import { Link } from 'wouter';
-import nekkoLogo from '@assets/generated_images/NEKKO_brand_logo_design_860189ca.png';
-import purinaLogo from '@assets/generated_images/PURINA_official_logo_0d40baeb.png';
-import purinaOneLogo from '@assets/generated_images/Purina_ONE_logo_f7cd7147.png';
-import reflexLogo from '@assets/generated_images/Reflex_brand_logo_6da9e437.png';
-import reflexPlusLogo from '@assets/generated_images/Reflex_Plus_logo_f7b1138b.png';
-import royalCaninLogo from '@assets/generated_images/ROYAL_CANIN_logo_206735e0.png';
-import shebaLogo from '@assets/generated_images/Sheba_brand_logo_49a6d9c0.png';
 
 export default function FeaturedBrands() {
   const brands = [
-    { name: 'NEKKO', slug: 'nekko', logo: nekkoLogo },
-    { name: 'PURINA', slug: 'purina', logo: purinaLogo },
-    { name: 'ONE', slug: 'one', logo: purinaOneLogo },
-    { name: 'Reflex', slug: 'brands/reflex', logo: reflexLogo },
-    { name: 'Reflex Plus', slug: 'reflex-plus', logo: reflexPlusLogo },
-    { name: 'ROYAL CANIN', slug: 'royal-canin', logo: royalCaninLogo },
-    { name: 'Sheba', slug: 'sheba', logo: shebaLogo }
+    { 
+      name: 'NEKKO', 
+      slug: 'nekko', 
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Nekko_logo.png/200px-Nekko_logo.png'
+    },
+    { 
+      name: 'PURINA', 
+      slug: 'purina', 
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Purina_logo.svg/200px-Purina_logo.svg.png'
+    },
+    { 
+      name: 'ONE', 
+      slug: 'one', 
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Purina_ONE_logo.png/200px-Purina_ONE_logo.png'
+    },
+    { 
+      name: 'Reflex', 
+      slug: 'brands/reflex', 
+      logo: 'https://www.reflexpetfood.com/wp-content/uploads/2020/06/reflex-logo.png'
+    },
+    { 
+      name: 'Reflex Plus', 
+      slug: 'reflex-plus', 
+      logo: 'https://www.reflexpetfood.com/wp-content/uploads/2020/06/reflex-plus-logo.png'
+    },
+    { 
+      name: 'ROYAL CANIN', 
+      slug: 'royal-canin', 
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Royal_Canin_logo.svg/200px-Royal_Canin_logo.svg.png'
+    },
+    { 
+      name: 'Sheba', 
+      slug: 'sheba', 
+      logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Sheba_logo.svg/200px-Sheba_logo.svg.png'
+    }
   ];
 
   return (
@@ -37,9 +59,12 @@ export default function FeaturedBrands() {
                   alt={`${brand.name} logo`}
                   className="w-full h-full object-cover"
                   style={{ 
-                    imageRendering: '-webkit-optimize-contrast',
-                    imageRendering: 'crisp-edges',
-                    imageRendering: 'pixelated'
+                    imageRendering: 'auto'
+                  }}
+                  onError={(e) => {
+                    // Fallback to a placeholder if image fails to load
+                    const target = e.target as HTMLImageElement;
+                    target.src = `https://via.placeholder.com/150x100/f3f4f6/374151?text=${encodeURIComponent(brand.name)}`;
                   }}
                 />
               </div>
