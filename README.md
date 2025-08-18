@@ -101,5 +101,5 @@ This application is optimized for Replit deployment. For other platforms:
 5. Submit a pull request
 
 ## License
-
+mail - saadbintofayeltahsin@gmail.com
 This project is licensed under the MIT License.
