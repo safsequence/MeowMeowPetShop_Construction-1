@@ -60,7 +60,7 @@ export default function FeaturedBrands() {
                 <img
                   src={brand.logo}
                   alt={`${brand.name} logo`}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain p-2"
                   style={{
                     imageRendering: "auto",
                   }}
