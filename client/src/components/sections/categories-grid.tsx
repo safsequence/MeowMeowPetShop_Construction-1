@@ -1,0 +1,156 @@
+import {
+  Cat,
+  Dog,
+  Heart,
+  Gift,
+  ShoppingBag,
+  Pill,
+  Shield,
+  Glasses,
+  Shirt,
+} from "lucide-react";
+import { Link } from "wouter";
+
+export default function CategoriesGrid() {
+  const categories = [
+    {
+      id: "adult-food",
+      name: "Adult Food",
+      icon: Cat,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/adult-food-2-1747499026.png",
+      count: "Premium Quality",
+      color: "bg-purple-100 text-purple-600",
+    },
+    {
+      id: "kitten-food",
+      name: "Kitten Food",
+      icon: Cat,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/kitten-food-2-1747508016.png",
+      count: "Growing Nutrition",
+      color: "bg-pink-100 text-pink-600",
+    },
+    {
+      id: "collar",
+      name: "Collar",
+      icon: Shirt,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/collar-1747508281.png",
+      count: "Style & Safety",
+      color: "bg-blue-100 text-blue-600",
+    },
+    {
+      id: "clumping-cat-litter",
+      name: "Clumping Cat Litter",
+      icon: Gift,
+      image: "https://mewmewshopbd.com/uploads/category/2024/1718325625.png",
+      count: "Easy Clean",
+      color: "bg-gray-100 text-gray-600",
+    },
+    {
+      id: "cat-litter-accessories",
+      name: "Cat Litter Accessories",
+      icon: Heart,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/cat-litter-accessaries-1747508179.png",
+      count: "Complete Care",
+      color: "bg-cyan-100 text-cyan-600",
+    },
+    {
+      id: "harness",
+      name: "Harness",
+      icon: Shield,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/harness-2-1747508347.png",
+      count: "Secure Walking",
+      color: "bg-red-100 text-red-600",
+    },
+    {
+      id: "cat-tick-flea-control",
+      name: "Cat Tick & Flea Control",
+      icon: Pill,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/cat-tick-and-flea-control-1747508541.png",
+      count: "Health Protection",
+      color: "bg-green-100 text-green-600",
+    },
+    {
+      id: "deworming-tablet",
+      name: "Deworming Tablet",
+      icon: Pill,
+      image: "https://mewmewshopbd.com/uploads/category/2024/1719451524.png",
+      count: "Wellness Care",
+      color: "bg-emerald-100 text-emerald-600",
+    },
+    {
+      id: "cat-pouches",
+      name: "Cat Pouches",
+      icon: Gift,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/pouches-1-1747508038.png",
+      count: "Wet Food",
+      color: "bg-orange-100 text-orange-600",
+    },
+    {
+      id: "sunglass",
+      name: "Sunglass",
+      icon: Glasses,
+      image:
+        "https://media.mewmewshopbd.com/uploads/media-manager/2025/05/sunglass-1747508365.png",
+      count: "Pet Fashion",
+      color: "bg-yellow-100 text-yellow-600",
+    },
+  ];
+
+  return (
+    <section className="section-spacing bg-white">
+      <div className="responsive-container">
+        {/* Header */}
+        <div className="mb-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center text-[#26732d] flex flex-col sm:flex-row items-center justify-center gap-3 animate-fade-in">
+            <ShoppingBag size={32} className="text-[#26732d]" />
+            Shop by Category
+          </h2>
+        </div>
+
+        {/* Categories Grid */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+          {categories.map((category, index) => {
+            const IconComponent = category.icon;
+            return (
+              <Link
+                key={category.id}
+                href={`/products?category=${category.id}`}
+                className="group cursor-pointer hover-lift animate-fade-in block"
+                style={
+                  { animationDelay: `${index * 0.1}s` } as React.CSSProperties
+                }
+              >
+                <div className="bg-white rounded-xl shadow-md overflow-hidden h-full flex flex-col">
+                  <div className="relative overflow-hidden flex-shrink-0">
+                    <img
+                      src={category.image}
+                      alt={category.name}
+                      className="w-full h-32 sm:h-40 md:h-48 object-cover transition-transform duration-300 group-hover:scale-110"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                  <div className="p-3 sm:p-4 text-center flex-grow flex flex-col justify-center min-h-[80px]">
+                    <h3 className="text-sm sm:text-base font-bold text-gray-800 mb-1 line-clamp-2">
+                      {category.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm text-gray-600">
+                      {category.count}
+                    </p>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
