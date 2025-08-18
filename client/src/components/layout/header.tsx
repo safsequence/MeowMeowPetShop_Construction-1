@@ -80,7 +80,7 @@ export default function Header() {
         { name: 'Cat Toys', path: '/cat-toys' },
         { name: 'Cat Litter', path: '/cat-litter' },
       ] },
-    { name: 'Reflex Brand', path: '/reflex' },
+    { name: 'Reflex Brand', path: '/brands/reflex' },
     { name: 'Blog', path: '/blog' },
     { name: 'All Products', path: '/products' }
   ];

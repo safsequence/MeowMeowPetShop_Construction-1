@@ -24,7 +24,7 @@ export default function FeaturedBrands() {
           {brands.map((brand, index) => (
             <Link 
               key={index} 
-              href={`/brands/${brand.slug}`}
+              href={brand.slug.startsWith('/') ? brand.slug : `/brands/${brand.slug}`}
               className="flex flex-col items-center cursor-pointer hover:opacity-80 transition-opacity group"
             >
               <div className="w-20 h-20 bg-white rounded-lg flex items-center justify-center mb-2 shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
