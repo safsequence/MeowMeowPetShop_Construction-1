@@ -92,11 +92,6 @@ html {
   body {
     @apply font-sans antialiased bg-background text-foreground;
     font-family: 'Inter', sans-serif;
-    overflow-x: hidden; /* Remove horizontal scrolling */
-  }
-
-  html {
-    overflow-x: hidden; /* Remove horizontal scrolling from html too */
   }
 }
 
