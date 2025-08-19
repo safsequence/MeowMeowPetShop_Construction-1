@@ -108,9 +108,17 @@ The application uses a query-first approach where the frontend drives data requi
 
 The application is designed for easy deployment to platforms like Replit, Vercel, or traditional hosting providers with Node.js support.
 
-## Recent Updates (January 28, 2025)
+## Recent Updates (August 19, 2025)
 
-### Migration to Replit Environment & Category Update (Latest Update)
+### Migration to Replit Environment & UI Enhancements (Latest Update)
+- **Successful Migration**: Completed migration from Replit Agent to standard Replit environment
+- **Database Migration**: Converted from Neon serverless to PostgreSQL with proper connection setup
+- **Package Dependencies**: Updated database drivers from @neondatabase/serverless to pg for PostgreSQL compatibility
+- **UI Customization**: Implemented yellow-based vertical scrollbar matching brand colors
+- **Horizontal Scroll Prevention**: Removed horizontal scrolling across the entire application
+- **Environment Setup**: Created PostgreSQL database and configured all necessary environment variables
+
+### Previous Migration to Replit Environment & Category Update
 - **Successful Migration**: Completed migration from Replit Agent to standard Replit environment
 - **Database Integration**: Created PostgreSQL database and configured proper connection
 - **Category System Overhaul**: Updated all product categories to match the "Shop by Category" section with 10 specific categories

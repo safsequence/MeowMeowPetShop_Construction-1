@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Scrollbar Styling */
+/* Custom Yellow Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 12px;
 }
@@ -14,19 +14,19 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #10b981, #059669);
+  background: linear-gradient(180deg, #FFDE59, #F3D34A);
   border-radius: 6px;
   border: 2px solid #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #059669, #047857);
+  background: linear-gradient(180deg, #F3D34A, #E6C73A);
 }
 
 /* Firefox */
 html {
   scrollbar-width: thin;
-  scrollbar-color: #10b981 #f1f5f9;
+  scrollbar-color: #FFDE59 #f1f5f9;
 }
 
 :root {
@@ -92,6 +92,11 @@ html {
   body {
     @apply font-sans antialiased bg-background text-foreground;
     font-family: 'Inter', sans-serif;
+    overflow-x: hidden; /* Remove horizontal scrolling */
+  }
+
+  html {
+    overflow-x: hidden; /* Remove horizontal scrolling from html too */
   }
 }
 
