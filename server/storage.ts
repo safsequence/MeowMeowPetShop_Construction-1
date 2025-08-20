@@ -283,16 +283,30 @@ export class DatabaseStorage implements IStorage {
 
       const productsWithCategory = [];
       for (const prod of dbProducts) {
-        const category = await Category.findById(prod.categoryId);
-        productsWithCategory.push({
-          id: prod.id,
-          name: prod.name,
-          price: prod.price,
-          category: category?.slug || 'uncategorized',
-          image: prod.image,
-          rating: prod.rating || 0,
-          stock: prod.stockQuantity || 0,
-        });
+        try {
+          const category = await Category.findById(prod.categoryId);
+          productsWithCategory.push({
+            id: prod.id,
+            name: prod.name,
+            price: prod.price,
+            category: category?.slug || 'uncategorized',
+            image: prod.image,
+            rating: prod.rating || 0,
+            stock: prod.stockQuantity || 0,
+          });
+        } catch (categoryError) {
+          // If category lookup fails, still include the product with default category
+          console.warn('Failed to find category for product:', prod.name, categoryError);
+          productsWithCategory.push({
+            id: prod.id,
+            name: prod.name,
+            price: prod.price,
+            category: 'uncategorized',
+            image: prod.image,
+            rating: prod.rating || 0,
+            stock: prod.stockQuantity || 0,
+          });
+        }
       }
 
       return productsWithCategory;

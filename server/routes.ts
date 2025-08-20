@@ -94,9 +94,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Products API
   app.get("/api/products", async (req, res) => {
     try {
-      const products = await storage.getProducts();
+      // Get products directly from MongoDB to avoid storage layer issues
+      const dbProducts = await Product.find({ isActive: true });
+      const products = [];
+      
+      for (const product of dbProducts) {
+        try {
+          const category = await Category.findById(product.categoryId);
+          products.push({
+            id: product.id,
+            name: product.name,
+            price: product.price,
+            category: category?.slug || 'uncategorized',
+            image: product.image,
+            rating: product.rating || 0,
+            stock: product.stockQuantity || 0,
+          });
+        } catch (err) {
+          // Skip products with invalid categoryId
+          console.warn('Skipping product with invalid categoryId:', product.name, err);
+        }
+      }
+      
       res.json(products);
     } catch (error) {
+      console.error('Error fetching products:', error);
       res.status(500).json({ message: "Failed to fetch products" });
     }
   });
