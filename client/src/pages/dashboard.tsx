@@ -113,7 +113,7 @@ export default function DashboardPage() {
       ]
     }
   ])
-
+  
   useEffect(() => {
     if (!user) {
       setLocation('/sign-in')
