@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Search, User, ShoppingCart, Phone, Truck, Shield, Facebook, Instagram, LogOut, Menu, ChevronDown, LogIn } from 'lucide-react';
+import { Search, User, ShoppingCart, Phone, Truck, Shield, Facebook, Instagram, LogOut, Menu, ChevronDown, LogIn, Speaker } from 'lucide-react';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useCart } from '@/contexts/cart-context';
 import { Link, useLocation } from 'wouter';
 import { searchProducts, type SearchableProduct } from '@/lib/search-data';
+import { useQuery } from '@tanstack/react-query';
 const logoPath = '/logo.png';
 
 export default function Header() {
@@ -22,6 +23,19 @@ export default function Header() {
   const { toast } = useToast();
   const { state: cartState } = useCart();
   const [, setLocation] = useLocation();
+
+  // Fetch current announcement
+  const { data: announcements } = useQuery({
+    queryKey: ['/api/announcements'],
+    queryFn: async () => {
+      const response = await fetch('/api/announcements');
+      if (!response.ok) throw new Error('Failed to fetch announcements');
+      return response.json();
+    },
+    refetchInterval: 30000, // Refetch every 30 seconds
+  });
+
+  const currentAnnouncement = announcements?.[0];
 
   const handleSignOut = async () => {
     // Check if it's an admin user (stored in localStorage)
@@ -104,6 +118,12 @@ export default function Header() {
                 <Shield size={12} className="mr-1" />
                 <span>Quality guarantee</span>
               </div>
+              {currentAnnouncement && (
+                <div className="flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium animate-pulse">
+                  <Speaker size={12} className="mr-1" />
+                  <span>{currentAnnouncement.text}</span>
+                </div>
+              )}
             </div>
             <div className="flex items-center gap-2">
               <span className="text-white font-medium text-xs">Follow:</span>

@@ -171,6 +171,21 @@ const orderSchema = new Schema<IOrder>({
   paymentStatus: { type: String, default: 'Pending' },
 }, { timestamps: true });
 
+// Announcement Schema
+export interface IAnnouncement extends Document {
+  text: string;
+  isActive: boolean;
+  priority: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const announcementSchema = new Schema<IAnnouncement>({
+  text: { type: String, required: true },
+  isActive: { type: Boolean, default: true },
+  priority: { type: Number, default: 1 },
+}, { timestamps: true });
+
 // Export Models
 export const User = mongoose.model<IUser>('User', userSchema);
 export const Category = mongoose.model<ICategory>('Category', categorySchema);
@@ -178,6 +193,7 @@ export const Brand = mongoose.model<IBrand>('Brand', brandSchema);
 export const Product = mongoose.model<IProduct>('Product', productSchema);
 export const BlogPost = mongoose.model<IBlogPost>('BlogPost', blogPostSchema);
 export const Order = mongoose.model<IOrder>('Order', orderSchema);
+export const Announcement = mongoose.model<IAnnouncement>('Announcement', announcementSchema);
 
 // Export types for compatibility with existing code
 export type UserType = IUser;
@@ -186,3 +202,4 @@ export type BrandType = IBrand;
 export type ProductType = IProduct;
 export type BlogPostType = IBlogPost;
 export type OrderType = IOrder;
+export type AnnouncementType = IAnnouncement;

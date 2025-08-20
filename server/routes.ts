@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { User, Product, Category, Brand } from "@shared/models";
+import { User, Product, Category, Brand, Announcement } from "@shared/models";
 import type { IUser } from "@shared/models";
 import { z } from "zod";
 import bcrypt from "bcrypt";
@@ -502,7 +502,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // If not found by email, try username (for admin login)
       if (!user) {
-        user = await User.findOne({ username: email });
+        user = await User.findOne({ username: email }) || undefined;
       }
       
       if (!user) {
@@ -656,6 +656,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
     const { width, height } = req.params;
     const imageUrl = `https://via.placeholder.com/${width}x${height}/26732d/ffffff?text=Pet+Shop`;
     res.redirect(imageUrl);
+  });
+
+  // Announcements API
+  app.get("/api/announcements", async (req, res) => {
+    try {
+      const announcements = await Announcement.find({ isActive: true })
+        .sort({ priority: -1, createdAt: -1 })
+        .limit(1);
+      res.json(announcements);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch announcements" });
+    }
+  });
+
+  app.get("/api/admin/announcements", async (req, res) => {
+    try {
+      const announcements = await Announcement.find({})
+        .sort({ priority: -1, createdAt: -1 });
+      res.json(announcements);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch announcements" });
+    }
+  });
+
+  app.post("/api/admin/announcements", async (req, res) => {
+    try {
+      const { text, isActive, priority } = req.body;
+      
+      if (!text) {
+        return res.status(400).json({ message: "Announcement text is required" });
+      }
+
+      const announcement = new Announcement({
+        text,
+        isActive: isActive ?? true,
+        priority: priority ?? 1
+      });
+
+      await announcement.save();
+      res.json(announcement);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to create announcement" });
+    }
+  });
+
+  app.put("/api/admin/announcements/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { text, isActive, priority } = req.body;
+
+      const announcement = await Announcement.findByIdAndUpdate(
+        id,
+        { text, isActive, priority },
+        { new: true }
+      );
+
+      if (!announcement) {
+        return res.status(404).json({ message: "Announcement not found" });
+      }
+
+      res.json(announcement);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update announcement" });
+    }
+  });
+
+  app.delete("/api/admin/announcements/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      const announcement = await Announcement.findByIdAndDelete(id);
+
+      if (!announcement) {
+        return res.status(404).json({ message: "Announcement not found" });
+      }
+
+      res.json({ message: "Announcement deleted successfully" });
+    } catch (error) {
+      res.status(500).json({ message: "Failed to delete announcement" });
+    }
   });
 
   const server = createServer(app);
