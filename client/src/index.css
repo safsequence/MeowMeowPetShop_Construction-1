@@ -3,46 +3,61 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Scrollbar with Yellow Background and Green Thumb */
-html {
-  overflow-y: scroll !important; /* Always show vertical scrollbar */
-  scrollbar-width: auto !important; /* Standard width for Firefox */
-  scrollbar-color: #39613d #fede58 !important; /* Green thumb, yellow track */
+/* Custom Scrollbar - Green Background, Yellow Thumb, Hidden on Mobile/Tablet */
+@media (min-width: 1024px) {
+  html {
+    overflow-y: scroll !important; /* Always show vertical scrollbar on desktop */
+    scrollbar-width: thin !important; /* Thin scrollbar for Firefox */
+    scrollbar-color: #fede58 #39613d !important; /* Yellow thumb, green track */
+  }
+
+  /* Webkit browsers scrollbar styling - Desktop only */
+  ::-webkit-scrollbar {
+    width: 10px !important; /* Thinner scrollbar */
+    background-color: #39613d !important; /* Green background */
+  }
+
+  ::-webkit-scrollbar-track {
+    background-color: #39613d !important; /* Green track background */
+    border-radius: 0px !important;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #fede58 !important; /* Yellow scrollbar thumb */
+    border-radius: 5px !important;
+    border: 1px solid #39613d !important; /* Green border around yellow thumb */
+    min-height: 30px !important;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #f5d742 !important; /* Slightly darker yellow on hover */
+  }
+
+  ::-webkit-scrollbar-thumb:active {
+    background-color: #ecc94b !important; /* Darker yellow when clicked */
+  }
+
+  /* Scrollbar corner styling */
+  ::-webkit-scrollbar-corner {
+    background-color: #39613d !important; /* Green corner */
+  }
+}
+
+/* Hide scrollbar on mobile and tablet */
+@media (max-width: 1023px) {
+  html {
+    overflow-y: auto !important; /* Default scroll behavior */
+    scrollbar-width: none !important; /* Hide scrollbar on Firefox */
+  }
+
+  /* Hide webkit scrollbar on mobile/tablet */
+  ::-webkit-scrollbar {
+    display: none !important;
+  }
 }
 
 body {
   min-height: 100vh !important;
-}
-
-/* Webkit browsers scrollbar styling */
-::-webkit-scrollbar {
-  width: 17px !important;
-  background-color: #fede58 !important; /* Yellow background */
-}
-
-::-webkit-scrollbar-track {
-  background-color: #fede58 !important; /* Yellow track background */
-  border-radius: 0px !important;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #39613d !important; /* Green scrollbar thumb */
-  border-radius: 8px !important;
-  border: 2px solid #fede58 !important; /* Yellow border around green thumb */
-  min-height: 40px !important;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #2d4a30 !important; /* Darker green on hover */
-}
-
-::-webkit-scrollbar-thumb:active {
-  background-color: #1f3321 !important; /* Even darker green when clicked */
-}
-
-/* Scrollbar corner styling */
-::-webkit-scrollbar-corner {
-  background-color: #fede58 !important; /* Yellow corner */
 }
 
 :root {
