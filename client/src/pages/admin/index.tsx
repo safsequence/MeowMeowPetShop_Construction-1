@@ -52,7 +52,6 @@ const productFormSchema = z.object({
 const announcementFormSchema = z.object({
   text: z.string().min(1, 'Announcement text is required'),
   isActive: z.boolean().optional(),
-  priority: z.number().min(1).max(10).optional(),
 });
 
 type ProductFormData = z.infer<typeof productFormSchema>;
@@ -101,20 +100,20 @@ export default function AdminPage() {
 
   // Announcements queries
   const { data: announcements = [], refetch: refetchAnnouncements } = useQuery({
-    queryKey: ['/api/admin/announcements'],
+    queryKey: ['/api/announcements'],
   });
 
   const createAnnouncementMutation = useMutation({
     mutationFn: async (data: AnnouncementFormData) => {
-      const response = await apiRequest('/api/admin/announcements', {
+      const response = await fetch('/api/announcements', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      return response;
+      if (!response.ok) throw new Error('Failed to create announcement');
+      return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/announcements'] });
       queryClient.invalidateQueries({ queryKey: ['/api/announcements'] });
       announcementForm.reset();
       setShowAnnouncementDialog(false);
@@ -134,15 +133,15 @@ export default function AdminPage() {
 
   const updateAnnouncementMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: AnnouncementFormData }) => {
-      const response = await apiRequest(`/api/admin/announcements/${id}`, {
+      const response = await fetch(`/api/announcements/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      return response;
+      if (!response.ok) throw new Error('Failed to update announcement');
+      return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/announcements'] });
       queryClient.invalidateQueries({ queryKey: ['/api/announcements'] });
       announcementForm.reset();
       setEditingAnnouncement(null);
@@ -163,12 +162,13 @@ export default function AdminPage() {
 
   const deleteAnnouncementMutation = useMutation({
     mutationFn: async (id: string) => {
-      await apiRequest(`/api/admin/announcements/${id}`, {
+      const response = await fetch(`/api/announcements/${id}`, {
         method: 'DELETE',
       });
+      if (!response.ok) throw new Error('Failed to delete announcement');
+      return response.json();
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['/api/admin/announcements'] });
       queryClient.invalidateQueries({ queryKey: ['/api/announcements'] });
       toast({
         title: 'Success',
@@ -209,7 +209,6 @@ export default function AdminPage() {
     defaultValues: {
       text: '',
       isActive: true,
-      priority: 1,
     },
   });
 
@@ -674,9 +673,6 @@ export default function AdminPage() {
                           <Badge variant={announcement.isActive ? 'default' : 'secondary'}>
                             {announcement.isActive ? 'Active' : 'Inactive'}
                           </Badge>
-                          <Badge variant="outline">
-                            Priority: {announcement.priority}
-                          </Badge>
                         </div>
                         <CardTitle className="text-xl">{announcement.text}</CardTitle>
                         <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
@@ -695,7 +691,6 @@ export default function AdminPage() {
                           announcementForm.reset({
                             text: announcement.text,
                             isActive: announcement.isActive,
-                            priority: announcement.priority,
                           });
                           setShowAnnouncementDialog(true);
                         }}>
@@ -1223,46 +1218,23 @@ export default function AdminPage() {
                 )}
               />
 
-              <div className="grid grid-cols-2 gap-4">
-                <FormField
-                  control={announcementForm.control}
-                  name="priority"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Priority (1-10)</FormLabel>
-                      <FormControl>
-                        <Input 
-                          type="number" 
-                          min="1" 
-                          max="10" 
-                          placeholder="1" 
-                          {...field}
-                          onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={announcementForm.control}
-                  name="isActive"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-                      <div className="space-y-0.5">
-                        <FormLabel>Active</FormLabel>
-                        <div className="text-xs text-muted-foreground">
-                          Show to visitors
-                        </div>
+              <FormField
+                control={announcementForm.control}
+                name="isActive"
+                render={({ field }) => (
+                  <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
+                    <div className="space-y-0.5">
+                      <FormLabel>Active</FormLabel>
+                      <div className="text-xs text-muted-foreground">
+                        Show to visitors
                       </div>
-                      <FormControl>
-                        <Switch checked={field.value} onCheckedChange={field.onChange} />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
+                    </div>
+                    <FormControl>
+                      <Switch checked={field.value} onCheckedChange={field.onChange} />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
 
               <DialogFooter>
                 <Button 

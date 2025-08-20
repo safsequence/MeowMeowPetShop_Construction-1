@@ -670,19 +670,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.get("/api/admin/announcements", async (req, res) => {
-    try {
-      const announcements = await Announcement.find({})
-        .sort({ priority: -1, createdAt: -1 });
-      res.json(announcements);
-    } catch (error) {
-      res.status(500).json({ message: "Failed to fetch announcements" });
-    }
-  });
 
-  app.post("/api/admin/announcements", async (req, res) => {
+  app.post("/api/announcements", async (req, res) => {
     try {
-      const { text, isActive, priority } = req.body;
+      const { text, isActive } = req.body;
       
       if (!text) {
         return res.status(400).json({ message: "Announcement text is required" });
@@ -690,8 +681,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const announcement = new Announcement({
         text,
-        isActive: isActive ?? true,
-        priority: priority ?? 1
+        isActive: isActive ?? true
       });
 
       await announcement.save();
@@ -701,14 +691,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/admin/announcements/:id", async (req, res) => {
+  app.put("/api/announcements/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const { text, isActive, priority } = req.body;
+      const { text, isActive } = req.body;
 
       const announcement = await Announcement.findByIdAndUpdate(
         id,
-        { text, isActive, priority },
+        { text, isActive, updatedAt: new Date() },
         { new: true }
       );
 
@@ -722,7 +712,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/admin/announcements/:id", async (req, res) => {
+  app.delete("/api/announcements/:id", async (req, res) => {
     try {
       const { id } = req.params;
       const announcement = await Announcement.findByIdAndDelete(id);

@@ -175,7 +175,6 @@ const orderSchema = new Schema<IOrder>({
 export interface IAnnouncement extends Document {
   text: string;
   isActive: boolean;
-  priority: number;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -183,7 +182,6 @@ export interface IAnnouncement extends Document {
 const announcementSchema = new Schema<IAnnouncement>({
   text: { type: String, required: true },
   isActive: { type: Boolean, default: true },
-  priority: { type: Number, default: 1 },
 }, { timestamps: true });
 
 // Export Models
