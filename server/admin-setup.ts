@@ -8,6 +8,8 @@ export async function createAdminAccount() {
 
     if (existingAdmin) {
       console.log("Admin account already exists");
+      // Still run cleanup even if admin exists
+      await cleanupCorruptedBrands();
       return;
     }
 
@@ -49,7 +51,49 @@ export async function createAdminAccount() {
       }
     }
 
+    await cleanupCorruptedBrands();
+
   } catch (error) {
     console.error("Error creating admin account:", error);
+  }
+}
+
+async function cleanupCorruptedBrands() {
+  try {
+    console.log('Running cleanup for corrupted brands...');
+    
+    // List all brands first
+    const allBrands = await Brand.find({});
+    console.log('Found', allBrands.length, 'total brands');
+    
+    // Find corrupted brands with ObjectId patterns as names or the specific problematic brand
+    const corruptedBrands = await Brand.find({
+      $or: [
+        { name: { $regex: /^[0-9a-fA-F]{24}$/ } }, // ObjectId pattern
+        { slug: { $regex: /^[0-9a-fA-F]{24}$/ } }, // ObjectId pattern
+        { name: '68a571911833638a216fa865' }, // Specific problematic brand
+        { slug: '68a571911833638a216fa865' }  // Specific problematic brand
+      ]
+    });
+
+    if (corruptedBrands.length > 0) {
+      console.log('Found corrupted brands:', corruptedBrands.map(b => `${b._id}: ${b.name}`));
+      
+      const deleteResult = await Brand.deleteMany({
+        $or: [
+          { name: { $regex: /^[0-9a-fA-F]{24}$/ } },
+          { slug: { $regex: /^[0-9a-fA-F]{24}$/ } },
+          { name: '68a571911833638a216fa865' },
+          { slug: '68a571911833638a216fa865' }
+        ]
+      });
+      
+      console.log('Cleanup result:', deleteResult);
+      console.log('Successfully removed', deleteResult.deletedCount, 'corrupted brands');
+    } else {
+      console.log('No corrupted brands found to clean up');
+    }
+  } catch (error) {
+    console.error('Error during brand cleanup:', error);
   }
 }

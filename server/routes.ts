@@ -91,6 +91,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Delete Brand API
+  app.delete("/api/brands/:id", async (req, res) => {
+    try {
+      const { id } = req.params;
+      console.log(`Attempting to delete brand with ID: ${id}`);
+      
+      const result = await Brand.findByIdAndDelete(id);
+      if (result) {
+        console.log(`Successfully deleted brand: ${result.name}`);
+        res.json({ message: "Brand deleted successfully" });
+      } else {
+        res.status(404).json({ message: "Brand not found" });
+      }
+    } catch (error) {
+      console.error("Error deleting brand:", error);
+      res.status(500).json({ message: "Failed to delete brand" });
+    }
+  });
+
   // Products API
   app.get("/api/products", async (req, res) => {
     try {
