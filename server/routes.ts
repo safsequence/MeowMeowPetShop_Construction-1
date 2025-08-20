@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, users } from "@shared/schema";
+import { insertUserSchema, users, products } from "@shared/schema";
 import { db } from "./db";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcrypt";
@@ -120,27 +120,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const productData = req.body;
       console.log('Received product data:', productData);
       
-      // Find category name from categoryId
-      const dbCategories = await storage.getCategories();
-      const category = dbCategories.find(cat => cat.id === productData.categoryId);
+      // Parse tags if they exist (comma-separated string to array)
+      const tags = productData.tags ? productData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
       
-      if (!category) {
-        return res.status(400).json({ message: "Invalid category selected" });
-      }
+      // Create product directly in database with all fields
+      const [newProduct] = await db
+        .insert(products)
+        .values({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          originalPrice: productData.originalPrice || null,
+          categoryId: productData.categoryId,
+          brandId: productData.brandId,
+          image: productData.image,
+          stockQuantity: parseInt(productData.stockQuantity) || 0,
+          tags: tags,
+          isNew: productData.isNew || false,
+          isBestseller: productData.isBestseller || false,
+          isOnSale: productData.isOnSale || false,
+          isActive: productData.isActive !== false,
+          rating: "4.5", // Default rating
+        })
+        .returning();
       
-      // Transform admin panel data format to simple product format
-      const simpleProductData = {
-        name: productData.name,
-        price: parseFloat(productData.price),
-        category: category.name,
-        image: productData.image,
-        rating: 4.5, // Default rating
-        stock: parseInt(productData.stockQuantity) || 0,
-      };
-      
-      console.log('Transformed product data:', simpleProductData);
-      const product = await storage.createProduct(simpleProductData);
-      res.status(201).json(product);
+      console.log('Created product:', newProduct);
+      res.status(201).json(newProduct);
     } catch (error) {
       console.error('Create product error:', error);
       res.status(500).json({ message: "Failed to create product", error: error instanceof Error ? error.message : 'Unknown error' });
@@ -151,19 +156,38 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { id } = req.params;
       const productData = req.body;
+      console.log('Updating product with data:', productData);
       
-      // Convert admin panel data format to simple product format
-      const simpleProductData = {
-        name: productData.name,
-        price: parseFloat(productData.price),
-        image: productData.image,
-        stock: parseInt(productData.stockQuantity) || 0,
-      };
+      // Parse tags if they exist (comma-separated string to array)
+      const tags = productData.tags ? productData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
       
-      const updatedProduct = await storage.updateProduct(id, simpleProductData);
+      // Update product directly in database with all fields
+      const [updatedProduct] = await db
+        .update(products)
+        .set({
+          name: productData.name,
+          description: productData.description,
+          price: productData.price,
+          originalPrice: productData.originalPrice || null,
+          categoryId: productData.categoryId,
+          brandId: productData.brandId,
+          image: productData.image,
+          stockQuantity: parseInt(productData.stockQuantity) || 0,
+          tags: tags,
+          isNew: productData.isNew || false,
+          isBestseller: productData.isBestseller || false,
+          isOnSale: productData.isOnSale || false,
+          isActive: productData.isActive !== false,
+          updatedAt: new Date(),
+        })
+        .where(eq(products.id, id))
+        .returning();
+      
       if (!updatedProduct) {
         return res.status(404).json({ message: "Product not found" });
       }
+      
+      console.log('Updated product:', updatedProduct);
       res.json(updatedProduct);
     } catch (error) {
       console.error('Update product error:', error);
