@@ -41,9 +41,6 @@ export default function Home() {
       </div>
 
       <Footer />
-      
-      {/* Extra content to ensure scrollbar appears */}
-      <div className="h-96 w-full"></div>
     </div>
   );
 }
