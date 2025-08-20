@@ -10,9 +10,7 @@ import NotFoundPage from "@/pages/not-found";
 import Home from "@/pages/home";
 import ProductsPage from "@/pages/products";
 import PrivilegeClubPage from "@/pages/privilege-club";
-import CheckoutPage from "@/pages/checkout";
-import InvoicePage from "@/pages/invoice";
-import ProfilePage from "@/pages/profile";
+
 import CatFoodPage from "@/pages/cat-food";
 import DogFoodPage from "@/pages/dog-food";
 import CatToysPage from "@/pages/cat-toys";
@@ -62,7 +60,6 @@ function Router() {
         <Route path="/admin" component={AdminPage} />
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/cart" component={CartPage} />
-        <Route path="/checkout" component={CheckoutPage} />
         <Route path="/invoice/:invoiceId" component={InvoicePage} />
         <Route path="/profile" component={ProfilePage} />
         <Route component={NotFoundPage} />
