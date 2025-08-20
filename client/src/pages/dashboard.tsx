@@ -113,6 +113,7 @@ export default function DashboardPage() {
       ]
     }
   ])
+  })
   
   useEffect(() => {
     if (!user) {
