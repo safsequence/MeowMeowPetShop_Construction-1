@@ -121,17 +121,17 @@ export default function Header() {
             </div>
 
             {/* Scrolling Announcement Area - Between left and right sections */}
-            <div className="flex-1 hidden lg:flex justify-center items-center relative overflow-hidden mx-4">
+            <div className="flex-1 flex justify-center items-center relative overflow-hidden mx-2 min-h-[24px]">
               {currentAnnouncement && (
                 <>
-                  <div className="animate-marquee whitespace-nowrap absolute">
-                    <div className="inline-flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium">
+                  <div className="animate-marquee whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
+                    <div className="inline-flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium ml-8">
                       <Speaker size={12} className="mr-2" />
                       <span>{currentAnnouncement.text}</span>
                     </div>
                   </div>
-                  <div className="animate-marquee2 whitespace-nowrap absolute">
-                    <div className="inline-flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium">
+                  <div className="animate-marquee2 whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
+                    <div className="inline-flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium ml-8">
                       <Speaker size={12} className="mr-2" />
                       <span>{currentAnnouncement.text}</span>
                     </div>
