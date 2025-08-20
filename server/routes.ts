@@ -126,8 +126,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let categoryRecord = await Category.findOne({ 
         $or: [
           { slug: productData.categoryId },
-          { name: productData.categoryId },
-          { _id: productData.categoryId }
+          { name: productData.categoryId }
         ]
       });
       
@@ -143,8 +142,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let brandRecord = await Brand.findOne({ 
         $or: [
           { slug: productData.brandId },
-          { name: productData.brandId },
-          { _id: productData.brandId }
+          { name: productData.brandId }
         ]
       });
       
@@ -198,8 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let categoryRecord = await Category.findOne({ 
         $or: [
           { slug: productData.categoryId },
-          { name: productData.categoryId },
-          { _id: productData.categoryId }
+          { name: productData.categoryId }
         ]
       });
       
@@ -215,8 +212,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let brandRecord = await Brand.findOne({ 
         $or: [
           { slug: productData.brandId },
-          { name: productData.brandId },
-          { _id: productData.brandId }
+          { name: productData.brandId }
         ]
       });
       
