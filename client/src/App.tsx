@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { CartProvider } from "@/contexts/cart-context";
+import ScrollToTop from "@/components/scroll-to-top";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import ProductsPage from "@/pages/products";
@@ -33,33 +34,36 @@ import ProfilePage from "@/pages/profile";
 
 function Router() {
   return (
-    <Switch>
-      <Route path="/" component={Home} />
-      <Route path="/products" component={ProductsPage} />
-      <Route path="/privilege-club" component={PrivilegeClubPage} />
-      <Route path="/cat-food" component={CatFoodPage} />
-      <Route path="/dog-food" component={DogFoodPage} />
-      <Route path="/cat-toys" component={CatToysPage} />
-      <Route path="/cat-litter" component={CatLitterPage} />
-      <Route path="/brands/reflex" component={ReflexPage} />
-      <Route path="/brands/nekko" component={NekkoPage} />
-      <Route path="/brands/purina" component={PurinaPage} />
-      <Route path="/brands/one" component={OnePage} />
-      <Route path="/brands/reflex-plus" component={ReflexPlusPage} />
-      <Route path="/brands/royal-canin" component={RoyalCaninPage} />
-      <Route path="/brands/sheba" component={ShebaPage} />
-      <Route path="/blog" component={BlogPage} />
-      <Route path="/sign-in" component={SignInPage} />
-      <Route path="/sign-up" component={SignUpPage} />
-      <Route path="/forgot-password" component={ForgotPasswordPage} />
-      <Route path="/reset-password" component={ResetPasswordPage} />
+    <>
+      <ScrollToTop />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/products" component={ProductsPage} />
+        <Route path="/privilege-club" component={PrivilegeClubPage} />
+        <Route path="/cat-food" component={CatFoodPage} />
+        <Route path="/dog-food" component={DogFoodPage} />
+        <Route path="/cat-toys" component={CatToysPage} />
+        <Route path="/cat-litter" component={CatLitterPage} />
+        <Route path="/brands/reflex" component={ReflexPage} />
+        <Route path="/brands/nekko" component={NekkoPage} />
+        <Route path="/brands/purina" component={PurinaPage} />
+        <Route path="/brands/one" component={OnePage} />
+        <Route path="/brands/reflex-plus" component={ReflexPlusPage} />
+        <Route path="/brands/royal-canin" component={RoyalCaninPage} />
+        <Route path="/brands/sheba" component={ShebaPage} />
+        <Route path="/blog" component={BlogPage} />
+        <Route path="/sign-in" component={SignInPage} />
+        <Route path="/sign-up" component={SignUpPage} />
+        <Route path="/forgot-password" component={ForgotPasswordPage} />
+        <Route path="/reset-password" component={ResetPasswordPage} />
 
-      <Route path="/admin" component={AdminPage} />
-      <Route path="/dashboard" component={DashboardPage} />
-      <Route path="/cart" component={CartPage} />
-      <Route path="/profile" component={ProfilePage} />
-      <Route component={NotFound} />
-    </Switch>
+        <Route path="/admin" component={AdminPage} />
+        <Route path="/dashboard" component={DashboardPage} />
+        <Route path="/cart" component={CartPage} />
+        <Route path="/profile" component={ProfilePage} />
+        <Route component={NotFound} />
+      </Switch>
+    </>
   );
 }
 
