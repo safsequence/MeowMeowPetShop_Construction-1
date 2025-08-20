@@ -6,7 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/use-auth";
 import { CartProvider } from "@/contexts/cart-context";
 import ScrollToTop from "@/components/scroll-to-top";
-import NotFound from "@/pages/not-found";
+import NotFoundPage from "@/pages/not-found";
 import Home from "@/pages/home";
 import ProductsPage from "@/pages/products";
 import PrivilegeClubPage from "@/pages/privilege-club";
@@ -65,7 +65,7 @@ function Router() {
         <Route path="/checkout" component={CheckoutPage} />
         <Route path="/invoice/:invoiceId" component={InvoicePage} />
         <Route path="/profile" component={ProfilePage} />
-        <Route component={NotFound} />
+        <Route component={NotFoundPage} />
       </Switch>
     </>
   );
