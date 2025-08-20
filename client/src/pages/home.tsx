@@ -42,8 +42,8 @@ export default function Home() {
 
       <Footer />
       
-      {/* Test scrollbar element - temporary */}
-      <div className="h-screen w-full bg-gradient-to-b from-transparent to-yellow-50 opacity-10 pointer-events-none"></div>
+      {/* Extra content to ensure scrollbar appears */}
+      <div className="h-96 w-full"></div>
     </div>
   );
 }
