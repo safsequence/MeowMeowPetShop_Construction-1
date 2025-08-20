@@ -116,7 +116,10 @@ const productSchema = new Schema<IProduct>({
   isOnSale: { type: Boolean, default: false },
   discount: { type: Number, default: 0 },
   isActive: { type: Boolean, default: true },
-}, { timestamps: true });
+}, { 
+  timestamps: true,
+  suppressReservedKeysWarning: true 
+});
 
 // Blog Post Schema
 export interface IBlogPost extends Document {
