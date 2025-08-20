@@ -20,8 +20,17 @@ interface SimpleCategory {
   products: SimpleProduct[];
 }
 
+interface SimpleBrand {
+  id: string;
+  name: string;
+  slug: string;
+  logo: string;
+  description: string;
+}
+
 export interface IStorage {
   getCategories(): Promise<SimpleCategory[]>;
+  getBrands(): Promise<SimpleBrand[]>;
   getProducts(): Promise<SimpleProduct[]>;
   getProduct(id: string): Promise<SimpleProduct | undefined>;
   createProduct(product: Omit<SimpleProduct, 'id'>): Promise<SimpleProduct>;
@@ -271,6 +280,22 @@ export class DatabaseStorage implements IStorage {
       console.error('Error fetching categories:', error);
       // Fallback to in-memory data
       return this.categories;
+    }
+  }
+
+  async getBrands(): Promise<SimpleBrand[]> {
+    try {
+      const dbBrands = await db.select().from(brands).where(eq(brands.isActive, true));
+      return dbBrands.map(brand => ({
+        id: brand.id,
+        name: brand.name,
+        slug: brand.slug,
+        logo: brand.logo || '',
+        description: brand.description || ''
+      }));
+    } catch (error) {
+      console.error('Error fetching brands:', error);
+      return [];
     }
   }
 

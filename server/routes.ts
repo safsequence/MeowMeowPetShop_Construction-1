@@ -82,6 +82,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Brands API
+  app.get("/api/brands", async (req, res) => {
+    try {
+      const brands = await storage.getBrands();
+      res.json(brands);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch brands" });
+    }
+  });
+
   // Products API
   app.get("/api/products", async (req, res) => {
     try {
