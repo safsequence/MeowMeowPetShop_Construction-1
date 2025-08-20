@@ -3,46 +3,46 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Visible Yellow Scrollbar - Like Reference Site */
+/* Custom Scrollbar with Yellow Background and Green Thumb */
 html {
   overflow-y: scroll !important; /* Always show vertical scrollbar */
   scrollbar-width: auto !important; /* Standard width for Firefox */
-  scrollbar-color: #FFDE59 #e5e7eb !important; /* Yellow thumb, gray track */
+  scrollbar-color: #39613d #fede58 !important; /* Green thumb, yellow track */
 }
 
 body {
   min-height: 100vh !important;
 }
 
-/* Standard browser scrollbar styling */
+/* Webkit browsers scrollbar styling */
 ::-webkit-scrollbar {
-  width: 17px !important; /* Standard scrollbar width */
-  background-color: #f1f5f9 !important;
+  width: 17px !important;
+  background-color: #fede58 !important; /* Yellow background */
 }
 
 ::-webkit-scrollbar-track {
-  background-color: #f1f5f9 !important;
+  background-color: #fede58 !important; /* Yellow track background */
   border-radius: 0px !important;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #FFDE59 !important; /* Your yellow brand color */
+  background-color: #39613d !important; /* Green scrollbar thumb */
   border-radius: 8px !important;
-  border: 2px solid #f1f5f9 !important;
-  min-height: 40px !important; /* Minimum thumb size */
+  border: 2px solid #fede58 !important; /* Yellow border around green thumb */
+  min-height: 40px !important;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #F3D34A !important; /* Darker yellow on hover */
+  background-color: #2d4a30 !important; /* Darker green on hover */
 }
 
 ::-webkit-scrollbar-thumb:active {
-  background-color: #E6C73A !important; /* Even darker when clicked */
+  background-color: #1f3321 !important; /* Even darker green when clicked */
 }
 
-/* Ensure scrollbar corner is styled */
+/* Scrollbar corner styling */
 ::-webkit-scrollbar-corner {
-  background-color: #f1f5f9 !important;
+  background-color: #fede58 !important; /* Yellow corner */
 }
 
 :root {
