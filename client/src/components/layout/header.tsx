@@ -104,7 +104,7 @@ export default function Header() {
       {/* Top Announcement Bar - Will scroll away */}
       <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative z-30">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
+          <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2 relative">
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs">
                 <Phone size={12} className="mr-1" />
@@ -118,12 +118,6 @@ export default function Header() {
                 <Shield size={12} className="mr-1" />
                 <span>Quality guarantee</span>
               </div>
-              {currentAnnouncement && (
-                <div className="flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium animate-pulse">
-                  <Speaker size={12} className="mr-1" />
-                  <span>{currentAnnouncement.text}</span>
-                </div>
-              )}
             </div>
             <div className="flex items-center gap-2">
               <span className="text-white font-medium text-xs">Follow:</span>
@@ -134,6 +128,24 @@ export default function Header() {
                 <Instagram size={14} />
               </a>
             </div>
+            
+            {/* Scrolling Announcement Overlay */}
+            {currentAnnouncement && (
+              <div className="absolute inset-0 flex items-center overflow-hidden pointer-events-none">
+                <div className="animate-marquee whitespace-nowrap">
+                  <div className="inline-flex items-center bg-[#ffde59] text-black px-4 py-1 rounded-full text-xs font-medium mx-4">
+                    <Speaker size={12} className="mr-2" />
+                    <span>{currentAnnouncement.text}</span>
+                  </div>
+                </div>
+                <div className="animate-marquee2 whitespace-nowrap">
+                  <div className="inline-flex items-center bg-[#ffde59] text-black px-4 py-1 rounded-full text-xs font-medium mx-4">
+                    <Speaker size={12} className="mr-2" />
+                    <span>{currentAnnouncement.text}</span>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
