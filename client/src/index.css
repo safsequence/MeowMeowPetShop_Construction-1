@@ -3,55 +3,43 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Force Yellow Scrollbar - High Priority */
-html, body {
+/* FORCE YELLOW SCROLLBAR */
+html {
   overflow-y: scroll !important;
-  scrollbar-width: thick !important;
-  scrollbar-color: #FFDE59 #e5e7eb !important;
+  height: 100% !important;
+  min-height: 100vh !important;
 }
 
-/* Webkit Browsers (Chrome, Safari, Edge) */
-* {
-  scrollbar-width: thick !important;
-  scrollbar-color: #FFDE59 #e5e7eb !important;
+body {
+  min-height: 101vh !important; /* Force content to be taller than viewport */
+  overflow-y: scroll !important;
 }
 
-*::-webkit-scrollbar {
-  width: 16px !important;
-  height: 16px !important;
+/* Yellow scrollbar for all webkit browsers */
+::-webkit-scrollbar {
+  width: 18px !important;
+  background: #f3f4f6 !important;
 }
 
-*::-webkit-scrollbar-track {
-  background: #e5e7eb !important;
-  border-radius: 10px !important;
+::-webkit-scrollbar-track {
+  background: #f3f4f6 !important;
+  border-radius: 0 !important;
 }
 
-*::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background: #FFDE59 !important;
-  border-radius: 10px !important;
-  border: 2px solid #e5e7eb !important;
+  border-radius: 0 !important;
+  border: 3px solid #f3f4f6 !important;
 }
 
-*::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
   background: #F3D34A !important;
 }
 
-*::-webkit-scrollbar-thumb:active {
-  background: #E6C73A !important;
-}
-
-/* Additional specific targeting */
-html::-webkit-scrollbar {
-  width: 16px !important;
-}
-
-html::-webkit-scrollbar-track {
-  background: #e5e7eb !important;
-}
-
-html::-webkit-scrollbar-thumb {
-  background: #FFDE59 !important;
-  border-radius: 10px !important;
+/* Firefox scrollbar */
+html {
+  scrollbar-width: thick !important;
+  scrollbar-color: #FFDE59 #f3f4f6 !important;
 }
 
 :root {
