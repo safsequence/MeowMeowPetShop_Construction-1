@@ -136,14 +136,14 @@ export default function Header() {
             <div className="flex-1 flex justify-center items-center relative overflow-hidden mx-2 min-h-[24px]">
               {currentAnnouncement && (
                 <div className="w-full h-full relative">
-                  <div className="animate-marquee whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
-                    <div className="inline-flex items-center text-white text-xs font-medium">
+                  <div className="animate-marquee whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center justify-start">
+                    <div className="inline-flex items-center text-white text-xs font-medium shrink-0">
                       <Speaker size={12} className="mr-2" />
                       <span dangerouslySetInnerHTML={{ __html: parseAnnouncementText(currentAnnouncement.text) }} />
                     </div>
                   </div>
-                  <div className="animate-marquee2 whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
-                    <div className="inline-flex items-center text-white text-xs font-medium">
+                  <div className="animate-marquee2 whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center justify-start">
+                    <div className="inline-flex items-center text-white text-xs font-medium shrink-0">
                       <Speaker size={12} className="mr-2" />
                       <span dangerouslySetInnerHTML={{ __html: parseAnnouncementText(currentAnnouncement.text) }} />
                     </div>
