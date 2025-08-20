@@ -285,7 +285,7 @@ export class DatabaseStorage implements IStorage {
       for (const prod of dbProducts) {
         const category = await Category.findById(prod.categoryId);
         productsWithCategory.push({
-          id: prod._id.toString(),
+          id: prod.id,
           name: prod.name,
           price: prod.price,
           category: category?.slug || 'uncategorized',
