@@ -25,7 +25,7 @@ import {
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
 import { ImageUpload } from '@/components/ui/image-upload';
-import { apiRequest } from '@/lib/queryClient';
+import { apiRequest, queryClient } from '@/lib/queryClient';
 import { 
   Package, FileEdit, Plus, Trash2, ArrowLeft, Search, 
   Filter, Grid, List, Eye, Edit, Save, X, 
@@ -113,10 +113,8 @@ export default function AdminPage() {
   // Product mutations
   const createProductMutation = useMutation({
     mutationFn: async (data: ProductFormData) => {
-      return apiRequest('/api/products', {
-        method: 'POST',
-        body: data,
-      });
+      const response = await apiRequest('POST', '/api/products', data);
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
@@ -138,10 +136,8 @@ export default function AdminPage() {
 
   const updateProductMutation = useMutation({
     mutationFn: async ({ id, data }: { id: string; data: ProductFormData }) => {
-      return apiRequest(`/api/products/${id}`, {
-        method: 'PUT',
-        body: data,
-      });
+      const response = await apiRequest('PUT', `/api/products/${id}`, data);
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
@@ -164,9 +160,8 @@ export default function AdminPage() {
 
   const deleteProductMutation = useMutation({
     mutationFn: async (id: string) => {
-      return apiRequest(`/api/products/${id}`, {
-        method: 'DELETE',
-      });
+      const response = await apiRequest('DELETE', `/api/products/${id}`);
+      return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/products'] });
@@ -233,7 +228,7 @@ export default function AdminPage() {
     );
   }
 
-  const filteredProducts = products.filter((product: any) => {
+  const filteredProducts = (products as any[]).filter((product: any) => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     return matchesSearch && matchesCategory;
@@ -377,7 +372,7 @@ export default function AdminPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map((cat: any) => (
+                  {(categories as any[]).map((cat: any) => (
                     <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                   ))}
                 </SelectContent>
@@ -439,14 +434,14 @@ export default function AdminPage() {
                                 <div>
                                   <div className="font-medium text-gray-900">{product.name}</div>
                                   <div className="text-sm text-gray-500">
-                                    {brands.find((b: any) => b.id === product.brandId)?.name || 'Unknown Brand'}
+                                    {(brands as any[]).find((b: any) => b.id === product.brandId)?.name || 'Unknown Brand'}
                                   </div>
                                 </div>
                               </div>
                             </td>
                             <td className="px-4 py-4">
                               <Badge variant="outline">
-                                {categories.find((c: any) => c.id === product.categoryId)?.name || product.category}
+                                {(categories as any[]).find((c: any) => c.id === product.categoryId)?.name || product.category}
                               </Badge>
                             </td>
                             <td className="px-4 py-4 font-medium">৳{product.price}</td>

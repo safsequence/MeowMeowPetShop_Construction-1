@@ -118,11 +118,32 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/products", async (req, res) => {
     try {
       const productData = req.body;
-      const product = await storage.createProduct(productData);
+      console.log('Received product data:', productData);
+      
+      // Find category name from categoryId
+      const dbCategories = await storage.getCategories();
+      const category = dbCategories.find(cat => cat.id === productData.categoryId);
+      
+      if (!category) {
+        return res.status(400).json({ message: "Invalid category selected" });
+      }
+      
+      // Transform admin panel data format to simple product format
+      const simpleProductData = {
+        name: productData.name,
+        price: parseFloat(productData.price),
+        category: category.name,
+        image: productData.image,
+        rating: 4.5, // Default rating
+        stock: parseInt(productData.stockQuantity) || 0,
+      };
+      
+      console.log('Transformed product data:', simpleProductData);
+      const product = await storage.createProduct(simpleProductData);
       res.status(201).json(product);
     } catch (error) {
       console.error('Create product error:', error);
-      res.status(500).json({ message: "Failed to create product" });
+      res.status(500).json({ message: "Failed to create product", error: error instanceof Error ? error.message : 'Unknown error' });
     }
   });
 
