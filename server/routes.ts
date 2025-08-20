@@ -115,6 +115,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
             category = await Category.findOne({ name: product.categoryId });
           }
 
+          // Resolve brand information
+          let brand = null;
+          if (product.brandId) {
+            try {
+              brand = await Brand.findById(product.brandId);
+            } catch (brandError) {
+              // If ObjectId lookup fails, try slug lookup
+              brand = await Brand.findOne({ slug: product.brandId });
+            }
+            // If still not found, try by name
+            if (!brand) {
+              brand = await Brand.findOne({ name: product.brandId });
+            }
+          }
+
           products.push({
             id: product.id,
             name: product.name,
@@ -123,6 +138,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
             category: category?.slug || 'uncategorized',
             categoryName: category?.name || 'Uncategorized',
             brandId: product.brandId,
+            brandName: brand?.name || 'No Brand',
+            brandSlug: brand?.slug || 'no-brand',
             image: product.image,
             images: product.images || [],
             rating: product.rating || 0,
@@ -138,7 +155,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
             description: product.description || '',
             specifications: product.specifications || {}
           });
-        } catch (err) {
+        } catch (err: any) {
           // Skip products with invalid data but log the specific product name
           console.warn('Skipping product with invalid data:', product.name || 'Unknown', err.message);
         }
@@ -155,12 +172,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/products/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const product = await storage.getProduct(id);
+      const product = await Product.findById(id);
+      
       if (!product) {
         return res.status(404).json({ message: "Product not found" });
       }
-      res.json(product);
+
+      // Resolve category and brand information
+      let category = null;
+      if (product.categoryId) {
+        try {
+          category = await Category.findById(product.categoryId);
+        } catch (categoryError) {
+          category = await Category.findOne({ slug: product.categoryId });
+        }
+        if (!category) {
+          category = await Category.findOne({ name: product.categoryId });
+        }
+      }
+
+      let brand = null;
+      if (product.brandId) {
+        try {
+          brand = await Brand.findById(product.brandId);
+        } catch (brandError) {
+          brand = await Brand.findOne({ slug: product.brandId });
+        }
+        if (!brand) {
+          brand = await Brand.findOne({ name: product.brandId });
+        }
+      }
+
+      const enrichedProduct = {
+        ...product.toObject(),
+        categoryName: category?.name || 'Uncategorized',
+        categorySlug: category?.slug || 'uncategorized',
+        brandName: brand?.name || 'No Brand',
+        brandSlug: brand?.slug || 'no-brand'
+      };
+
+      res.json(enrichedProduct);
     } catch (error) {
+      console.error('Error fetching product:', error);
       res.status(500).json({ message: "Failed to fetch product" });
     }
   });
