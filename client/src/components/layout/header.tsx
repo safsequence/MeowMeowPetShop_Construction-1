@@ -125,13 +125,13 @@ export default function Header() {
               {currentAnnouncement && (
                 <>
                   <div className="animate-marquee whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
-                    <div className="inline-flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium ml-8">
+                    <div className="inline-flex items-center text-white text-xs font-medium ml-8">
                       <Speaker size={12} className="mr-2" />
                       <span>{currentAnnouncement.text}</span>
                     </div>
                   </div>
                   <div className="animate-marquee2 whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
-                    <div className="inline-flex items-center bg-[#ffde59] text-black px-3 py-1 rounded-full text-xs font-medium ml-8">
+                    <div className="inline-flex items-center text-white text-xs font-medium ml-8">
                       <Speaker size={12} className="mr-2" />
                       <span>{currentAnnouncement.text}</span>
                     </div>
