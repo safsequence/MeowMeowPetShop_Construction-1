@@ -62,10 +62,17 @@ export function useProducts() {
 
   const getProductsByBrand = (brandSlug: string) => {
     return products.filter(product => {
-      // Match by brand slug (for brand pages)
-      return product.tags?.some(tag => 
+      // Match by brand name or slug
+      const brandMatches = product.brandName?.toLowerCase() === brandSlug.toLowerCase() ||
+                          product.brandSlug?.toLowerCase() === brandSlug.toLowerCase();
+      
+      // Also check tags and product name for brand matches
+      const tagMatches = product.tags?.some(tag => 
         tag.toLowerCase().includes(brandSlug.toLowerCase())
-      ) || product.name.toLowerCase().includes(brandSlug.toLowerCase());
+      );
+      const nameMatches = product.name.toLowerCase().includes(brandSlug.toLowerCase());
+      
+      return brandMatches || tagMatches || nameMatches;
     });
   };
 
