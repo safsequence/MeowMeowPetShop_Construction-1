@@ -1,12 +1,14 @@
 import bcrypt from "bcrypt";
-import { User, Brand } from "@shared/models";
+import { db } from "./db";
+import { users, brands } from "@shared/schema";
+import { eq } from "drizzle-orm";
 
 export async function createAdminAccount() {
   try {
     // Check if admin account already exists by email
-    const existingAdmin = await User.findOne({ email: "admin@gmail.com" });
+    const existingAdmin = await db.select().from(users).where(eq(users.email, "admin@gmail.com")).limit(1);
 
-    if (existingAdmin) {
+    if (existingAdmin.length > 0) {
       console.log("Admin account already exists");
       return;
     }
@@ -15,7 +17,7 @@ export async function createAdminAccount() {
     const hashedPassword = await bcrypt.hash("meowmeow123", 10);
 
     // Create the admin account with email
-    const adminUser = new User({
+    await db.insert(users).values({
       username: "admin",
       password: hashedPassword,
       email: "admin@gmail.com",
@@ -25,12 +27,10 @@ export async function createAdminAccount() {
       isActive: true,
     });
 
-    await adminUser.save();
-
-    console.log("Admin account created successfully:", adminUser.email);
+    console.log("Admin account created successfully: admin@gmail.com");
 
     // Create default brands
-    const brands = [
+    const brandData = [
       { name: 'Nekko', slug: 'nekko', description: 'Premium cat food brand from Thailand' },
       { name: 'Purina', slug: 'purina', description: 'Trusted pet nutrition for over 90 years' },
       { name: 'Purina One', slug: 'purina-one', description: 'Purposeful nutrition for dogs and cats' },
@@ -40,12 +40,11 @@ export async function createAdminAccount() {
       { name: 'Sheba', slug: 'sheba', description: 'Gourmet cat food with fine cuts' }
     ];
 
-    for (const brandData of brands) {
-      const existingBrand = await Brand.findOne({ slug: brandData.slug });
-      if (!existingBrand) {
-        const brand = new Brand(brandData);
-        await brand.save();
-        console.log(`Created brand: ${brandData.name}`);
+    for (const brand of brandData) {
+      const existingBrand = await db.select().from(brands).where(eq(brands.slug, brand.slug)).limit(1);
+      if (existingBrand.length === 0) {
+        await db.insert(brands).values(brand);
+        console.log(`Created brand: ${brand.name}`);
       }
     }
 
