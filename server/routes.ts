@@ -122,14 +122,49 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Parse tags if they exist (comma-separated string to array)
       const tags = productData.tags ? productData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
       
+      // Find category and brand by their IDs/names
+      let categoryRecord = await Category.findOne({ 
+        $or: [
+          { slug: productData.categoryId },
+          { name: productData.categoryId },
+          { _id: productData.categoryId }
+        ]
+      });
+      
+      if (!categoryRecord) {
+        // Create category if it doesn't exist
+        categoryRecord = new Category({
+          name: productData.categoryId,
+          slug: productData.categoryId.toLowerCase().replace(/\s+/g, '-'),
+        });
+        await categoryRecord.save();
+      }
+      
+      let brandRecord = await Brand.findOne({ 
+        $or: [
+          { slug: productData.brandId },
+          { name: productData.brandId },
+          { _id: productData.brandId }
+        ]
+      });
+      
+      if (!brandRecord) {
+        // Create brand if it doesn't exist
+        brandRecord = new Brand({
+          name: productData.brandId,
+          slug: productData.brandId.toLowerCase().replace(/\s+/g, '-'),
+        });
+        await brandRecord.save();
+      }
+
       // Create product directly in database with all fields
       const newProduct = new Product({
         name: productData.name,
         description: productData.description,
         price: productData.price,
         originalPrice: productData.originalPrice || undefined,
-        categoryId: productData.categoryId,
-        brandId: productData.brandId,
+        categoryId: categoryRecord._id,
+        brandId: brandRecord._id,
         image: productData.image,
         stockQuantity: parseInt(productData.stockQuantity) || 0,
         tags: tags,
@@ -159,6 +194,41 @@ export async function registerRoutes(app: Express): Promise<Server> {
       // Parse tags if they exist (comma-separated string to array)
       const tags = productData.tags ? productData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
       
+      // Find category and brand by their IDs/names
+      let categoryRecord = await Category.findOne({ 
+        $or: [
+          { slug: productData.categoryId },
+          { name: productData.categoryId },
+          { _id: productData.categoryId }
+        ]
+      });
+      
+      if (!categoryRecord) {
+        // Create category if it doesn't exist
+        categoryRecord = new Category({
+          name: productData.categoryId,
+          slug: productData.categoryId.toLowerCase().replace(/\s+/g, '-'),
+        });
+        await categoryRecord.save();
+      }
+      
+      let brandRecord = await Brand.findOne({ 
+        $or: [
+          { slug: productData.brandId },
+          { name: productData.brandId },
+          { _id: productData.brandId }
+        ]
+      });
+      
+      if (!brandRecord) {
+        // Create brand if it doesn't exist
+        brandRecord = new Brand({
+          name: productData.brandId,
+          slug: productData.brandId.toLowerCase().replace(/\s+/g, '-'),
+        });
+        await brandRecord.save();
+      }
+
       // Update product directly in database with all fields
       const updatedProduct = await Product.findByIdAndUpdate(
         id,
@@ -167,8 +237,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           description: productData.description,
           price: productData.price,
           originalPrice: productData.originalPrice || undefined,
-          categoryId: productData.categoryId,
-          brandId: productData.brandId,
+          categoryId: categoryRecord._id,
+          brandId: brandRecord._id,
           image: productData.image,
           stockQuantity: parseInt(productData.stockQuantity) || 0,
           tags: tags,

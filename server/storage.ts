@@ -129,7 +129,7 @@ export class DatabaseStorage implements IStorage {
       const category = await Category.findById(product.categoryId);
       
       return {
-        id: product._id.toString(),
+        id: product.id,
         name: product.name,
         price: product.price,
         category: category?.name || 'uncategorized',
@@ -230,9 +230,9 @@ export class DatabaseStorage implements IStorage {
         id: cat.slug,
         name: cat.name,
         products: dbProducts
-          .filter(prod => prod.categoryId === cat._id.toString())
+          .filter(prod => prod.categoryId.toString() === cat.id)
           .map(prod => ({
-            id: prod._id.toString(),
+            id: prod.id,
             name: prod.name,
             price: prod.price,
             category: cat.slug,
@@ -260,7 +260,7 @@ export class DatabaseStorage implements IStorage {
     try {
       const dbBrands = await Brand.find({ isActive: true });
       return dbBrands.map(brand => ({
-        id: brand._id.toString(),
+        id: brand.id.toString(),
         name: brand.name,
         slug: brand.slug,
         logo: brand.logo || '',
@@ -274,10 +274,7 @@ export class DatabaseStorage implements IStorage {
 
   async getProducts(): Promise<SimpleProduct[]> {
     try {
-      const dbProducts = await Product.find({ isActive: true }).populate({
-        path: 'categoryId',
-        model: 'Category'
-      });
+      const dbProducts = await Product.find({ isActive: true });
 
       if (dbProducts.length === 0) {
         await this.seedDatabase();
@@ -291,7 +288,7 @@ export class DatabaseStorage implements IStorage {
           id: prod._id.toString(),
           name: prod.name,
           price: prod.price,
-          category: category?.name || 'uncategorized',
+          category: category?.slug || 'uncategorized',
           image: prod.image,
           rating: prod.rating || 0,
           stock: prod.stockQuantity || 0,
@@ -301,7 +298,7 @@ export class DatabaseStorage implements IStorage {
       return productsWithCategory;
     } catch (error) {
       console.error('Error fetching products:', error);
-      return this.categories.flatMap(cat => cat.products);
+      return [];
     }
   }
 
