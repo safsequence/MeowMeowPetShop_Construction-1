@@ -33,9 +33,6 @@ import ResetPasswordPage from "@/pages/reset-password";
 import AdminPage from "@/pages/admin";
 import DashboardPage from "@/pages/dashboard";
 import CartPage from "@/pages/cart";
-import CheckoutPage from "@/pages/checkout";
-import InvoicePage from "@/pages/invoice";
-import ProfilePage from "@/pages/profile";
 
 function Router() {
   return (
