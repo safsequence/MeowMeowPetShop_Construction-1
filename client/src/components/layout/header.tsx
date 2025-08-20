@@ -37,6 +37,18 @@ export default function Header() {
 
   const currentAnnouncement = announcements?.[0];
 
+  // Function to parse bold text formatting
+  const parseAnnouncementText = (text: string) => {
+    if (!text) return text;
+    
+    // Replace **text** with bold
+    let parsed = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    // Replace *text* with bold
+    parsed = parsed.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+    
+    return parsed;
+  };
+
   const handleSignOut = async () => {
     // Check if it's an admin user (stored in localStorage)
     const storedUser = localStorage.getItem('auth_user');
@@ -127,13 +139,13 @@ export default function Header() {
                   <div className="animate-marquee whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
                     <div className="inline-flex items-center text-white text-xs font-medium">
                       <Speaker size={12} className="mr-2" />
-                      <span>{currentAnnouncement.text}</span>
+                      <span dangerouslySetInnerHTML={{ __html: parseAnnouncementText(currentAnnouncement.text) }} />
                     </div>
                   </div>
                   <div className="animate-marquee2 whitespace-nowrap absolute top-0 left-0 w-full h-full flex items-center">
                     <div className="inline-flex items-center text-white text-xs font-medium">
                       <Speaker size={12} className="mr-2" />
-                      <span>{currentAnnouncement.text}</span>
+                      <span dangerouslySetInnerHTML={{ __html: parseAnnouncementText(currentAnnouncement.text) }} />
                     </div>
                   </div>
                 </div>

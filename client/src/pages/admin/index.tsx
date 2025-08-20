@@ -85,6 +85,18 @@ export default function AdminPage() {
   const [showProductDialog, setShowProductDialog] = useState(false);
   const [showBlogDialog, setShowBlogDialog] = useState(false);
 
+  // Function to parse bold text formatting
+  const parseAnnouncementText = (text: string) => {
+    if (!text) return text;
+    
+    // Replace **text** with bold
+    let parsed = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    // Replace *text* with bold
+    parsed = parsed.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
+    
+    return parsed;
+  };
+
   // Fetch products, categories, and brands from database
   const { data: products = [], isLoading: isLoadingProducts, refetch: refetchProducts } = useQuery({
     queryKey: ['/api/products'],
@@ -674,7 +686,7 @@ export default function AdminPage() {
                             {announcement.isActive ? 'Active' : 'Inactive'}
                           </Badge>
                         </div>
-                        <CardTitle className="text-xl">{announcement.text}</CardTitle>
+                        <CardTitle className="text-xl" dangerouslySetInnerHTML={{ __html: parseAnnouncementText(announcement.text) }} />
                         <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
                           <span>Created: {new Date(announcement.createdAt).toLocaleDateString()}</span>
                           {announcement.updatedAt !== announcement.createdAt && (
