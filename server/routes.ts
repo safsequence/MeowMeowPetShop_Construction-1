@@ -597,36 +597,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
         totalRevenue: 0,
         totalProducts: 4
       });
-
-
-  // Seed dummy products endpoint (admin only)
-  app.post("/api/admin/seed-products", async (req, res) => {
-    try {
-      const { userId } = req.body;
-      
-      if (!userId) {
-        return res.status(401).json({ message: "Unauthorized" });
-      }
-
-      const user = await User.findById(userId);
-      
-      if (!user || user.role !== "admin") {
-        return res.status(403).json({ message: "Admin access required" });
-      }
-
-      const { seedDummyProducts } = await import("./seed-products");
-      const createdCount = await seedDummyProducts();
-      
-      res.json({ 
-        message: `Successfully created ${createdCount} dummy products`,
-        createdCount 
-      });
-    } catch (error) {
-      console.error("Error seeding products:", error);
-      res.status(500).json({ message: "Failed to seed products" });
-    }
-  });
-
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch admin stats" });
     }

@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { User, Brand } from "@shared/models";
-import { seedDummyProducts } from "./seed-products";
 
 export async function createAdminAccount() {
   try {
@@ -53,13 +52,6 @@ export async function createAdminAccount() {
     }
 
     await cleanupCorruptedBrands();
-
-    // Seed dummy products after setup
-    try {
-      await seedDummyProducts();
-    } catch (error) {
-      console.error("Error seeding dummy products:", error);
-    }
 
   } catch (error) {
     console.error("Error creating admin account:", error);
