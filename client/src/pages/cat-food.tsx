@@ -8,7 +8,7 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import ProductCard from '@/components/product/product-card';
 import AnalyticsBar from '@/components/product/analytics-bar';
-import { getProductsByCategory, type Product } from '@/lib/product-data';
+import { useProducts, type Product } from '@/hooks/use-products';
 
 const catFoodCategories = [
   'Adult Food',
@@ -30,14 +30,16 @@ export default function CatFoodPage() {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Get dynamic products from centralized data
+  const { loading, error, getProductsByCategory } = useProducts()
+  
+  // Get dynamic products from API
   const allProducts = getProductsByCategory('cat-food');
   
   // Filter products based on search and category
   const filteredProducts = allProducts.filter(product => {
     const matchesCategory = selectedCategory === 'All';
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         (product.description || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     return matchesCategory && matchesSearch;
   });
@@ -49,6 +51,34 @@ export default function CatFoodPage() {
   const handleSearch = (query: string) => {
     setSearchQuery(query);
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center pt-32">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-500 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading cat food products...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="flex items-center justify-center pt-32">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">Error loading products: {error}</p>
+            <Button onClick={() => window.location.reload()}>Try Again</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">

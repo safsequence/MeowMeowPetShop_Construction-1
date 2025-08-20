@@ -100,22 +100,51 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       for (const product of dbProducts) {
         try {
-          const category = await Category.findById(product.categoryId);
+          let category = null;
+          
+          // Try to find category by ObjectId first
+          try {
+            category = await Category.findById(product.categoryId);
+          } catch (objectIdError) {
+            // If ObjectId lookup fails, try slug lookup
+            category = await Category.findOne({ slug: product.categoryId });
+          }
+          
+          // If still not found, try by name
+          if (!category) {
+            category = await Category.findOne({ name: product.categoryId });
+          }
+
           products.push({
             id: product.id,
             name: product.name,
             price: product.price,
+            originalPrice: product.originalPrice || null,
             category: category?.slug || 'uncategorized',
+            categoryName: category?.name || 'Uncategorized',
+            brandId: product.brandId,
             image: product.image,
+            images: product.images || [],
             rating: product.rating || 0,
+            reviews: product.reviews || 0,
             stock: product.stockQuantity || 0,
+            stockStatus: product.stockStatus || 'In Stock',
+            tags: product.tags || [],
+            features: product.features || [],
+            isNew: product.isNew || false,
+            isBestseller: product.isBestseller || false,
+            isOnSale: product.isOnSale || false,
+            discount: product.discount || 0,
+            description: product.description || '',
+            specifications: product.specifications || {}
           });
         } catch (err) {
-          // Skip products with invalid categoryId
-          console.warn('Skipping product with invalid categoryId:', product.name, err);
+          // Skip products with invalid data but log the specific product name
+          console.warn('Skipping product with invalid data:', product.name || 'Unknown', err.message);
         }
       }
       
+      console.log(`Successfully fetched ${products.length} products`);
       res.json(products);
     } catch (error) {
       console.error('Error fetching products:', error);

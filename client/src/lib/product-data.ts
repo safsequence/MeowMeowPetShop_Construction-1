@@ -266,7 +266,27 @@ export const productsData: Record<string, Product[]> = {
   'reflex': [],
 }
 
+// API-based product fetching function
+let cachedProducts: Product[] | null = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 60000; // 1 minute cache
+
+export async function fetchProductsFromAPI(): Promise<Product[]> {
+  try {
+    const response = await fetch('/api/products');
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const products = await response.json();
+    return products;
+  } catch (error) {
+    console.error('Error fetching products from API:', error);
+    return [];
+  }
+}
+
 export function getProductsByCategory(categoryId: string): Product[] {
+  // For now, return mock data but we'll replace this with a hook
   return productsData[categoryId] || []
 }
 

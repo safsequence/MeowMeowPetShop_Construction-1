@@ -7,23 +7,26 @@ import Footer from '@/components/layout/footer'
 import CollapsibleSidebar from '@/components/product/collapsible-sidebar'
 import ProductCard from '@/components/product/product-card'
 import AnalyticsBar from '@/components/product/analytics-bar'
-import { getProductsByCategory, categories, type Product } from '@/lib/product-data'
+import { useProducts } from '@/hooks/use-products'
+import { categories } from '@/lib/product-data'
 import { Search, Filter, Grid, List } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useLocation } from 'wouter'
 
 export default function ProductsPage() {
   const [location] = useLocation()
-  const [selectedCategory, setSelectedCategory] = useState<string>('adult-food')
+  const [selectedCategory, setSelectedCategory] = useState<string>('cat-food')
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('name')
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
+  
+  const { products: allProducts, loading, error, getProductsByCategory } = useProducts()
 
   // Handle URL parameters for category selection
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search)
     const categoryParam = urlParams.get('category')
-    if (categoryParam && categories.find(cat => cat.id === categoryParam)) {
+    if (categoryParam) {
       setSelectedCategory(categoryParam)
     }
   }, [location])
