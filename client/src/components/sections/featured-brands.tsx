@@ -19,7 +19,7 @@ export default function FeaturedBrands() {
     },
     {
       name: "Reflex",
-      slug: "brands/reflex",
+      slug: "reflex",
       logo: "https://mewmewshopbd.com/uploads/brand/2024/1719452600.svg",
     },
     {
