@@ -1,11 +1,10 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertUserSchema, users, products } from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
-import bcrypt from "bcrypt";
+import { User, Product, Category, Brand } from "@shared/models";
+import type { IUser } from "@shared/models";
 import { z } from "zod";
+import bcrypt from "bcrypt";
 import multer from "multer";
 import path from "path";
 import { promises as fs } from "fs";
@@ -124,25 +123,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const tags = productData.tags ? productData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
       
       // Create product directly in database with all fields
-      const [newProduct] = await db
-        .insert(products)
-        .values({
-          name: productData.name,
-          description: productData.description,
-          price: productData.price,
-          originalPrice: productData.originalPrice || null,
-          categoryId: productData.categoryId,
-          brandId: productData.brandId,
-          image: productData.image,
-          stockQuantity: parseInt(productData.stockQuantity) || 0,
-          tags: tags,
-          isNew: productData.isNew || false,
-          isBestseller: productData.isBestseller || false,
-          isOnSale: productData.isOnSale || false,
-          isActive: productData.isActive !== false,
-          rating: "4.5", // Default rating
-        })
-        .returning();
+      const newProduct = new Product({
+        name: productData.name,
+        description: productData.description,
+        price: productData.price,
+        originalPrice: productData.originalPrice || undefined,
+        categoryId: productData.categoryId,
+        brandId: productData.brandId,
+        image: productData.image,
+        stockQuantity: parseInt(productData.stockQuantity) || 0,
+        tags: tags,
+        isNew: productData.isNew || false,
+        isBestseller: productData.isBestseller || false,
+        isOnSale: productData.isOnSale || false,
+        isActive: productData.isActive !== false,
+        rating: 4.5, // Default rating
+      });
+      
+      await newProduct.save();
       
       console.log('Created product:', newProduct);
       res.status(201).json(newProduct);
@@ -162,13 +160,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const tags = productData.tags ? productData.tags.split(',').map((tag: string) => tag.trim()).filter((tag: string) => tag.length > 0) : [];
       
       // Update product directly in database with all fields
-      const [updatedProduct] = await db
-        .update(products)
-        .set({
+      const updatedProduct = await Product.findByIdAndUpdate(
+        id,
+        {
           name: productData.name,
           description: productData.description,
           price: productData.price,
-          originalPrice: productData.originalPrice || null,
+          originalPrice: productData.originalPrice || undefined,
           categoryId: productData.categoryId,
           brandId: productData.brandId,
           image: productData.image,
@@ -179,9 +177,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
           isOnSale: productData.isOnSale || false,
           isActive: productData.isActive !== false,
           updatedAt: new Date(),
-        })
-        .where(eq(products.id, id))
-        .returning();
+        },
+        { new: true }
+      );
       
       if (!updatedProduct) {
         return res.status(404).json({ message: "Product not found" });
@@ -198,8 +196,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/products/:id", async (req, res) => {
     try {
       const { id } = req.params;
-      const success = await storage.deleteProduct(id);
-      if (!success) {
+      const deletedProduct = await Product.findByIdAndDelete(id);
+      if (!deletedProduct) {
         return res.status(404).json({ message: "Product not found" });
       }
       res.json({ message: "Product deleted successfully" });
@@ -218,7 +216,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
 
     try {
-      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      const user = await User.findById(userId);
       
       if (!user || user.role !== "admin") {
         return res.status(403).json({ message: "Admin access required" });
@@ -232,8 +230,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   };
 
   // Authentication Routes
-  const registerSchema = insertUserSchema.extend({
-    confirmPassword: z.string(),
+  const registerSchema = z.object({
+    username: z.string().min(1, "Username is required"),
+    email: z.string().email("Valid email is required").optional(),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z.string().min(1, "Confirm password is required"),
+    firstName: z.string().optional(),
+    lastName: z.string().optional(),
+    phone: z.string().optional()
   }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ["confirmPassword"],
@@ -309,8 +313,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       // If not found by email, try username (for admin login)
       if (!user) {
-        const [userByUsername] = await db.select().from(users).where(eq(users.username, email));
-        user = userByUsername;
+        user = await User.findOne({ username: email });
       }
       
       if (!user) {
@@ -391,13 +394,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      const user = await User.findById(userId);
       
       if (!user || user.role !== "admin") {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const allUsers = await db.select().from(users);
+      const allUsers = await User.find();
       
       res.json({
         totalUsers: allUsers.length,
@@ -418,15 +421,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const [user] = await db.select().from(users).where(eq(users.id, userId));
+      const user = await User.findById(userId);
       
       if (!user || user.role !== "admin") {
         return res.status(403).json({ message: "Admin access required" });
       }
 
-      const allUsers = await db.select().from(users);
-      const usersWithoutPasswords = allUsers.map(({ password, ...user }) => user);
-      res.json(usersWithoutPasswords);
+      const allUsers = await User.find().select('-password');
+      res.json(allUsers);
     } catch (error) {
       res.status(500).json({ message: "Failed to fetch users" });
     }
@@ -441,19 +443,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(401).json({ message: "Unauthorized" });
       }
 
-      const [adminUser] = await db.select().from(users).where(eq(users.id, userId));
+      const adminUser = await User.findById(userId);
       
       if (!adminUser || adminUser.role !== "admin") {
         return res.status(403).json({ message: "Admin access required" });
       }
 
       // Prevent deleting admin account
-      const [userToDelete] = await db.select().from(users).where(eq(users.id, targetUserId));
+      const userToDelete = await User.findById(targetUserId);
       if (userToDelete?.role === "admin") {
         return res.status(403).json({ message: "Cannot delete admin account" });
       }
 
-      await db.delete(users).where(eq(users.id, targetUserId));
+      await User.findByIdAndDelete(targetUserId);
       res.json({ message: "User deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete user" });

@@ -1,0 +1,185 @@
+import mongoose, { Schema, Document } from 'mongoose';
+
+// User Schema
+export interface IUser extends Document {
+  username: string;
+  password: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  address?: any;
+  profilePicture?: string;
+  role: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const userSchema = new Schema<IUser>({
+  username: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  email: { type: String, unique: true, sparse: true },
+  firstName: String,
+  lastName: String,
+  phone: String,
+  address: Schema.Types.Mixed,
+  profilePicture: String,
+  role: { type: String, default: 'user' },
+  isActive: { type: Boolean, default: true },
+}, { timestamps: true });
+
+// Category Schema
+export interface ICategory extends Document {
+  name: string;
+  slug: string;
+  description?: string;
+  image?: string;
+  parentId?: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const categorySchema = new Schema<ICategory>({
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  description: String,
+  image: String,
+  parentId: String,
+  isActive: { type: Boolean, default: true },
+}, { timestamps: true });
+
+// Brand Schema
+export interface IBrand extends Document {
+  name: string;
+  slug: string;
+  logo?: string;
+  description?: string;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const brandSchema = new Schema<IBrand>({
+  name: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  logo: String,
+  description: String,
+  isActive: { type: Boolean, default: true },
+}, { timestamps: true });
+
+// Product Schema
+export interface IProduct extends Document {
+  name: string;
+  description?: string;
+  price: number;
+  originalPrice?: number;
+  categoryId: string;
+  brandId: string;
+  image: string;
+  images?: string[];
+  rating: number;
+  reviews: number;
+  stockStatus: string;
+  stockQuantity: number;
+  tags?: string[];
+  features?: string[];
+  specifications?: any;
+  isNew: boolean;
+  isBestseller: boolean;
+  isOnSale: boolean;
+  discount: number;
+  isActive: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const productSchema = new Schema<IProduct>({
+  name: { type: String, required: true },
+  description: String,
+  price: { type: Number, required: true },
+  originalPrice: Number,
+  categoryId: { type: String, required: true },
+  brandId: { type: String, required: true },
+  image: { type: String, required: true },
+  images: [String],
+  rating: { type: Number, default: 0 },
+  reviews: { type: Number, default: 0 },
+  stockStatus: { type: String, default: 'In Stock' },
+  stockQuantity: { type: Number, default: 0 },
+  tags: [String],
+  features: [String],
+  specifications: Schema.Types.Mixed,
+  isNew: { type: Boolean, default: false },
+  isBestseller: { type: Boolean, default: false },
+  isOnSale: { type: Boolean, default: false },
+  discount: { type: Number, default: 0 },
+  isActive: { type: Boolean, default: true },
+}, { timestamps: true });
+
+// Blog Post Schema
+export interface IBlogPost extends Document {
+  title: string;
+  slug: string;
+  excerpt?: string;
+  content: string;
+  image?: string;
+  author: string;
+  publishedAt?: Date;
+  tags?: string[];
+  isPublished: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const blogPostSchema = new Schema<IBlogPost>({
+  title: { type: String, required: true },
+  slug: { type: String, required: true, unique: true },
+  excerpt: String,
+  content: { type: String, required: true },
+  image: String,
+  author: { type: String, required: true },
+  publishedAt: Date,
+  tags: [String],
+  isPublished: { type: Boolean, default: false },
+}, { timestamps: true });
+
+// Order Schema
+export interface IOrder extends Document {
+  userId: string;
+  status: string;
+  total: number;
+  items: any[];
+  shippingAddress?: any;
+  paymentMethod?: string;
+  paymentStatus: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const orderSchema = new Schema<IOrder>({
+  userId: { type: String, required: true },
+  status: { type: String, default: 'Processing' },
+  total: { type: Number, required: true },
+  items: [{ type: Schema.Types.Mixed }],
+  shippingAddress: Schema.Types.Mixed,
+  paymentMethod: String,
+  paymentStatus: { type: String, default: 'Pending' },
+}, { timestamps: true });
+
+// Export Models
+export const User = mongoose.model<IUser>('User', userSchema);
+export const Category = mongoose.model<ICategory>('Category', categorySchema);
+export const Brand = mongoose.model<IBrand>('Brand', brandSchema);
+export const Product = mongoose.model<IProduct>('Product', productSchema);
+export const BlogPost = mongoose.model<IBlogPost>('BlogPost', blogPostSchema);
+export const Order = mongoose.model<IOrder>('Order', orderSchema);
+
+// Export types for compatibility with existing code
+export type UserType = IUser;
+export type CategoryType = ICategory;
+export type BrandType = IBrand;
+export type ProductType = IProduct;
+export type BlogPostType = IBlogPost;
+export type OrderType = IOrder;

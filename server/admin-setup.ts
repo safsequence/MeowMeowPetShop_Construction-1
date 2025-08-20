@@ -1,18 +1,12 @@
 import bcrypt from "bcrypt";
-import { db } from "./db";
-import { users } from "@shared/schema";
-import { eq } from "drizzle-orm";
+import { User, Brand } from "@shared/models";
 
 export async function createAdminAccount() {
   try {
     // Check if admin account already exists by email
-    const existingAdmin = await db
-      .select()
-      .from(users)
-      .where(eq(users.email, "admin@gmail.com"))
-      .limit(1);
+    const existingAdmin = await User.findOne({ email: "admin@gmail.com" });
 
-    if (existingAdmin.length > 0) {
+    if (existingAdmin) {
       console.log("Admin account already exists");
       return;
     }
@@ -21,20 +15,40 @@ export async function createAdminAccount() {
     const hashedPassword = await bcrypt.hash("meowmeow123", 10);
 
     // Create the admin account with email
-    const [adminUser] = await db
-      .insert(users)
-      .values({
-        username: "admin",
-        password: hashedPassword,
-        email: "admin@gmail.com",
-        firstName: "System",
-        lastName: "Administrator",
-        role: "admin",
-        isActive: true,
-      })
-      .returning();
+    const adminUser = new User({
+      username: "admin",
+      password: hashedPassword,
+      email: "admin@gmail.com",
+      firstName: "System",
+      lastName: "Administrator",
+      role: "admin",
+      isActive: true,
+    });
+
+    await adminUser.save();
 
     console.log("Admin account created successfully:", adminUser.email);
+
+    // Create default brands
+    const brands = [
+      { name: 'Nekko', slug: 'nekko', description: 'Premium cat food brand from Thailand' },
+      { name: 'Purina', slug: 'purina', description: 'Trusted pet nutrition for over 90 years' },
+      { name: 'Purina One', slug: 'purina-one', description: 'Purposeful nutrition for dogs and cats' },
+      { name: 'Reflex', slug: 'reflex', description: 'Complete nutrition for pets' },
+      { name: 'Reflex Plus', slug: 'reflex-plus', description: 'Enhanced nutrition with premium ingredients' },
+      { name: 'Royal Canin', slug: 'royal-canin', description: 'Breed-specific and life-stage nutrition' },
+      { name: 'Sheba', slug: 'sheba', description: 'Gourmet cat food with fine cuts' }
+    ];
+
+    for (const brandData of brands) {
+      const existingBrand = await Brand.findOne({ slug: brandData.slug });
+      if (!existingBrand) {
+        const brand = new Brand(brandData);
+        await brand.save();
+        console.log(`Created brand: ${brandData.name}`);
+      }
+    }
+
   } catch (error) {
     console.error("Error creating admin account:", error);
   }

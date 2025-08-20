@@ -1,6 +1,5 @@
-import { users, products, categories, brands, type User, type InsertUser } from "@shared/schema";
-import { db } from "./db";
-import { eq } from "drizzle-orm";
+import { User, Category, Brand, Product, BlogPost, Order } from "@shared/models";
+import type { IUser, ICategory, IBrand, IProduct } from "@shared/models";
 import { nanoid } from "nanoid";
 
 // Simple storage for the pet shop
@@ -28,6 +27,19 @@ interface SimpleBrand {
   description: string;
 }
 
+interface InsertUser {
+  username: string;
+  password: string;
+  email?: string;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  address?: any;
+  profilePicture?: string;
+  role?: string;
+  isActive?: boolean;
+}
+
 export interface IStorage {
   getCategories(): Promise<SimpleCategory[]>;
   getBrands(): Promise<SimpleBrand[]>;
@@ -36,11 +48,11 @@ export interface IStorage {
   createProduct(product: Omit<SimpleProduct, 'id'>): Promise<SimpleProduct>;
   updateProduct(id: string, product: Partial<SimpleProduct>): Promise<SimpleProduct | undefined>;
   deleteProduct(id: string): Promise<boolean>;
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
-  createUser(insertUser: InsertUser): Promise<User>;
-  updateUser(id: string, userData: Partial<InsertUser>): Promise<User | undefined>;
+  getUser(id: string): Promise<IUser | undefined>;
+  getUserByUsername(username: string): Promise<IUser | undefined>;
+  getUserByEmail(email: string): Promise<IUser | undefined>;
+  createUser(insertUser: InsertUser): Promise<IUser>;
+  updateUser(id: string, userData: Partial<InsertUser>): Promise<IUser | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -76,67 +88,54 @@ export class DatabaseStorage implements IStorage {
     ];
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.id, id));
+  async getUser(id: string): Promise<IUser | undefined> {
+    const user = await User.findById(id);
     return user || undefined;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.username, username));
+  async getUserByUsername(username: string): Promise<IUser | undefined> {
+    const user = await User.findOne({ username });
     return user || undefined;
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db.select().from(users).where(eq(users.email, email));
+  async getUserByEmail(email: string): Promise<IUser | undefined> {
+    const user = await User.findOne({ email });
     return user || undefined;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async createUser(insertUser: InsertUser): Promise<IUser> {
     // Prevent any new admin users from being created
     const userToInsert = { ...insertUser, role: "user" };
     
-    const [user] = await db
-      .insert(users)
-      .values(userToInsert)
-      .returning();
+    const user = new User(userToInsert);
+    await user.save();
     return user;
   }
 
-  async updateUser(id: string, userData: Partial<InsertUser>): Promise<User | undefined> {
-    const [user] = await db
-      .update(users)
-      .set({ ...userData, updatedAt: new Date() })
-      .where(eq(users.id, id))
-      .returning();
+  async updateUser(id: string, userData: Partial<InsertUser>): Promise<IUser | undefined> {
+    const user = await User.findByIdAndUpdate(
+      id,
+      { ...userData, updatedAt: new Date() },
+      { new: true }
+    );
     return user || undefined;
   }
 
   async getProduct(id: string): Promise<SimpleProduct | undefined> {
     try {
-      const [product] = await db
-        .select({
-          id: products.id,
-          name: products.name,
-          price: products.price,
-          category: categories.name,
-          image: products.image,
-          rating: products.rating,
-          stock: products.stockQuantity,
-        })
-        .from(products)
-        .leftJoin(categories, eq(products.categoryId, categories.id))
-        .where(eq(products.id, id));
-      
+      const product = await Product.findById(id);
       if (!product) return undefined;
+
+      const category = await Category.findById(product.categoryId);
       
       return {
-        id: product.id,
+        id: product._id.toString(),
         name: product.name,
-        price: parseFloat(product.price || '0'),
-        category: product.category || 'uncategorized',
+        price: product.price,
+        category: category?.name || 'uncategorized',
         image: product.image,
-        rating: parseFloat(product.rating || '0'),
-        stock: product.stock || 0,
+        rating: product.rating || 0,
+        stock: product.stockQuantity || 0,
       };
     } catch (error) {
       console.error('Error fetching product:', error);
@@ -145,56 +144,46 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createProduct(productData: Omit<SimpleProduct, 'id'>): Promise<SimpleProduct> {
-    const productId = nanoid();
-    
     // Find or create category
-    let categoryRecord = await db.select().from(categories).where(eq(categories.name, productData.category)).limit(1);
-    if (categoryRecord.length === 0) {
-      const [newCategory] = await db
-        .insert(categories)
-        .values({
-          name: productData.category,
-          slug: productData.category.toLowerCase().replace(/\s+/g, '-'),
-        })
-        .returning();
-      categoryRecord = [newCategory];
+    let categoryRecord = await Category.findOne({ name: productData.category });
+    if (!categoryRecord) {
+      categoryRecord = new Category({
+        name: productData.category,
+        slug: productData.category.toLowerCase().replace(/\s+/g, '-'),
+      });
+      await categoryRecord.save();
     }
 
     // Create a default brand if needed
-    let brandRecord = await db.select().from(brands).limit(1);
-    if (brandRecord.length === 0) {
-      const [newBrand] = await db
-        .insert(brands)
-        .values({
-          name: 'Default Brand',
-          slug: 'default-brand',
-        })
-        .returning();
-      brandRecord = [newBrand];
+    let brandRecord = await Brand.findOne();
+    if (!brandRecord) {
+      brandRecord = new Brand({
+        name: 'Default Brand',
+        slug: 'default-brand',
+      });
+      await brandRecord.save();
     }
 
-    const [newProduct] = await db
-      .insert(products)
-      .values({
-        id: productId,
-        name: productData.name,
-        description: `High-quality ${productData.name}`,
-        price: productData.price.toString(),
-        categoryId: categoryRecord[0].id,
-        brandId: brandRecord[0].id,
-        image: productData.image,
-        rating: productData.rating.toString(),
-        stockQuantity: productData.stock,
-      })
-      .returning();
+    const newProduct = new Product({
+      name: productData.name,
+      description: `High-quality ${productData.name}`,
+      price: productData.price,
+      categoryId: categoryRecord._id.toString(),
+      brandId: brandRecord._id.toString(),
+      image: productData.image,
+      rating: productData.rating,
+      stockQuantity: productData.stock,
+    });
+
+    await newProduct.save();
 
     return {
-      id: newProduct.id,
+      id: newProduct._id.toString(),
       name: newProduct.name,
-      price: parseFloat(newProduct.price),
+      price: newProduct.price,
       category: productData.category,
       image: newProduct.image,
-      rating: parseFloat(newProduct.rating || '0'),
+      rating: newProduct.rating || 0,
       stock: newProduct.stockQuantity || 0,
     };
   }
@@ -204,19 +193,14 @@ export class DatabaseStorage implements IStorage {
       const updateData: any = {};
       
       if (productData.name) updateData.name = productData.name;
-      if (productData.price !== undefined) updateData.price = productData.price.toString();
+      if (productData.price !== undefined) updateData.price = productData.price;
       if (productData.image) updateData.image = productData.image;
-      if (productData.rating !== undefined) updateData.rating = productData.rating.toString();
+      if (productData.rating !== undefined) updateData.rating = productData.rating;
       if (productData.stock !== undefined) updateData.stockQuantity = productData.stock;
       
       updateData.updatedAt = new Date();
 
-      const [updatedProduct] = await db
-        .update(products)
-        .set(updateData)
-        .where(eq(products.id, id))
-        .returning();
-
+      const updatedProduct = await Product.findByIdAndUpdate(id, updateData, { new: true });
       if (!updatedProduct) return undefined;
 
       return this.getProduct(id);
@@ -228,8 +212,8 @@ export class DatabaseStorage implements IStorage {
 
   async deleteProduct(id: string): Promise<boolean> {
     try {
-      const result = await db.delete(products).where(eq(products.id, id));
-      return result.rowCount !== undefined && result.rowCount !== null && result.rowCount > 0;
+      const result = await Product.findByIdAndDelete(id);
+      return !!result;
     } catch (error) {
       console.error('Error deleting product:', error);
       return false;
@@ -239,33 +223,22 @@ export class DatabaseStorage implements IStorage {
   async getCategories(): Promise<SimpleCategory[]> {
     try {
       // Get categories and their products from database
-      const dbCategories = await db.select().from(categories).where(eq(categories.isActive, true));
-      const dbProducts = await db
-        .select({
-          id: products.id,
-          name: products.name,
-          price: products.price,
-          categoryId: products.categoryId,
-          image: products.image,
-          rating: products.rating,
-          stock: products.stockQuantity,
-        })
-        .from(products)
-        .where(eq(products.isActive, true));
+      const dbCategories = await Category.find({ isActive: true });
+      const dbProducts = await Product.find({ isActive: true });
 
       const categoriesWithProducts = dbCategories.map(cat => ({
         id: cat.slug,
         name: cat.name,
         products: dbProducts
-          .filter(prod => prod.categoryId === cat.id)
+          .filter(prod => prod.categoryId === cat._id.toString())
           .map(prod => ({
-            id: prod.id,
+            id: prod._id.toString(),
             name: prod.name,
-            price: parseFloat(prod.price),
+            price: prod.price,
             category: cat.slug,
             image: prod.image,
-            rating: parseFloat(prod.rating || '0'),
-            stock: prod.stock || 0,
+            rating: prod.rating || 0,
+            stock: prod.stockQuantity || 0,
           }))
       }));
 
@@ -285,9 +258,9 @@ export class DatabaseStorage implements IStorage {
 
   async getBrands(): Promise<SimpleBrand[]> {
     try {
-      const dbBrands = await db.select().from(brands).where(eq(brands.isActive, true));
+      const dbBrands = await Brand.find({ isActive: true });
       return dbBrands.map(brand => ({
-        id: brand.id,
+        id: brand._id.toString(),
         name: brand.name,
         slug: brand.slug,
         logo: brand.logo || '',
@@ -301,34 +274,31 @@ export class DatabaseStorage implements IStorage {
 
   async getProducts(): Promise<SimpleProduct[]> {
     try {
-      const dbProducts = await db
-        .select({
-          id: products.id,
-          name: products.name,
-          price: products.price,
-          category: categories.name,
-          image: products.image,
-          rating: products.rating,
-          stock: products.stockQuantity,
-        })
-        .from(products)
-        .leftJoin(categories, eq(products.categoryId, categories.id))
-        .where(eq(products.isActive, true));
+      const dbProducts = await Product.find({ isActive: true }).populate({
+        path: 'categoryId',
+        model: 'Category'
+      });
 
       if (dbProducts.length === 0) {
         await this.seedDatabase();
         return this.categories.flatMap(cat => cat.products);
       }
 
-      return dbProducts.map(prod => ({
-        id: prod.id,
-        name: prod.name,
-        price: parseFloat(prod.price),
-        category: prod.category || 'uncategorized',
-        image: prod.image,
-        rating: parseFloat(prod.rating || '0'),
-        stock: prod.stock || 0,
-      }));
+      const productsWithCategory = [];
+      for (const prod of dbProducts) {
+        const category = await Category.findById(prod.categoryId);
+        productsWithCategory.push({
+          id: prod._id.toString(),
+          name: prod.name,
+          price: prod.price,
+          category: category?.name || 'uncategorized',
+          image: prod.image,
+          rating: prod.rating || 0,
+          stock: prod.stockQuantity || 0,
+        });
+      }
+
+      return productsWithCategory;
     } catch (error) {
       console.error('Error fetching products:', error);
       return this.categories.flatMap(cat => cat.products);
@@ -341,49 +311,40 @@ export class DatabaseStorage implements IStorage {
       
       // Create categories
       for (const category of this.categories) {
-        const [dbCategory] = await db
-          .insert(categories)
-          .values({
+        const existingCategory = await Category.findOne({ slug: category.id });
+        if (!existingCategory) {
+          const dbCategory = new Category({
             name: category.name,
             slug: category.id,
-          })
-          .onConflictDoNothing()
-          .returning();
+          });
+          await dbCategory.save();
 
-        if (dbCategory) {
           // Create default brand
-          let [brand] = await db
-            .select()
-            .from(brands)
-            .where(eq(brands.name, 'Default Brand'))
-            .limit(1);
-          
+          let brand = await Brand.findOne({ name: 'Default Brand' });
           if (!brand) {
-            [brand] = await db
-              .insert(brands)
-              .values({
-                name: 'Default Brand',
-                slug: 'default-brand',
-              })
-              .returning();
+            brand = new Brand({
+              name: 'Default Brand',
+              slug: 'default-brand',
+            });
+            await brand.save();
           }
 
           // Create products for this category
           for (const product of category.products) {
-            await db
-              .insert(products)
-              .values({
-                id: product.id,
+            const existingProduct = await Product.findOne({ name: product.name });
+            if (!existingProduct) {
+              const newProduct = new Product({
                 name: product.name,
                 description: `High-quality ${product.name}`,
-                price: product.price.toString(),
-                categoryId: dbCategory.id,
-                brandId: brand.id,
+                price: product.price,
+                categoryId: dbCategory._id.toString(),
+                brandId: brand._id.toString(),
                 image: product.image,
-                rating: product.rating.toString(),
+                rating: product.rating,
                 stockQuantity: product.stock,
-              })
-              .onConflictDoNothing();
+              });
+              await newProduct.save();
+            }
           }
         }
       }
