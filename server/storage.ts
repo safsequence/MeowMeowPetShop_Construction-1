@@ -1,7 +1,5 @@
-import { db } from "./db";
-import { users, categories, brands, products, blogPosts, orders } from "@shared/schema";
-import type { User, Category, Brand, Product } from "@shared/schema";
-import { eq, and } from "drizzle-orm";
+import { User, Category, Brand, Product, BlogPost, Order } from "@shared/models";
+import type { IUser, ICategory, IBrand, IProduct } from "@shared/models";
 import { nanoid } from "nanoid";
 
 // Simple storage for the pet shop
@@ -50,11 +48,11 @@ export interface IStorage {
   createProduct(product: Omit<SimpleProduct, 'id'>): Promise<SimpleProduct>;
   updateProduct(id: string, product: Partial<SimpleProduct>): Promise<SimpleProduct | undefined>;
   deleteProduct(id: string): Promise<boolean>;
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  getUserByEmail(email: string): Promise<User | undefined>;
-  createUser(insertUser: InsertUser): Promise<User>;
-  updateUser(id: string, userData: Partial<InsertUser>): Promise<User | undefined>;
+  getUser(id: string): Promise<IUser | undefined>;
+  getUserByUsername(username: string): Promise<IUser | undefined>;
+  getUserByEmail(email: string): Promise<IUser | undefined>;
+  createUser(insertUser: InsertUser): Promise<IUser>;
+  updateUser(id: string, userData: Partial<InsertUser>): Promise<IUser | undefined>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -90,54 +88,53 @@ export class DatabaseStorage implements IStorage {
     ];
   }
 
-  async getUser(id: string): Promise<User | undefined> {
-    const result = await db.select().from(users).where(eq(users.id, id)).limit(1);
-    return result[0] || undefined;
+  async getUser(id: string): Promise<IUser | undefined> {
+    const user = await User.findById(id);
+    return user || undefined;
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    const result = await db.select().from(users).where(eq(users.username, username)).limit(1);
-    return result[0] || undefined;
+  async getUserByUsername(username: string): Promise<IUser | undefined> {
+    const user = await User.findOne({ username });
+    return user || undefined;
   }
 
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    if (!email) return undefined;
-    const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
-    return result[0] || undefined;
+  async getUserByEmail(email: string): Promise<IUser | undefined> {
+    const user = await User.findOne({ email });
+    return user || undefined;
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
+  async createUser(insertUser: InsertUser): Promise<IUser> {
     // Prevent any new admin users from being created
     const userToInsert = { ...insertUser, role: "user" };
     
-    const result = await db.insert(users).values(userToInsert).returning();
-    return result[0];
+    const user = new User(userToInsert);
+    await user.save();
+    return user;
   }
 
-  async updateUser(id: string, userData: Partial<InsertUser>): Promise<User | undefined> {
-    const result = await db.update(users)
-      .set({ ...userData, updatedAt: new Date() })
-      .where(eq(users.id, id))
-      .returning();
-    return result[0] || undefined;
+  async updateUser(id: string, userData: Partial<InsertUser>): Promise<IUser | undefined> {
+    const user = await User.findByIdAndUpdate(
+      id,
+      { ...userData, updatedAt: new Date() },
+      { new: true }
+    );
+    return user || undefined;
   }
 
   async getProduct(id: string): Promise<SimpleProduct | undefined> {
     try {
-      const productResult = await db.select().from(products).where(eq(products.id, id)).limit(1);
-      if (productResult.length === 0) return undefined;
+      const product = await Product.findById(id);
+      if (!product) return undefined;
 
-      const product = productResult[0];
-      const categoryResult = await db.select().from(categories).where(eq(categories.id, product.categoryId)).limit(1);
-      const category = categoryResult[0];
+      const category = await Category.findById(product.categoryId);
       
       return {
         id: product.id,
         name: product.name,
-        price: Number(product.price),
+        price: product.price,
         category: category?.name || 'uncategorized',
         image: product.image,
-        rating: Number(product.rating) || 0,
+        rating: product.rating || 0,
         stock: product.stockQuantity || 0,
       };
     } catch (error) {
@@ -261,9 +258,9 @@ export class DatabaseStorage implements IStorage {
 
   async getBrands(): Promise<SimpleBrand[]> {
     try {
-      const dbBrands = await db.select().from(brands).where(eq(brands.isActive, true));
+      const dbBrands = await Brand.find({ isActive: true });
       return dbBrands.map(brand => ({
-        id: brand.id,
+        id: brand.id.toString(),
         name: brand.name,
         slug: brand.slug,
         logo: brand.logo || '',
