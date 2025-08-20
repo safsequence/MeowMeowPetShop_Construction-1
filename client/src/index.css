@@ -6,29 +6,29 @@
 /* Scrolling announcement animation */
 @keyframes marquee {
   0% {
-    transform: translateX(100%);
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-100vw);
   }
 }
 
 @keyframes marquee2 {
   0% {
-    transform: translateX(100%);
+    transform: translateX(100vw);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-100vw);
   }
 }
 
 .animate-marquee {
-  animation: marquee 12s linear infinite;
+  animation: marquee 10s linear infinite;
 }
 
 .animate-marquee2 {
-  animation: marquee2 12s linear infinite;
-  animation-delay: 6s;
+  animation: marquee2 10s linear infinite;
+  animation-delay: 5s;
 }
 
 /* Custom Scrollbar - Green Background, Yellow Thumb, Hidden on Mobile/Tablet */
