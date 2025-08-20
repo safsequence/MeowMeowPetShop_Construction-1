@@ -184,6 +184,83 @@ const announcementSchema = new Schema<IAnnouncement>({
   isActive: { type: Boolean, default: true },
 }, { timestamps: true });
 
+// Cart Item Schema
+export interface ICartItem {
+  productId: string;
+  name: string;
+  price: number;
+  quantity: number;
+  image: string;
+}
+
+// Cart Schema
+export interface ICart extends Document {
+  userId?: string;
+  sessionId?: string;
+  items: ICartItem[];
+  total: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const cartSchema = new Schema<ICart>({
+  userId: String,
+  sessionId: String,
+  items: [{
+    productId: { type: String, required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true, default: 1 },
+    image: { type: String, required: true }
+  }],
+  total: { type: Number, default: 0 }
+}, { timestamps: true });
+
+// Invoice Schema
+export interface IInvoice extends Document {
+  invoiceNumber: string;
+  orderId: string;
+  userId: string;
+  customerInfo: {
+    name: string;
+    email: string;
+    phone: string;
+    address?: any;
+  };
+  items: ICartItem[];
+  subtotal: number;
+  total: number;
+  paymentMethod: string;
+  paymentStatus: string;
+  orderDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+const invoiceSchema = new Schema<IInvoice>({
+  invoiceNumber: { type: String, required: true, unique: true },
+  orderId: { type: String, required: true },
+  userId: { type: String, required: true },
+  customerInfo: {
+    name: { type: String, required: true },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    address: Schema.Types.Mixed
+  },
+  items: [{
+    productId: { type: String, required: true },
+    name: { type: String, required: true },
+    price: { type: Number, required: true },
+    quantity: { type: Number, required: true },
+    image: { type: String, required: true }
+  }],
+  subtotal: { type: Number, required: true },
+  total: { type: Number, required: true },
+  paymentMethod: { type: String, required: true },
+  paymentStatus: { type: String, default: 'Pending' },
+  orderDate: { type: Date, default: Date.now }
+}, { timestamps: true });
+
 // Export Models
 export const User = mongoose.model<IUser>('User', userSchema);
 export const Category = mongoose.model<ICategory>('Category', categorySchema);
@@ -192,6 +269,8 @@ export const Product = mongoose.model<IProduct>('Product', productSchema);
 export const BlogPost = mongoose.model<IBlogPost>('BlogPost', blogPostSchema);
 export const Order = mongoose.model<IOrder>('Order', orderSchema);
 export const Announcement = mongoose.model<IAnnouncement>('Announcement', announcementSchema);
+export const Cart = mongoose.model<ICart>('Cart', cartSchema);
+export const Invoice = mongoose.model<IInvoice>('Invoice', invoiceSchema);
 
 // Export types for compatibility with existing code
 export type UserType = IUser;
@@ -201,3 +280,6 @@ export type ProductType = IProduct;
 export type BlogPostType = IBlogPost;
 export type OrderType = IOrder;
 export type AnnouncementType = IAnnouncement;
+export type CartType = ICart;
+export type CartItemType = ICartItem;
+export type InvoiceType = IInvoice;

@@ -60,23 +60,44 @@ export default function DashboardPage() {
     requestedProducts: 0
   })
 
-  const [recentOrders, setRecentOrders] = useState<Order[]>([
-    {
-      id: 'ORD-2025-001',
-      date: '2025-01-27',
-      status: 'delivered',
-      total: 89.99,
-      items: [
-        { name: 'Royal Canin Cat Food 2kg', quantity: 1, price: 45.99 },
-        { name: 'Cat Interactive Toy', quantity: 2, price: 22.00 }
-      ]
-    },
-    {
-      id: 'ORD-2025-002',
-      date: '2025-01-25',
-      status: 'processing',
-      total: 156.50,
-      items: [
+  const [recentOrders, setRecentOrders] = useState<Order[]>([])
+
+  // Fetch user orders and invoices
+  useEffect(() => {
+    if (user?.id) {
+      // Fetch orders
+      fetch(`/api/orders/user/${user.id}`)
+        .then(res => res.json())
+        .then(orders => {
+          const formattedOrders = orders.map((order: any) => ({
+            id: order._id,
+            date: new Date(order.createdAt).toISOString().split('T')[0],
+            status: order.status.toLowerCase(),
+            total: order.total,
+            items: order.items || []
+          }))
+          setRecentOrders(formattedOrders)
+        })
+        .catch(err => console.error('Failed to fetch orders:', err))
+    } else {
+      // Demo data for non-logged in users
+      setRecentOrders([
+        {
+          id: 'ORD-2025-001',
+          date: '2025-01-27',
+          status: 'delivered',
+          total: 89.99,
+          items: [
+            { name: 'Royal Canin Cat Food 2kg', quantity: 1, price: 45.99 },
+            { name: 'Cat Interactive Toy', quantity: 2, price: 22.00 }
+          ]
+        },
+        {
+          id: 'ORD-2025-002',
+          date: '2025-01-25',
+          status: 'processing',
+          total: 156.50,
+          items: [
         { name: 'Premium Dog Food 5kg', quantity: 1, price: 78.50 },
         { name: 'Dog Grooming Kit', quantity: 1, price: 78.00 }
       ]

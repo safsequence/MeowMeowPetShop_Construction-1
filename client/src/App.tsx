@@ -30,6 +30,8 @@ import ResetPasswordPage from "@/pages/reset-password";
 import AdminPage from "@/pages/admin";
 import DashboardPage from "@/pages/dashboard";
 import CartPage from "@/pages/cart";
+import CheckoutPage from "@/pages/checkout";
+import InvoicePage from "@/pages/invoice";
 import ProfilePage from "@/pages/profile";
 
 function Router() {
@@ -60,6 +62,8 @@ function Router() {
         <Route path="/admin" component={AdminPage} />
         <Route path="/dashboard" component={DashboardPage} />
         <Route path="/cart" component={CartPage} />
+        <Route path="/checkout" component={CheckoutPage} />
+        <Route path="/invoice/:invoiceId" component={InvoicePage} />
         <Route path="/profile" component={ProfilePage} />
         <Route component={NotFound} />
       </Switch>

@@ -1,8 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { User, Product, Category, Brand, Announcement } from "@shared/models";
-import type { IUser } from "@shared/models";
+import { User, Product, Category, Brand, Announcement, Cart, Order, Invoice } from "@shared/models";
+import type { IUser, ICart, ICartItem, IOrder, IInvoice } from "@shared/models";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 import multer from "multer";
@@ -724,6 +724,295 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Announcement deleted successfully" });
     } catch (error) {
       res.status(500).json({ message: "Failed to delete announcement" });
+    }
+  });
+
+  // Cart API endpoints
+  app.get("/api/cart/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      let cart = await Cart.findOne({ userId });
+      
+      if (!cart) {
+        cart = new Cart({ userId, items: [], total: 0 });
+        await cart.save();
+      }
+      
+      res.json(cart);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch cart" });
+    }
+  });
+
+  app.post("/api/cart/add", async (req, res) => {
+    try {
+      const { userId, productId, name, price, image, quantity = 1 } = req.body;
+      
+      let cart = await Cart.findOne({ userId });
+      
+      if (!cart) {
+        cart = new Cart({ userId, items: [], total: 0 });
+      }
+      
+      const existingItemIndex = cart.items.findIndex(item => item.productId === productId);
+      
+      if (existingItemIndex > -1) {
+        cart.items[existingItemIndex].quantity += quantity;
+      } else {
+        cart.items.push({ productId, name, price, image, quantity });
+      }
+      
+      cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      await cart.save();
+      
+      res.json(cart);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to add item to cart" });
+    }
+  });
+
+  app.put("/api/cart/update", async (req, res) => {
+    try {
+      const { userId, productId, quantity } = req.body;
+      
+      const cart = await Cart.findOne({ userId });
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
+      
+      if (quantity <= 0) {
+        cart.items = cart.items.filter(item => item.productId !== productId);
+      } else {
+        const itemIndex = cart.items.findIndex(item => item.productId === productId);
+        if (itemIndex > -1) {
+          cart.items[itemIndex].quantity = quantity;
+        }
+      }
+      
+      cart.total = cart.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      await cart.save();
+      
+      res.json(cart);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to update cart" });
+    }
+  });
+
+  app.delete("/api/cart/clear/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      
+      const cart = await Cart.findOne({ userId });
+      if (!cart) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
+      
+      cart.items = [];
+      cart.total = 0;
+      await cart.save();
+      
+      res.json(cart);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to clear cart" });
+    }
+  });
+
+  // Order API endpoints
+  app.post("/api/orders", async (req, res) => {
+    try {
+      const { 
+        userId, 
+        customerInfo, 
+        items, 
+        subtotal, 
+        total, 
+        paymentMethod,
+        shippingAddress 
+      } = req.body;
+      
+      // Generate unique invoice number
+      const invoiceNumber = `INV-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+      
+      // Create order
+      const order = new Order({
+        userId,
+        status: 'Processing',
+        total,
+        items,
+        shippingAddress,
+        paymentMethod,
+        paymentStatus: paymentMethod === 'COD' ? 'Pending' : 'Paid'
+      });
+      
+      await order.save();
+      
+      // Create invoice
+      const invoice = new Invoice({
+        invoiceNumber,
+        orderId: order._id.toString(),
+        userId,
+        customerInfo,
+        items,
+        subtotal,
+        total,
+        paymentMethod,
+        paymentStatus: order.paymentStatus
+      });
+      
+      await invoice.save();
+      
+      // Clear user's cart
+      await Cart.findOneAndUpdate(
+        { userId },
+        { items: [], total: 0 }
+      );
+      
+      res.json({ order, invoice });
+    } catch (error) {
+      console.error('Order creation error:', error);
+      res.status(500).json({ message: "Failed to create order" });
+    }
+  });
+
+  app.get("/api/orders/user/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const orders = await Order.find({ userId }).sort({ createdAt: -1 });
+      res.json(orders);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch orders" });
+    }
+  });
+
+  app.get("/api/orders/:orderId", async (req, res) => {
+    try {
+      const { orderId } = req.params;
+      const order = await Order.findById(orderId);
+      
+      if (!order) {
+        return res.status(404).json({ message: "Order not found" });
+      }
+      
+      res.json(order);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch order" });
+    }
+  });
+
+  // Invoice API endpoints
+  app.get("/api/invoices/user/:userId", async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const invoices = await Invoice.find({ userId }).sort({ createdAt: -1 });
+      res.json(invoices);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch invoices" });
+    }
+  });
+
+  app.get("/api/invoices/:invoiceId", async (req, res) => {
+    try {
+      const { invoiceId } = req.params;
+      const invoice = await Invoice.findById(invoiceId);
+      
+      if (!invoice) {
+        return res.status(404).json({ message: "Invoice not found" });
+      }
+      
+      res.json(invoice);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to fetch invoice" });
+    }
+  });
+
+  app.get("/api/invoices/download/:invoiceId", async (req, res) => {
+    try {
+      const { invoiceId } = req.params;
+      const invoice = await Invoice.findById(invoiceId);
+      
+      if (!invoice) {
+        return res.status(404).json({ message: "Invoice not found" });
+      }
+      
+      // Generate invoice HTML for download
+      const invoiceHtml = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Invoice ${invoice.invoiceNumber}</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 40px; }
+            .header { border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+            .invoice-title { color: #333; font-size: 24px; margin: 0; }
+            .invoice-number { color: #666; margin: 5px 0; }
+            .company-info { margin-bottom: 30px; }
+            .customer-info { margin-bottom: 30px; }
+            .items-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+            .items-table th, .items-table td { border: 1px solid #ddd; padding: 12px; text-align: left; }
+            .items-table th { background-color: #f5f5f5; }
+            .total-section { text-align: right; }
+            .total-line { margin: 10px 0; }
+            .final-total { font-weight: bold; font-size: 18px; border-top: 2px solid #333; padding-top: 10px; }
+          </style>
+        </head>
+        <body>
+          <div class="header">
+            <h1 class="invoice-title">Meow Meow Pet Shop</h1>
+            <p class="invoice-number">Invoice #${invoice.invoiceNumber}</p>
+            <p>Date: ${new Date(invoice.orderDate).toLocaleDateString()}</p>
+          </div>
+          
+          <div class="company-info">
+            <h3>From:</h3>
+            <p>Meow Meow Pet Shop<br>
+            Savar, Bangladesh<br>
+            Email: info@meowmeowpetshop.com</p>
+          </div>
+          
+          <div class="customer-info">
+            <h3>Bill To:</h3>
+            <p>${invoice.customerInfo.name}<br>
+            Email: ${invoice.customerInfo.email}<br>
+            Phone: ${invoice.customerInfo.phone}</p>
+          </div>
+          
+          <table class="items-table">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${invoice.items.map(item => `
+                <tr>
+                  <td>${item.name}</td>
+                  <td>${item.quantity}</td>
+                  <td>৳ ${item.price}</td>
+                  <td>৳ ${item.price * item.quantity}</td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+          
+          <div class="total-section">
+            <div class="total-line">Subtotal: ৳ ${invoice.subtotal}</div>
+            <div class="total-line final-total">Total: ৳ ${invoice.total}</div>
+            <div class="total-line">Payment Method: ${invoice.paymentMethod}</div>
+            <div class="total-line">Payment Status: ${invoice.paymentStatus}</div>
+          </div>
+        </body>
+        </html>
+      `;
+      
+      res.setHeader('Content-Type', 'text/html');
+      res.setHeader('Content-Disposition', `attachment; filename="invoice-${invoice.invoiceNumber}.html"`);
+      res.send(invoiceHtml);
+    } catch (error) {
+      res.status(500).json({ message: "Failed to generate invoice" });
     }
   });
 
