@@ -8,7 +8,7 @@
   html {
     overflow-y: scroll !important; /* Always show vertical scrollbar on desktop */
     scrollbar-width: thin !important; /* Thin scrollbar for Firefox */
-    scrollbar-color: #fede58 #39613d !important; /* Yellow thumb, green track */
+    scrollbar-color: #ffffff #39613d !important; /* White thumb, green track */
   }
 
   /* Webkit browsers scrollbar styling - Desktop only */
@@ -23,18 +23,18 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #fede58 !important; /* Yellow scrollbar thumb */
+    background-color: #ffffff !important; /* White scrollbar thumb */
     border-radius: 5px !important;
-    border: 1px solid #39613d !important; /* Green border around yellow thumb */
+    border: 1px solid #39613d !important; /* Green border around white thumb */
     min-height: 30px !important;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #f5d742 !important; /* Slightly darker yellow on hover */
+    background-color: #f8f9fa !important; /* Light gray on hover */
   }
 
   ::-webkit-scrollbar-thumb:active {
-    background-color: #ecc94b !important; /* Darker yellow when clicked */
+    background-color: #e9ecef !important; /* Slightly darker gray when clicked */
   }
 
   /* Scrollbar corner styling */
