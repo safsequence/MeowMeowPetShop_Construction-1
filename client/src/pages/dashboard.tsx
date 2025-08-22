@@ -98,22 +98,23 @@ export default function DashboardPage() {
           status: 'processing',
           total: 156.50,
           items: [
-        { name: 'Premium Dog Food 5kg', quantity: 1, price: 78.50 },
-        { name: 'Dog Grooming Kit', quantity: 1, price: 78.00 }
-      ]
-    },
-    {
-      id: 'ORD-2025-003',
-      date: '2025-01-20',
-      status: 'pending',
-      total: 234.75,
-      items: [
-        { name: 'Cat Litter Premium 10kg', quantity: 2, price: 89.90 },
-        { name: 'Cat Tree Large', quantity: 1, price: 144.85 }
-      ]
+            { name: 'Premium Dog Food 5kg', quantity: 1, price: 78.50 },
+            { name: 'Dog Grooming Kit', quantity: 1, price: 78.00 }
+          ]
+        },
+        {
+          id: 'ORD-2025-003',
+          date: '2025-01-20',
+          status: 'pending',
+          total: 234.75,
+          items: [
+            { name: 'Cat Litter Premium 10kg', quantity: 2, price: 89.90 },
+            { name: 'Cat Tree Large', quantity: 1, price: 144.85 }
+          ]
+        }
+      ])
     }
-  ])
-  })
+  }, [user])
   
   useEffect(() => {
     if (!user) {
