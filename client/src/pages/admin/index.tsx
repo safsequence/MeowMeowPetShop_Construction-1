@@ -29,7 +29,7 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 import { 
   Package, FileEdit, Plus, Trash2, ArrowLeft, Search, 
   Filter, Grid, List, Eye, Edit, Save, X, 
-  Home, PawPrint, BookOpen, Speaker
+  Home, PawPrint, BookOpen, Speaker, Grid3X3
 } from "lucide-react";
 
 // Form validation schemas
@@ -84,6 +84,7 @@ export default function AdminPage() {
   const [editingBlog, setEditingBlog] = useState<BlogPost | null>(null);
   const [showProductDialog, setShowProductDialog] = useState(false);
   const [showBlogDialog, setShowBlogDialog] = useState(false);
+  const [selectedShopCategory, setSelectedShopCategory] = useState<string>('adult-food');
 
   // Function to parse bold text formatting
   const parseAnnouncementText = (text: string) => {
@@ -446,10 +447,14 @@ export default function AdminPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-3 lg:w-auto lg:grid-cols-3 bg-white border border-gray-200">
+          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4 bg-white border border-gray-200">
             <TabsTrigger value="products" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
               <Package className="w-4 h-4 mr-2" />
               Products
+            </TabsTrigger>
+            <TabsTrigger value="shop-categories" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
+              <Grid3X3 className="w-4 h-4 mr-2" />
+              Shop by Category
             </TabsTrigger>
             <TabsTrigger value="announcements" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
               <Speaker className="w-4 h-4 mr-2" />
@@ -651,6 +656,200 @@ export default function AdminPage() {
                   ))}
                 </div>
               )}
+            </div>
+          </TabsContent>
+
+          {/* Shop by Category Tab */}
+          <TabsContent value="shop-categories" className="space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Shop by Category Management</h2>
+                <p className="text-gray-600">Manage the 10 featured categories displayed on the homepage</p>
+              </div>
+            </div>
+
+            {/* Category Selection */}
+            <div className="bg-white p-4 rounded-lg border">
+              <h3 className="text-lg font-semibold mb-4">Select Category to Manage</h3>
+              <Select value={selectedShopCategory} onValueChange={setSelectedShopCategory}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select a shop category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="adult-food">Adult Food</SelectItem>
+                  <SelectItem value="kitten-food">Kitten Food</SelectItem>
+                  <SelectItem value="collar">Collar</SelectItem>
+                  <SelectItem value="clumping-cat-litter">Clumping Cat Litter</SelectItem>
+                  <SelectItem value="cat-litter-accessories">Cat Litter Accessories</SelectItem>
+                  <SelectItem value="harness">Harness</SelectItem>
+                  <SelectItem value="cat-tick-flea-control">Cat Tick & Flea Control</SelectItem>
+                  <SelectItem value="deworming-tablet">Deworming Tablet</SelectItem>
+                  <SelectItem value="cat-pouches">Cat Pouches</SelectItem>
+                  <SelectItem value="sunglass">Sunglass</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* Category Products Management */}
+            <div className="space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Grid3X3 className="w-5 h-5 text-green-600" />
+                    {selectedShopCategory.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} Products
+                  </CardTitle>
+                  <CardDescription>
+                    Assign products to this featured category. These will appear in the "Shop by Category" section on the homepage.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {/* Instructions */}
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                      <h4 className="font-medium text-blue-900 mb-2">How to manage Shop by Category products:</h4>
+                      <ul className="list-disc list-inside text-sm text-blue-800 space-y-1">
+                        <li>Go to the "Products" tab to add/edit individual products</li>
+                        <li>Assign products to the appropriate regular categories (Adult Food, Kitten Food, etc.)</li>
+                        <li>Use the "Tags" field to mark products for featured categories</li>
+                        <li>Products with matching tags will automatically appear in these sections</li>
+                      </ul>
+                    </div>
+
+                    {/* Current Products in Category */}
+                    <div className="border rounded-lg p-4">
+                      <h4 className="font-medium mb-3">Products currently assigned to this category:</h4>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {products
+                          .filter((product: any) => 
+                            product.tags?.includes(selectedShopCategory) ||
+                            (selectedShopCategory === 'adult-food' && product.categoryId === 'adult-food') ||
+                            (selectedShopCategory === 'kitten-food' && product.categoryId === 'kitten-food') ||
+                            (selectedShopCategory === 'collar' && product.tags?.includes('collar')) ||
+                            (selectedShopCategory === 'clumping-cat-litter' && product.categoryId === 'clumping-cat-litter') ||
+                            (selectedShopCategory === 'cat-litter-accessories' && product.categoryId === 'cat-litter-accessories') ||
+                            (selectedShopCategory === 'harness' && product.tags?.includes('harness')) ||
+                            (selectedShopCategory === 'cat-tick-flea-control' && product.categoryId === 'cat-tick-flea-control') ||
+                            (selectedShopCategory === 'deworming-tablet' && product.categoryId === 'deworming-tablet') ||
+                            (selectedShopCategory === 'cat-pouches' && product.categoryId === 'cat-pouches') ||
+                            (selectedShopCategory === 'sunglass' && product.tags?.includes('sunglass'))
+                          )
+                          .map((product: any) => (
+                            <Card key={product.id} className="hover:shadow-md transition-shadow">
+                              <CardContent className="p-4">
+                                <div className="flex items-center space-x-3">
+                                  <img 
+                                    src={product.image} 
+                                    alt={product.name} 
+                                    className="w-12 h-12 rounded-lg object-cover"
+                                  />
+                                  <div className="flex-1 min-w-0">
+                                    <h5 className="font-medium text-sm truncate">{product.name}</h5>
+                                    <p className="text-xs text-gray-500">৳{product.price}</p>
+                                    <div className="flex flex-wrap gap-1 mt-1">
+                                      {product.isActive && (
+                                        <Badge className="text-xs bg-green-100 text-green-800">Active</Badge>
+                                      )}
+                                      {product.isNew && (
+                                        <Badge className="text-xs bg-blue-100 text-blue-800">New</Badge>
+                                      )}
+                                      {product.isBestseller && (
+                                        <Badge className="text-xs bg-yellow-100 text-yellow-800">Bestseller</Badge>
+                                      )}
+                                    </div>
+                                  </div>
+                                </div>
+                              </CardContent>
+                            </Card>
+                          ))
+                        }
+                        {products
+                          .filter((product: any) => 
+                            product.tags?.includes(selectedShopCategory) ||
+                            (selectedShopCategory === 'adult-food' && product.categoryId === 'adult-food') ||
+                            (selectedShopCategory === 'kitten-food' && product.categoryId === 'kitten-food') ||
+                            (selectedShopCategory === 'collar' && product.tags?.includes('collar')) ||
+                            (selectedShopCategory === 'clumping-cat-litter' && product.categoryId === 'clumping-cat-litter') ||
+                            (selectedShopCategory === 'cat-litter-accessories' && product.categoryId === 'cat-litter-accessories') ||
+                            (selectedShopCategory === 'harness' && product.tags?.includes('harness')) ||
+                            (selectedShopCategory === 'cat-tick-flea-control' && product.categoryId === 'cat-tick-flea-control') ||
+                            (selectedShopCategory === 'deworming-tablet' && product.categoryId === 'deworming-tablet') ||
+                            (selectedShopCategory === 'cat-pouches' && product.categoryId === 'cat-pouches') ||
+                            (selectedShopCategory === 'sunglass' && product.tags?.includes('sunglass'))
+                          ).length === 0 && (
+                          <div className="col-span-full text-center py-8 text-gray-500">
+                            <Grid3X3 className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                            <p className="text-sm">No products assigned to this category yet.</p>
+                            <p className="text-xs mt-1">
+                              Go to Products tab and assign products using categories or tags.
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Quick Actions */}
+                    <div className="flex flex-wrap gap-2">
+                      <Button
+                        onClick={() => {
+                          setEditingProduct(null);
+                          form.reset();
+                          setShowProductDialog(true);
+                        }}
+                        className="bg-green-600 hover:bg-green-700"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Add New Product
+                      </Button>
+                      <Button
+                        variant="outline"
+                        onClick={() => setActiveTab('products')}
+                      >
+                        <Package className="w-4 h-4 mr-2" />
+                        Manage All Products
+                      </Button>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Category Statistics */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg">Category Statistics</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                    {[
+                      'adult-food', 'kitten-food', 'collar', 'clumping-cat-litter', 
+                      'cat-litter-accessories', 'harness', 'cat-tick-flea-control', 
+                      'deworming-tablet', 'cat-pouches', 'sunglass'
+                    ].map((category) => {
+                      const count = products.filter((product: any) => 
+                        product.tags?.includes(category) ||
+                        (category === 'adult-food' && product.categoryId === 'adult-food') ||
+                        (category === 'kitten-food' && product.categoryId === 'kitten-food') ||
+                        (category === 'collar' && product.tags?.includes('collar')) ||
+                        (category === 'clumping-cat-litter' && product.categoryId === 'clumping-cat-litter') ||
+                        (category === 'cat-litter-accessories' && product.categoryId === 'cat-litter-accessories') ||
+                        (category === 'harness' && product.tags?.includes('harness')) ||
+                        (category === 'cat-tick-flea-control' && product.categoryId === 'cat-tick-flea-control') ||
+                        (category === 'deworming-tablet' && product.categoryId === 'deworming-tablet') ||
+                        (category === 'cat-pouches' && product.categoryId === 'cat-pouches') ||
+                        (category === 'sunglass' && product.tags?.includes('sunglass'))
+                      ).length;
+
+                      return (
+                        <div key={category} className="text-center p-3 bg-gray-50 rounded-lg">
+                          <div className="text-xl font-bold text-gray-900">{count}</div>
+                          <div className="text-xs text-gray-600 mt-1">
+                            {category.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </TabsContent>
 
