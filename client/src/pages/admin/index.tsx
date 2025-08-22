@@ -29,7 +29,7 @@ import { apiRequest, queryClient } from '@/lib/queryClient';
 import { 
   Package, FileEdit, Plus, Trash2, ArrowLeft, Search, 
   Filter, Grid, List, Eye, Edit, Save, X, 
-  Home, PawPrint, BookOpen, Speaker, Grid3X3
+  Home, PawPrint, BookOpen, Speaker, Grid3X3, Coffee
 } from "lucide-react";
 
 // Form validation schemas
@@ -85,6 +85,7 @@ export default function AdminPage() {
   const [showProductDialog, setShowProductDialog] = useState(false);
   const [showBlogDialog, setShowBlogDialog] = useState(false);
   const [selectedShopCategory, setSelectedShopCategory] = useState<string>('adult-food');
+  const [repackSearchTerm, setRepackSearchTerm] = useState('');
 
   // Function to parse bold text formatting
   const parseAnnouncementText = (text: string) => {
@@ -447,7 +448,7 @@ export default function AdminPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4 bg-white border border-gray-200">
+          <TabsList className="grid w-full grid-cols-5 lg:w-auto lg:grid-cols-5 bg-white border border-gray-200">
             <TabsTrigger value="products" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
               <Package className="w-4 h-4 mr-2" />
               Products
@@ -455,6 +456,10 @@ export default function AdminPage() {
             <TabsTrigger value="shop-categories" className="data-[state=active]:bg-green-600 data-[state=active]:text-white">
               <Grid3X3 className="w-4 h-4 mr-2" />
               Shop by Category
+            </TabsTrigger>
+            <TabsTrigger value="repack-food" className="data-[state=active]:bg-orange-600 data-[state=active]:text-white">
+              <Coffee className="w-4 h-4 mr-2" />
+              Repack Food
             </TabsTrigger>
             <TabsTrigger value="announcements" className="data-[state=active]:bg-blue-600 data-[state=active]:text-white">
               <Speaker className="w-4 h-4 mr-2" />
@@ -848,6 +853,251 @@ export default function AdminPage() {
                       );
                     })}
                   </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          {/* Repack Food Tab */}
+          <TabsContent value="repack-food" className="space-y-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">Repack Food Management</h2>
+                <p className="text-gray-600">Manage repack food products and bulk food items</p>
+              </div>
+              <Button 
+                onClick={() => {
+                  setEditingProduct(null);
+                  form.reset({
+                    ...form.getValues(),
+                    tags: 'repack-food',
+                  });
+                  setShowProductDialog(true);
+                }}
+                className="bg-orange-600 hover:bg-orange-700"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Repack Food
+              </Button>
+            </div>
+
+            {/* Search and Filters */}
+            <div className="flex flex-col sm:flex-row gap-4 bg-white p-4 rounded-lg border">
+              <div className="flex-1">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <Input
+                    placeholder="Search repack food products..."
+                    value={repackSearchTerm}
+                    onChange={(e) => setRepackSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Repack Food Products */}
+            <div className="bg-white rounded-lg border">
+              <div className="p-4 border-b bg-orange-50">
+                <h3 className="text-lg font-semibold text-orange-800 flex items-center gap-2">
+                  <Coffee className="w-5 h-5" />
+                  Repack Food Products
+                </h3>
+                <p className="text-sm text-orange-600 mt-1">
+                  Products tagged as repack food items
+                </p>
+              </div>
+
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50 border-b">
+                    <tr>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Stock</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-200">
+                    {isLoadingProducts ? (
+                      <tr>
+                        <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                          Loading repack food products...
+                        </td>
+                      </tr>
+                    ) : (
+                      (() => {
+                        const repackProducts = (products as any[]).filter((product: any) => {
+                          const matchesRepack = product.tags?.includes('repack-food') || 
+                                              product.tags?.includes('repack') ||
+                                              product.name.toLowerCase().includes('repack') ||
+                                              product.description?.toLowerCase().includes('repack');
+                          const matchesSearch = product.name.toLowerCase().includes(repackSearchTerm.toLowerCase());
+                          return matchesRepack && matchesSearch;
+                        });
+
+                        return repackProducts.length === 0 ? (
+                          <tr>
+                            <td colSpan={6} className="px-4 py-8 text-center text-gray-500">
+                              <Coffee className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+                              <p className="text-sm">No repack food products found</p>
+                              <p className="text-xs mt-1">
+                                Add products with "repack-food" tag or containing "repack" in name/description
+                              </p>
+                            </td>
+                          </tr>
+                        ) : repackProducts.map((product: any) => (
+                          <tr key={product.id} className="hover:bg-orange-50">
+                            <td className="px-4 py-4">
+                              <div className="flex items-center">
+                                <img src={product.image} alt={product.name} className="w-12 h-12 rounded-lg object-cover mr-3" />
+                                <div>
+                                  <div className="font-medium text-gray-900">{product.name}</div>
+                                  <div className="text-sm text-gray-500">
+                                    {(brands as any[]).find((b: any) => b.id === product.brandId)?.name || 'Unknown Brand'}
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="px-4 py-4">
+                              <Badge variant="outline" className="border-orange-200 text-orange-800">
+                                {(categories as any[]).find((c: any) => c.id === product.categoryId)?.name || product.category}
+                              </Badge>
+                            </td>
+                            <td className="px-4 py-4 font-medium">৳{product.price}</td>
+                            <td className="px-4 py-4">{product.stockQuantity || product.stock || 0}</td>
+                            <td className="px-4 py-4">
+                              <div className="flex flex-wrap gap-1">
+                                {product.isActive !== false && (
+                                  <Badge variant="default" className="bg-green-100 text-green-800">Active</Badge>
+                                )}
+                                {product.tags?.includes('repack-food') && (
+                                  <Badge variant="secondary" className="bg-orange-100 text-orange-800">Repack</Badge>
+                                )}
+                                {product.isNew && (
+                                  <Badge variant="secondary" className="bg-blue-100 text-blue-800">New</Badge>
+                                )}
+                                {product.isBestseller && (
+                                  <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Bestseller</Badge>
+                                )}
+                                {product.isOnSale && (
+                                  <Badge variant="secondary" className="bg-red-100 text-red-800">On Sale</Badge>
+                                )}
+                              </div>
+                            </td>
+                            <td className="px-4 py-4 text-right">
+                              <div className="flex justify-end space-x-2">
+                                <Button size="sm" variant="ghost" onClick={() => handleEditProduct(product)}>
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button 
+                                  size="sm" 
+                                  variant="ghost" 
+                                  onClick={() => handleDeleteProduct(product.id)}
+                                  className="text-red-600 hover:text-red-700"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </td>
+                          </tr>
+                        ));
+                      })()
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            {/* Repack Food Guidelines */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Coffee className="w-5 h-5 text-orange-600" />
+                  Repack Food Guidelines
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+                    <h4 className="font-medium text-orange-900 mb-2">How to add repack food products:</h4>
+                    <ul className="list-disc list-inside text-sm text-orange-800 space-y-1">
+                      <li>Use the "Add Repack Food" button above</li>
+                      <li>Add "repack-food" in the Tags field</li>
+                      <li>Include "repack" in the product name or description</li>
+                      <li>Set appropriate pricing for bulk quantities</li>
+                    </ul>
+                  </div>
+                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                    <h4 className="font-medium text-blue-900 mb-2">Best practices:</h4>
+                    <ul className="list-disc list-inside text-sm text-blue-800 space-y-1">
+                      <li>Clearly specify quantity in product name</li>
+                      <li>Include packaging information in description</li>
+                      <li>Use appropriate categories (Adult Food, Kitten Food, etc.)</li>
+                      <li>Set realistic stock quantities for bulk items</li>
+                    </ul>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Statistics */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-orange-600">
+                    {(products as any[]).filter((p: any) => 
+                      p.tags?.includes('repack-food') || 
+                      p.tags?.includes('repack') ||
+                      p.name.toLowerCase().includes('repack') ||
+                      p.description?.toLowerCase().includes('repack')
+                    ).length}
+                  </div>
+                  <div className="text-sm text-gray-600">Total Repack Products</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-green-600">
+                    {(products as any[]).filter((p: any) => 
+                      (p.tags?.includes('repack-food') || 
+                       p.tags?.includes('repack') ||
+                       p.name.toLowerCase().includes('repack') ||
+                       p.description?.toLowerCase().includes('repack')) &&
+                      p.isActive !== false
+                    ).length}
+                  </div>
+                  <div className="text-sm text-gray-600">Active Products</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-blue-600">
+                    {(products as any[]).filter((p: any) => 
+                      (p.tags?.includes('repack-food') || 
+                       p.tags?.includes('repack') ||
+                       p.name.toLowerCase().includes('repack') ||
+                       p.description?.toLowerCase().includes('repack')) &&
+                      (p.stockQuantity || p.stock || 0) > 0
+                    ).length}
+                  </div>
+                  <div className="text-sm text-gray-600">In Stock</div>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardContent className="p-4 text-center">
+                  <div className="text-2xl font-bold text-red-600">
+                    {(products as any[]).filter((p: any) => 
+                      (p.tags?.includes('repack-food') || 
+                       p.tags?.includes('repack') ||
+                       p.name.toLowerCase().includes('repack') ||
+                       p.description?.toLowerCase().includes('repack')) &&
+                      (p.stockQuantity || p.stock || 0) === 0
+                    ).length}
+                  </div>
+                  <div className="text-sm text-gray-600">Out of Stock</div>
                 </CardContent>
               </Card>
             </div>
