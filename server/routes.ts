@@ -396,6 +396,124 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Initialize repack food products
+  app.post("/api/init-repack-products", async (req, res) => {
+    try {
+      // Check if repack products already exist
+      const existingRepackProducts = await Product.find({
+        tags: { $in: ['repack-food'] }
+      });
+      
+      if (existingRepackProducts.length > 0) {
+        return res.json({ message: "Repack products already exist", count: existingRepackProducts.length });
+      }
+
+      // Find or create "Repack Food" category
+      let repackCategory = await Category.findOne({ name: "Repack Food" });
+      if (!repackCategory) {
+        repackCategory = new Category({
+          name: "Repack Food",
+          slug: "repack-food",
+        });
+        await repackCategory.save();
+      }
+
+      // Find or create "Meow Meow" brand
+      let meowMeowBrand = await Brand.findOne({ name: "Meow Meow" });
+      if (!meowMeowBrand) {
+        meowMeowBrand = new Brand({
+          name: "Meow Meow",
+          slug: "meow-meow",
+        });
+        await meowMeowBrand.save();
+      }
+
+      // Create the 3 repack food products
+      const repackProducts = [
+        {
+          name: 'Bulk Cat Food Repack (20kg)',
+          description: 'Premium quality, repackaged for savings',
+          price: 6400,
+          originalPrice: 8000,
+          categoryId: repackCategory._id,
+          brandId: meowMeowBrand._id,
+          image: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+          stockQuantity: 15,
+          tags: ['repack-food', 'bulk-save', 'cat-food'],
+          isNew: false,
+          isBestseller: true,
+          isOnSale: true,
+          isActive: true,
+          rating: 4.5,
+        },
+        {
+          name: 'Bulk Dog Food Repack (25kg)',
+          description: 'Economical choice for multiple dogs',
+          price: 7200,
+          originalPrice: 9600,
+          categoryId: repackCategory._id,
+          brandId: meowMeowBrand._id,
+          image: 'https://images.unsplash.com/photo-1623387641168-d9803ddd3f35?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+          stockQuantity: 12,
+          tags: ['repack-food', 'combo-deal', 'dog-food'],
+          isNew: false,
+          isBestseller: true,
+          isOnSale: true,
+          isActive: true,
+          rating: 4.5,
+        },
+        {
+          name: 'Mixed Pet Treats (5kg)',
+          description: 'Assorted treats for cats and dogs',
+          price: 2800,
+          originalPrice: 3500,
+          categoryId: repackCategory._id,
+          brandId: meowMeowBrand._id,
+          image: 'https://images.unsplash.com/photo-1583337130417-3346a1be7dee?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&h=300',
+          stockQuantity: 25,
+          tags: ['repack-food', 'bulk-save', 'treats'],
+          isNew: false,
+          isBestseller: false,
+          isOnSale: true,
+          isActive: true,
+          rating: 4.5,
+        }
+      ];
+
+      const createdProducts = await Product.insertMany(repackProducts);
+      console.log('Created repack products:', createdProducts.length);
+      
+      res.status(201).json({ 
+        message: "Repack products initialized successfully", 
+        count: createdProducts.length,
+        products: createdProducts
+      });
+    } catch (error) {
+      console.error('Init repack products error:', error);
+      res.status(500).json({ message: "Failed to initialize repack products" });
+    }
+  });
+
+  // Get repack food products specifically
+  app.get("/api/repack-products", async (req, res) => {
+    try {
+      const repackProducts = await Product.find({
+        $or: [
+          { tags: { $in: ['repack-food', 'repack'] } },
+          { name: { $regex: /repack/i } },
+          { description: { $regex: /repack/i } }
+        ],
+        isActive: true
+      }).populate('categoryId').populate('brandId');
+      
+      console.log(`Successfully fetched ${repackProducts.length} repack products`);
+      res.json(repackProducts);
+    } catch (error) {
+      console.error('Get repack products error:', error);
+      res.status(500).json({ message: "Failed to fetch repack products" });
+    }
+  });
+
   // Middleware to check admin access
   const requireAdmin = async (req: any, res: any, next: any) => {
     const { userId } = req.body;
