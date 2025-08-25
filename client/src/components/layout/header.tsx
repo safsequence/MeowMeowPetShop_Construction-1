@@ -124,7 +124,7 @@ export default function Header() {
   ];
 
   return (
-    <>
+    <div className="relative">
       {/* Top Announcement Bar - Will scroll away */}
       <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative z-30">
         <div className="container mx-auto px-4">
@@ -177,7 +177,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Fixed position below announcement bar */}
+      {/* Main Header - Sticky at top, stays visible when scrolling */}
       <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
@@ -333,7 +333,6 @@ export default function Header() {
           </nav>
         </div>
       </header>
-
-    </>
+    </div>
   );
 }
