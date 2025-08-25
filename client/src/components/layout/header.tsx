@@ -124,8 +124,8 @@ export default function Header() {
   ];
 
   return (
-    <div className="relative">
-      {/* Top Announcement Bar - Will scroll away */}
+    <>
+      {/* Top Announcement Bar - Will scroll away naturally */}
       <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative z-30">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
@@ -177,8 +177,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Fixed at top, stays visible when scrolling */}
-      <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-50 border-b border-gray-200">
+      {/* Main Header - Sticky navigation that stays when scrolling */}
+      <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
@@ -306,33 +306,17 @@ export default function Header() {
               {/* Main Navigation Items */}
               {navigationItems.map((item) => (
                 <div key={item.name} className="relative group">
-                  {item.subItems ? (
-                    <div>
-                      <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                        {item.name}
-                        <ChevronDown size={16} />
-                      </Button>
-                      <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        {item.subItems.map((subItem) => (
-                          <Link key={subItem.name} href={subItem.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors" data-testid={`nav-sub-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                            {subItem.name}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  ) : (
-                    <Link href={item.path}>
-                      <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                        {item.name}
-                      </Button>
-                    </Link>
-                  )}
+                  <Link href={item.path}>
+                    <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                      {item.name}
+                    </Button>
+                  </Link>
                 </div>
               ))}
             </div>
           </nav>
         </div>
       </header>
-    </div>
+    </>
   );
 }
