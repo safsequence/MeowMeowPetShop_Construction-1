@@ -1,5 +1,6 @@
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import PersistentSidebar from "@/components/layout/persistent-sidebar";
 import HeroBanner from "@/components/sections/hero-banner";
 import CategoriesGrid from "@/components/sections/categories-grid";
 import FlashSale from "@/components/sections/flash-sale";
@@ -11,13 +12,17 @@ import NewlyLaunched from "@/components/sections/newly-launched";
 import MembershipBanner from "@/components/sections/membership-banner";
 import BlogPreview from "@/components/sections/blog-preview";
 import Testimonials from "@/components/sections/testimonials";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 export default function Home() {
+  const { isVisible: sidebarVisible } = useSidebar();
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
+      <PersistentSidebar />
 
-      <main className="flex-1 w-full">
+      <main className={`flex-1 w-full transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
         <div className="space-y-8 md:space-y-12">
           <HeroBanner />
           <div className="px-4 lg:px-6">
@@ -35,7 +40,9 @@ export default function Home() {
         </div>
       </main>
 
-      <Footer />
+      <div className={`transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
+        <Footer />
+      </div>
     </div>
   );
 }

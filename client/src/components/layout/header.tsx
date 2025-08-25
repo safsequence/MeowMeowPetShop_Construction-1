@@ -8,6 +8,7 @@ import { useAuth } from '@/hooks/use-auth';
 import { signOut } from '@/lib/supabase';
 import { useToast } from '@/hooks/use-toast';
 import { useCart } from '@/contexts/cart-context';
+import { useSidebar } from '@/contexts/sidebar-context';
 import { Link, useLocation } from 'wouter';
 import { searchProducts, type SearchableProduct } from '@/lib/search-data';
 import { useQuery } from '@tanstack/react-query';
@@ -22,6 +23,7 @@ export default function Header() {
   const { user, loading } = useAuth();
   const { toast } = useToast();
   const { state: cartState } = useCart();
+  const { toggle: toggleSidebar } = useSidebar();
   const [, setLocation] = useLocation();
 
   // Fetch current announcement
@@ -300,21 +302,23 @@ export default function Header() {
           {/* Navigation Bar */}
           <nav className="mt-4 border-t pt-4 relative">
             <div className="flex items-center gap-6">
+              {/* Categories Button - First Item */}
+              <div>
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1 bg-gray-50"
+                  onClick={toggleSidebar}
+                  data-testid="button-categories-toggle"
+                >
+                  <Menu size={16} />
+                  Categories
+                </Button>
+              </div>
+
               {/* Main Navigation Items */}
               {navigationItems.map((item) => (
                 <div key={item.name} className="relative group">
-                  {item.name === 'Categories' ? (
-                    <div>
-                      <Button 
-                        variant="ghost" 
-                        className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" 
-                        data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
-                      >
-                        {item.name}
-                        <ChevronDown size={16} />
-                      </Button>
-                    </div>
-                  ) : item.subItems ? (
+                  {item.subItems ? (
                     <div>
                       <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
                         {item.name}
