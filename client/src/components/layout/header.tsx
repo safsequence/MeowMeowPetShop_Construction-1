@@ -299,63 +299,59 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Navigation Bar with Integrated Categories Sidebar */}
-          <div className="mt-4 border-t pt-4 relative flex">
-            {/* Categories Sidebar - Left Panel */}
-            <div className="w-64 bg-gray-50 border-r border-gray-200 py-4 px-4 rounded-l-lg">
-              <div className="flex items-center justify-between mb-3">
-                <h3 className="font-bold text-[#26732d] flex items-center">
-                  <Menu size={16} className="mr-2" />
+          {/* Navigation Bar with Categories Button */}
+          <nav className="mt-4 border-t pt-4 relative">
+            <div className="flex items-center gap-6">
+              {/* Categories Button - Left */}
+              <div className="relative group">
+                <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1 bg-gray-50">
+                  <Menu size={16} />
                   Categories
-                </h3>
-              </div>
-              <ul className="space-y-1">
-                {categories.map((category, index) => (
-                  <li key={index}>
-                    <Link href={category.href}>
-                      <div className="flex items-center justify-between py-2 px-3 text-gray-700 hover:bg-[#ffde59]/20 hover:text-[#26732d] rounded transition-colors text-sm cursor-pointer">
+                  <ChevronDown size={16} />
+                </Button>
+                {/* Categories Dropdown */}
+                <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                  {categories.map((category, index) => (
+                    <Link key={index} href={category.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors">
+                      <div className="flex items-center justify-between">
                         <span>{category.label}</span>
                         {category.hasSubCategories && (
                           <ChevronDown size={12} className="text-gray-400" />
                         )}
                       </div>
                     </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            
-            {/* Main Navigation - Right Panel */}
-            <nav className="flex-1 py-4 px-6 bg-white rounded-r-lg">
-              <div className="flex flex-wrap items-center gap-6">
-                {navigationItems.map((item) => (
-                  <div key={item.name} className="relative group">
-                    {item.subItems ? (
-                      <div>
-                        <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                          {item.name}
-                          <ChevronDown size={16} />
-                        </Button>
-                        <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                          {item.subItems.map((subItem) => (
-                            <Link key={subItem.name} href={subItem.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors" data-testid={`nav-sub-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                              {subItem.name}
-                            </Link>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <Link href={item.path}>
-                        <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                          {item.name}
-                        </Button>
-                      </Link>
-                    )}
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </nav>
-          </div>
+
+              {/* Main Navigation Items */}
+              {navigationItems.map((item) => (
+                <div key={item.name} className="relative group">
+                  {item.subItems ? (
+                    <div>
+                      <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                        {item.name}
+                        <ChevronDown size={16} />
+                      </Button>
+                      <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                        {item.subItems.map((subItem) => (
+                          <Link key={subItem.name} href={subItem.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors" data-testid={`nav-sub-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                            {subItem.name}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  ) : (
+                    <Link href={item.path}>
+                      <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                        {item.name}
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </nav>
         </div>
       </header>
 
