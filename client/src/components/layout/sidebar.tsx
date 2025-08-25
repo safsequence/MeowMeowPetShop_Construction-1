@@ -31,9 +31,9 @@ export default function NavigationSidebar() {
         />
       )}
 
-      {/* Sidebar - Positioned below the sticky header */}
+      {/* Sidebar - Positioned below the fixed header */}
       <div className={cn(
-        "fixed left-0 top-[120px] w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 h-[calc(100vh-120px)] overflow-y-auto",
+        "fixed left-0 top-[120px] w-80 bg-white shadow-lg transform transition-transform duration-300 ease-in-out z-40 h-[calc(100vh-120px)] overflow-y-auto",
         isVisible ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="p-6">

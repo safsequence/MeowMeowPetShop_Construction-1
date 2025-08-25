@@ -177,8 +177,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Sticky at top, stays visible when scrolling */}
-      <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
+      {/* Main Header - Fixed at top, stays visible when scrolling */}
+      <header className="bg-white shadow-md fixed top-0 left-0 right-0 z-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
