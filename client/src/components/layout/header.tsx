@@ -11,6 +11,7 @@ import { useCart } from '@/contexts/cart-context';
 import { Link, useLocation } from 'wouter';
 import { searchProducts, type SearchableProduct } from '@/lib/search-data';
 import { useQuery } from '@tanstack/react-query';
+import NavigationSidebar from '@/components/layout/sidebar';
 const logoPath = '/logo.png';
 
 export default function Header() {
@@ -18,6 +19,7 @@ export default function Header() {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchableProduct[]>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showNavigationSidebar, setShowNavigationSidebar] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
   const { user, loading } = useAuth();
   const { toast } = useToast();
@@ -303,7 +305,20 @@ export default function Header() {
               {/* Main Navigation Items */}
               {navigationItems.map((item) => (
                 <div key={item.name} className="relative group">
-                  {item.subItems ? (
+                  {item.name === 'Categories' ? (
+                    <div>
+                      <Button 
+                        variant="ghost" 
+                        className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" 
+                        data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                        onClick={() => setShowNavigationSidebar(!showNavigationSidebar)}
+                        onMouseEnter={() => setShowNavigationSidebar(true)}
+                      >
+                        {item.name}
+                        <ChevronDown size={16} />
+                      </Button>
+                    </div>
+                  ) : item.subItems ? (
                     <div>
                       <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
                         {item.name}
@@ -331,7 +346,11 @@ export default function Header() {
         </div>
       </header>
 
-
+      {/* Navigation Sidebar */}
+      <NavigationSidebar 
+        isVisible={showNavigationSidebar} 
+        onClose={() => setShowNavigationSidebar(false)} 
+      />
     </>
   );
 }
