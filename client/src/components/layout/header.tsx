@@ -302,6 +302,19 @@ export default function Header() {
           {/* Navigation Bar */}
           <nav className="mt-4 border-t pt-4 relative">
             <div className="flex items-center gap-6">
+              {/* Categories Button - First Item */}
+              <div>
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1 bg-gray-50"
+                  onClick={toggleSidebar}
+                  data-testid="button-categories-toggle"
+                >
+                  <Menu size={16} />
+                  Categories
+                </Button>
+              </div>
+
               {/* Main Navigation Items */}
               {navigationItems.map((item) => (
                 <div key={item.name} className="relative group">
