@@ -42,12 +42,12 @@ export default function Header() {
   // Function to parse bold text formatting
   const parseAnnouncementText = (text: string) => {
     if (!text) return text;
-    
+
     // Replace **text** with bold
     let parsed = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     // Replace *text* with bold
     parsed = parsed.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-    
+
     return parsed;
   };
 

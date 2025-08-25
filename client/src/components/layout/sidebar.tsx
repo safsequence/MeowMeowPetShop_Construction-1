@@ -3,13 +3,12 @@ import { useState } from 'react';
 import { Cat, Dog, Bone, SprayCan, Plus, Heart, Package, Stethoscope, Shirt, Gem, Crown, Gamepad2 } from 'lucide-react';
 import { Link } from 'wouter';
 import { cn } from '@/lib/utils';
+import { useSidebar } from '@/contexts/sidebar-context';
 
-interface NavigationSidebarProps {
-  isVisible: boolean;
-  onClose: () => void;
-}
-
-export default function NavigationSidebar({ isVisible, onClose }: NavigationSidebarProps) {
+export default function NavigationSidebar() {
+  const { isVisible, setIsVisible } = useSidebar();
+  
+  const onClose = () => setIsVisible(false);
   const categories = [
     { icon: Crown, label: 'Cat Food', href: '/cat-food', hasSubCategories: true },
     { icon: Dog, label: 'Dog Food', href: '/dog-food', hasSubCategories: true },
@@ -36,7 +35,8 @@ export default function NavigationSidebar({ isVisible, onClose }: NavigationSide
       {/* Sidebar */}
       <div
         className={cn(
-          'fixed left-0 top-[140px] h-[calc(100vh-140px)] w-64 bg-white shadow-lg border-r border-gray-200 transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto',
+          'fixed left-0 top-[140px] w-64 bg-white shadow-lg border-r border-gray-200 transform transition-transform duration-300 ease-in-out z-30 overflow-y-auto',
+          'min-h-[calc(100vh-140px)]',
           isVisible ? 'translate-x-0' : '-translate-x-full'
         )}
       >

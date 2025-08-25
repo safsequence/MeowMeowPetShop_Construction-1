@@ -34,6 +34,7 @@ import CartPage from "@/pages/cart";
 import CheckoutPage from "@/pages/checkout";
 import InvoicePage from "@/pages/invoice";
 import ProfilePage from "@/pages/profile";
+import { SidebarProvider } from "@/contexts/sidebar-context";
 
 function Router() {
   return (
@@ -78,8 +79,12 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <TooltipProvider>
-            <Toaster />
-            <Router />
+            <SidebarProvider>
+              <div className="min-h-screen bg-white">
+                <Router />
+                <Toaster />
+              </div>
+            </SidebarProvider>
           </TooltipProvider>
         </CartProvider>
       </AuthProvider>
