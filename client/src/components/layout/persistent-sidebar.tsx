@@ -22,7 +22,7 @@ export default function PersistentSidebar() {
   if (!isVisible) return null;
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 z-40 mt-[140px]">
+    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 z-40 mt-[140px] overflow-y-auto">
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-[#26732d] flex items-center text-sm">
@@ -36,12 +36,12 @@ export default function PersistentSidebar() {
               <li key={index}>
                 <Link href={category.href}>
                   <div className="flex items-center justify-between py-2 px-3 text-gray-700 hover:bg-[#ffde59]/20 hover:text-[#26732d] rounded transition-colors text-sm cursor-pointer">
-                    <div className="flex items-center">
-                      <IconComponent size={14} className="text-[#26732d] mr-2" />
-                      <span>{category.label}</span>
+                    <div className="flex items-center min-w-0">
+                      <IconComponent size={14} className="text-[#26732d] mr-2 flex-shrink-0" />
+                      <span className="truncate">{category.label}</span>
                     </div>
                     {category.hasSubCategories && (
-                      <ChevronRight size={12} className="text-gray-400" />
+                      <ChevronRight size={12} className="text-gray-400 flex-shrink-0 ml-2" />
                     )}
                   </div>
                 </Link>

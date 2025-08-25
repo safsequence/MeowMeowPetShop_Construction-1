@@ -18,11 +18,11 @@ export default function Home() {
   const { isVisible: sidebarVisible } = useSidebar();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Header />
       <PersistentSidebar />
 
-      <main className={`flex-1 w-full transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
+      <main className={`flex-1 transition-all duration-300 ${sidebarVisible ? 'ml-64 w-[calc(100%-16rem)]' : 'ml-0 w-full'}`}>
         <div className="space-y-8 md:space-y-12">
           <HeroBanner />
           <div className="px-4 lg:px-6">
@@ -40,7 +40,7 @@ export default function Home() {
         </div>
       </main>
 
-      <div className={`transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
+      <div className={`transition-all duration-300 ${sidebarVisible ? 'ml-64 w-[calc(100%-16rem)]' : 'ml-0 w-full'}`}>
         <Footer />
       </div>
     </div>
