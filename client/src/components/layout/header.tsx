@@ -102,13 +102,36 @@ export default function Header() {
     { name: 'Privilege Club', path: '/privilege-club' },
     { name: 'Categories', path: '#', subItems: [
         { name: 'Cat Food', path: '/cat-food' },
-        { name: 'Dog Food', path: '/dog-food' },
         { name: 'Cat Toys', path: '/cat-toys' },
         { name: 'Cat Litter', path: '/cat-litter' },
+        { name: 'Cat Care & Health', path: '/cat-care' },
+        { name: 'Clothing, Beds & Carrier', path: '/cat-accessories' },
+        { name: 'Cat Accessories', path: '/cat-accessories' },
+        { name: 'Dog Health & Accessories', path: '/dog-accessories' },
+        { name: 'Dog Food', path: '/dog-food' },
+        { name: 'Rabbit Food & Accessories', path: '/rabbit' },
+        { name: 'Bird Food & Accessories', path: '/bird' },
       ] },
-    { name: 'Reflex Brand', path: '/brands/reflex' },
-    { name: 'Blog', path: '/blog' },
-    { name: 'All Products', path: '/products' }
+    { name: 'Cat Food', path: '/cat-food', subItems: [
+        { name: 'Dry Food', path: '/cat-food?type=dry' },
+        { name: 'Wet Food', path: '/cat-food?type=wet' },
+        { name: 'Treats & Snacks', path: '/cat-food?type=treats' },
+        { name: 'Special Diet', path: '/cat-food?type=special' },
+      ] },
+    { name: 'Dog Food', path: '/dog-food', subItems: [
+        { name: 'Dry Food', path: '/dog-food?type=dry' },
+        { name: 'Wet Food', path: '/dog-food?type=wet' },
+        { name: 'Treats & Snacks', path: '/dog-food?type=treats' },
+        { name: 'Puppy Food', path: '/dog-food?type=puppy' },
+      ] },
+    { name: 'Cat Toys', path: '/cat-toys' },
+    { name: 'Cat Litter', path: '/cat-litter', subItems: [
+        { name: 'Clay Litter', path: '/cat-litter?type=clay' },
+        { name: 'Crystal Litter', path: '/cat-litter?type=crystal' },
+        { name: 'Natural Litter', path: '/cat-litter?type=natural' },
+      ] },
+    { name: 'Reflex', path: '/brands/reflex' },
+    { name: 'Blog', path: '/blog' }
   ];
 
   return (
@@ -122,13 +145,13 @@ export default function Header() {
                 <Phone size={12} className="mr-1" />
                 <span>+880-1234-567890</span>
               </div>
-              <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs">
+              <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs cursor-pointer hover:bg-[#224228] transition-colors">
                 <Truck size={12} className="mr-1" />
-                <span>Free delivery over ৳2000</span>
+                <span>Our location</span>
               </div>
-              <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs">
+              <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs cursor-pointer hover:bg-[#224228] transition-colors">
                 <Shield size={12} className="mr-1" />
-                <span>Quality guarantee</span>
+                <span>Track Your Order</span>
               </div>
             </div>
 

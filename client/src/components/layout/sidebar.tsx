@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Cat, Dog, Bone, SprayCan, Plus, Heart, Menu, X, Crown, Gamepad2, Package, Stethoscope, Shirt, Gem } from 'lucide-react';
+import { Cat, Dog, Bone, SprayCan, Plus, Heart, Menu, X, Crown, Gamepad2, Package, Stethoscope, Shirt, Gem, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -8,16 +8,16 @@ export default function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const categories = [
-    { icon: Crown, label: 'Cat Food', href: '#' },
-    { icon: Gamepad2, label: 'Cat Toys', href: '#' },
-    { icon: Package, label: 'Cat Litter', href: '#' },
-    { icon: Stethoscope, label: 'Cat Care & Health', href: '#' },
-    { icon: Shirt, label: 'Clothing, Beds & Carrier', href: '#' },
-    { icon: Gem, label: 'Cat Accessories', href: '#' },
-    { icon: Dog, label: 'Dog Food', href: '#' },
-    { icon: Plus, label: 'Dog Health & Accessories', href: '#' },
-    { icon: Bone, label: 'Rabbit Food & Accessories', href: '#' },
-    { icon: SprayCan, label: 'Bird Food & Accessories', href: '#' },
+    { icon: Crown, label: 'Cat Food', href: '/cat-food', hasSubCategories: true },
+    { icon: Gamepad2, label: 'Cat Toys', href: '/cat-toys', hasSubCategories: false },
+    { icon: Package, label: 'Cat Litter', href: '/cat-litter', hasSubCategories: true },
+    { icon: Stethoscope, label: 'Cat Care & Health', href: '/cat-care', hasSubCategories: false },
+    { icon: Shirt, label: 'Clothing, Beds & Carrier', href: '/cat-accessories', hasSubCategories: true },
+    { icon: Gem, label: 'Cat Accessories', href: '/cat-accessories', hasSubCategories: true },
+    { icon: Plus, label: 'Dog Health & Accessories', href: '/dog-accessories', hasSubCategories: true },
+    { icon: Dog, label: 'Dog Food', href: '/dog-food', hasSubCategories: true },
+    { icon: Bone, label: 'Rabbit Food & Accessories', href: '/rabbit', hasSubCategories: true },
+    { icon: SprayCan, label: 'Bird Food & Accessories', href: '/bird', hasSubCategories: true },
   ];
 
   const toggleSidebar = () => {
@@ -56,19 +56,24 @@ export default function Sidebar() {
                 <a 
                   href={category.href} 
                   className={cn(
-                    "flex items-center py-1.5 px-3 text-gray-700 hover:bg-yellow-50 hover:text-meow-green rounded transition-colors text-sm",
+                    "flex items-center justify-between py-1.5 px-3 text-gray-700 hover:bg-yellow-50 hover:text-meow-green rounded transition-colors text-sm",
                     isCollapsed && "justify-center px-2"
                   )}
                   title={isCollapsed ? category.label : undefined}
                 >
-                  <IconComponent size={14} className={cn(
-                    "text-meow-green",
-                    isCollapsed ? "mr-0" : "mr-2"
-                  )} />
-                  {!isCollapsed && (
-                    <span className="transition-opacity duration-300">
-                      {category.label}
-                    </span>
+                  <div className="flex items-center">
+                    <IconComponent size={14} className={cn(
+                      "text-meow-green",
+                      isCollapsed ? "mr-0" : "mr-2"
+                    )} />
+                    {!isCollapsed && (
+                      <span className="transition-opacity duration-300">
+                        {category.label}
+                      </span>
+                    )}
+                  </div>
+                  {!isCollapsed && category.hasSubCategories && (
+                    <ChevronRight size={12} className="text-gray-400" />
                   )}
                 </a>
               </li>
