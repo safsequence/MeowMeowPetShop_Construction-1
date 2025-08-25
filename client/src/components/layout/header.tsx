@@ -100,18 +100,6 @@ export default function Header() {
   const navigationItems = [
     { name: 'Home', path: '/' },
     { name: 'Privilege Club', path: '/privilege-club' },
-    { name: 'Categories', path: '#', subItems: [
-        { name: 'Cat Food', path: '/cat-food' },
-        { name: 'Cat Toys', path: '/cat-toys' },
-        { name: 'Cat Litter', path: '/cat-litter' },
-        { name: 'Cat Care & Health', path: '/cat-care' },
-        { name: 'Clothing, Beds & Carrier', path: '/cat-accessories' },
-        { name: 'Cat Accessories', path: '/cat-accessories' },
-        { name: 'Dog Health & Accessories', path: '/dog-accessories' },
-        { name: 'Dog Food', path: '/dog-food' },
-        { name: 'Rabbit Food & Accessories', path: '/rabbit' },
-        { name: 'Bird Food & Accessories', path: '/bird' },
-      ] },
     { name: 'Cat Food', path: '/cat-food', subItems: [
         { name: 'Dry Food', path: '/cat-food?type=dry' },
         { name: 'Wet Food', path: '/cat-food?type=wet' },
@@ -132,6 +120,19 @@ export default function Header() {
       ] },
     { name: 'Reflex', path: '/brands/reflex' },
     { name: 'Blog', path: '/blog' }
+  ];
+
+  const categories = [
+    { label: 'Cat Food', href: '/cat-food', hasSubCategories: true },
+    { label: 'Cat Toys', href: '/cat-toys', hasSubCategories: false },
+    { label: 'Cat Litter', href: '/cat-litter', hasSubCategories: true },
+    { label: 'Cat Care & Health', href: '/cat-care', hasSubCategories: false },
+    { label: 'Clothing, Beds & Carrier', href: '/cat-accessories', hasSubCategories: true },
+    { label: 'Cat Accessories', href: '/cat-accessories', hasSubCategories: true },
+    { label: 'Dog Health & Accessories', href: '/dog-accessories', hasSubCategories: true },
+    { label: 'Dog Food', href: '/dog-food', hasSubCategories: true },
+    { label: 'Rabbit Food & Accessories', href: '/rabbit', hasSubCategories: true },
+    { label: 'Bird Food & Accessories', href: '/bird', hasSubCategories: true },
   ];
 
   return (
@@ -298,35 +299,63 @@ export default function Header() {
             </div>
           </div>
 
-          <nav className="mt-4 border-t pt-4 relative">
-            <div className="flex flex-wrap items-center gap-6">
-              {navigationItems.map((item) => (
-                <div key={item.name} className="relative group">
-                  {item.subItems ? (
-                    <div>
-                      <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                        {item.name}
-                        <ChevronDown size={16} />
-                      </Button>
-                      <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                        {item.subItems.map((subItem) => (
-                          <Link key={subItem.name} href={subItem.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors" data-testid={`nav-sub-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                            {subItem.name}
-                          </Link>
-                        ))}
+          {/* Navigation Bar with Integrated Categories Sidebar */}
+          <div className="mt-4 border-t pt-4 relative flex">
+            {/* Categories Sidebar - Left Panel */}
+            <div className="w-64 bg-gray-50 border-r border-gray-200 py-4 px-4 rounded-l-lg">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="font-bold text-[#26732d] flex items-center">
+                  <Menu size={16} className="mr-2" />
+                  Categories
+                </h3>
+              </div>
+              <ul className="space-y-1">
+                {categories.map((category, index) => (
+                  <li key={index}>
+                    <Link href={category.href}>
+                      <div className="flex items-center justify-between py-2 px-3 text-gray-700 hover:bg-[#ffde59]/20 hover:text-[#26732d] rounded transition-colors text-sm cursor-pointer">
+                        <span>{category.label}</span>
+                        {category.hasSubCategories && (
+                          <ChevronDown size={12} className="text-gray-400" />
+                        )}
                       </div>
-                    </div>
-                  ) : (
-                    <Link href={item.path}>
-                      <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
-                        {item.name}
-                      </Button>
                     </Link>
-                  )}
-                </div>
-              ))}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </nav>
+            
+            {/* Main Navigation - Right Panel */}
+            <nav className="flex-1 py-4 px-6 bg-white rounded-r-lg">
+              <div className="flex flex-wrap items-center gap-6">
+                {navigationItems.map((item) => (
+                  <div key={item.name} className="relative group">
+                    {item.subItems ? (
+                      <div>
+                        <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                          {item.name}
+                          <ChevronDown size={16} />
+                        </Button>
+                        <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 min-w-48 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                          {item.subItems.map((subItem) => (
+                            <Link key={subItem.name} href={subItem.path} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors" data-testid={`nav-sub-${subItem.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                              {subItem.name}
+                            </Link>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <Link href={item.path}>
+                        <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                          {item.name}
+                        </Button>
+                      </Link>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </nav>
+          </div>
         </div>
       </header>
 
