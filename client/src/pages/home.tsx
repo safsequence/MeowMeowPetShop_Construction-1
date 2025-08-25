@@ -12,6 +12,7 @@ import NewlyLaunched from "@/components/sections/newly-launched";
 import MembershipBanner from "@/components/sections/membership-banner";
 import BlogPreview from "@/components/sections/blog-preview";
 import Testimonials from "@/components/sections/testimonials";
+import { cn } from '@/lib/utils';
 import { useSidebar } from "@/contexts/sidebar-context";
 
 export default function Home() {
