@@ -98,26 +98,24 @@ export default function Header() {
   }, []);
 
   const navigationItems = [
+    { name: 'Categories', path: '#', subItems: [
+        { name: 'Cat Food', path: '/cat-food' },
+        { name: 'Dog Food', path: '/dog-food' },
+        { name: 'Cat Toys', path: '/cat-toys' },
+        { name: 'Cat Litter', path: '/cat-litter' },
+        { name: 'Cat Care & Health', path: '/cat-care' },
+        { name: 'Clothing, Beds & Carrier', path: '/cat-accessories' },
+        { name: 'Cat Accessories', path: '/cat-accessories' },
+        { name: 'Dog Health & Accessories', path: '/dog-accessories' },
+        { name: 'Rabbit Food & Accessories', path: '/rabbit' },
+        { name: 'Bird Food & Accessories', path: '/bird' },
+      ] },
     { name: 'Home', path: '/' },
     { name: 'Privilege Club', path: '/privilege-club' },
-    { name: 'Cat Food', path: '/cat-food', subItems: [
-        { name: 'Dry Food', path: '/cat-food?type=dry' },
-        { name: 'Wet Food', path: '/cat-food?type=wet' },
-        { name: 'Treats & Snacks', path: '/cat-food?type=treats' },
-        { name: 'Special Diet', path: '/cat-food?type=special' },
-      ] },
-    { name: 'Dog Food', path: '/dog-food', subItems: [
-        { name: 'Dry Food', path: '/dog-food?type=dry' },
-        { name: 'Wet Food', path: '/dog-food?type=wet' },
-        { name: 'Treats & Snacks', path: '/dog-food?type=treats' },
-        { name: 'Puppy Food', path: '/dog-food?type=puppy' },
-      ] },
+    { name: 'Cat Food', path: '/cat-food' },
+    { name: 'Dog Food', path: '/dog-food' },
     { name: 'Cat Toys', path: '/cat-toys' },
-    { name: 'Cat Litter', path: '/cat-litter', subItems: [
-        { name: 'Clay Litter', path: '/cat-litter?type=clay' },
-        { name: 'Crystal Litter', path: '/cat-litter?type=crystal' },
-        { name: 'Natural Litter', path: '/cat-litter?type=natural' },
-      ] },
+    { name: 'Cat Litter', path: '/cat-litter' },
     { name: 'Reflex', path: '/brands/reflex' },
     { name: 'Blog', path: '/blog' }
   ];
@@ -299,31 +297,9 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Navigation Bar with Categories Button */}
+          {/* Navigation Bar */}
           <nav className="mt-4 border-t pt-4 relative">
             <div className="flex items-center gap-6">
-              {/* Categories Button - Left */}
-              <div className="relative group">
-                <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1 bg-gray-50">
-                  <Menu size={16} />
-                  Categories
-                  <ChevronDown size={16} />
-                </Button>
-                {/* Categories Dropdown */}
-                <div className="absolute top-full left-0 mt-1 bg-white shadow-lg rounded-lg border py-2 w-64 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  {categories.map((category, index) => (
-                    <Link key={index} href={category.href} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-[#26732d] transition-colors">
-                      <div className="flex items-center justify-between">
-                        <span>{category.label}</span>
-                        {category.hasSubCategories && (
-                          <ChevronDown size={12} className="text-gray-400" />
-                        )}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-
               {/* Main Navigation Items */}
               {navigationItems.map((item) => (
                 <div key={item.name} className="relative group">
