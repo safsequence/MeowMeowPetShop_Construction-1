@@ -100,18 +100,6 @@ export default function Header() {
   }, []);
 
   const navigationItems = [
-    { name: 'Categories', path: '#', subItems: [
-        { name: 'Cat Food', path: '/cat-food' },
-        { name: 'Dog Food', path: '/dog-food' },
-        { name: 'Cat Toys', path: '/cat-toys' },
-        { name: 'Cat Litter', path: '/cat-litter' },
-        { name: 'Cat Care & Health', path: '/cat-care' },
-        { name: 'Clothing, Beds & Carrier', path: '/cat-accessories' },
-        { name: 'Cat Accessories', path: '/cat-accessories' },
-        { name: 'Dog Health & Accessories', path: '/dog-accessories' },
-        { name: 'Rabbit Food & Accessories', path: '/rabbit' },
-        { name: 'Bird Food & Accessories', path: '/bird' },
-      ] },
     { name: 'Home', path: '/' },
     { name: 'Privilege Club', path: '/privilege-club' },
     { name: 'Cat Food', path: '/cat-food' },
