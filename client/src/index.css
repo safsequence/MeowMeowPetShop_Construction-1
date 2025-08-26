@@ -86,7 +86,7 @@
 
 body {
   min-height: 100vh !important;
-  padding-top: 0 !important;
+  padding-top: 140px !important; /* Space for fixed header */
 }
 
 :root {
