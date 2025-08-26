@@ -179,7 +179,7 @@ export default function Header() {
 
       {/* Main Header - Fixed below announcement bar */}
       <header className="bg-white shadow-md fixed top-[48px] left-0 right-0 z-[101] border-b border-gray-200">
-        <div className="container mx-auto px-4 py-3">
+        <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
             <div className="flex flex-col lg:flex-row lg:items-center lg:gap-8 w-full">
@@ -320,7 +320,7 @@ export default function Header() {
 
         {/* Navigation Menu */}
         <nav className="border-t border-gray-100 bg-gray-50 relative z-[100]">
-          <div className="container mx-auto px-4 py-2">
+          <div className="container mx-auto px-4 py-3">
             <div className="flex items-center space-x-6 overflow-x-auto">
               {/* Categories Toggle */}
               <div className="flex-shrink-0">
