@@ -125,8 +125,8 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Announcement Bar - Will scroll away naturally */}
-      <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative z-30">
+      {/* Top Announcement Bar - This will scroll away naturally */}
+      <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
             <div className="flex flex-wrap items-center gap-3">
@@ -144,7 +144,7 @@ export default function Header() {
               </div>
             </div>
 
-            {/* Scrolling Announcement Area - Between left and right sections */}
+            {/* Scrolling Announcement Area */}
             <div className="flex-1 flex justify-center items-center relative overflow-hidden mx-2 min-h-[24px]">
               {currentAnnouncement && (
                 <div className="w-full h-full relative">
@@ -177,7 +177,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Sticky navigation that stays when scrolling */}
+      {/* Main Header - This stays sticky */}
       <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
@@ -193,8 +193,19 @@ export default function Header() {
 
               <div className="flex-1 mt-4 lg:mt-0" ref={searchRef}>
                 <div className="relative">
-                  <Input type="text" placeholder="Search for pet food, toys, accessories..." value={searchQuery} onChange={handleSearchChange} className="w-full py-2 px-4 pr-12 border-2 border-gray-200 rounded-lg focus:border-[#ffde59] focus:outline-none text-sm" data-testid="input-global-search" />
-                  <Button size="sm" className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#ffde59] text-black px-3 py-1 rounded-md hover:bg-[#ffd73e] transition-colors" data-testid="button-search">
+                  <Input 
+                    type="text" 
+                    placeholder="Search for pet food, toys, accessories..." 
+                    value={searchQuery} 
+                    onChange={handleSearchChange} 
+                    className="w-full py-2 px-4 pr-12 border-2 border-gray-200 rounded-lg focus:border-[#ffde59] focus:outline-none text-sm" 
+                    data-testid="input-global-search" 
+                  />
+                  <Button 
+                    size="sm" 
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-[#ffde59] text-black px-3 py-1 rounded-md hover:bg-[#ffd73e] transition-colors" 
+                    data-testid="button-search"
+                  >
                     <Search size={14} />
                   </Button>
 
@@ -202,7 +213,12 @@ export default function Header() {
                     <Card className="absolute top-full left-0 right-0 mt-1 z-50 max-h-96 overflow-y-auto">
                       <CardContent className="p-0">
                         {searchResults.map((product) => (
-                          <div key={product.id} className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0" onClick={() => handleSearchSelect(product)} data-testid={`search-result-${product.id}`}>
+                          <div 
+                            key={product.id} 
+                            className="p-3 hover:bg-gray-50 cursor-pointer border-b last:border-b-0" 
+                            onClick={() => handleSearchSelect(product)} 
+                            data-testid={`search-result-${product.id}`}
+                          >
                             <div className="flex justify-between items-start">
                               <div>
                                 <h4 className="font-medium text-sm">{product.name}</h4>
@@ -249,49 +265,65 @@ export default function Header() {
                       </div>
                     </div>
                   </div>
-                  <Button variant="ghost" size="sm" className="text-gray-700 hover:text-[#26732d]" onClick={handleSignOut}>
-                    <LogOut size={18} />
-                    <span className="ml-1">Sign Out</span>
+
+                  {/* Sign Out Button */}
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    onClick={handleSignOut} 
+                    className="text-red-600 border-red-200 hover:bg-red-50 hover:border-red-300 transition-colors"
+                    data-testid="button-sign-out"
+                  >
+                    <LogOut size={14} className="mr-1" />
+                    Sign Out
                   </Button>
-                </div>
-              ) : !loading ? (
-                <div className="flex items-center space-x-2">
-                  <Link href="/sign-in">
-                    <Button variant="ghost" size="sm" className="text-gray-700 hover:text-[#26732d]" data-testid="button-sign-in-desktop">
-                      <User size={18} />
-                      <span className="ml-1">Sign In</span>
-                    </Button>
-                  </Link>
-                  <Link href="/sign-up">
-                    <Button variant="outline" size="sm" className="text-[#26732d] border-[#26732d] hover:bg-green-50" data-testid="button-sign-up-desktop">
-                      <span>Sign Up</span>
-                    </Button>
-                  </Link>
                 </div>
               ) : (
                 <div className="flex items-center space-x-2">
-                  <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse"></div>
+                  <Link href="/sign-in">
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      className="text-[#26732d] border-[#26732d] hover:bg-[#26732d] hover:text-white transition-colors"
+                      data-testid="button-sign-in"
+                    >
+                      <LogIn size={14} className="mr-1" />
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link href="/sign-up">
+                    <Button 
+                      size="sm" 
+                      className="bg-[#ffde59] text-black hover:bg-[#ffd73e] transition-colors"
+                      data-testid="button-sign-up"
+                    >
+                      Sign Up
+                    </Button>
+                  </Link>
                 </div>
               )}
+
+              {/* Cart */}
               <Link href="/cart">
-                <Button variant="ghost" size="sm" className="text-gray-700 hover:text-[#26732d] relative" data-testid="button-cart">
-                  <ShoppingCart size={18} />
-                  <span className="ml-1">Cart</span>
-                  {cartState.itemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 bg-[#ffde59] text-black text-xs rounded-full h-4 w-4 flex items-center justify-center font-bold">
-                      {cartState.itemCount}
+                <div className="relative p-2 hover:bg-gray-100 rounded-lg transition-colors cursor-pointer" data-testid="button-cart">
+                  <ShoppingCart size={20} className="text-gray-700" />
+                  {cartState.items.length > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-medium">
+                      {cartState.items.reduce((total, item) => total + item.quantity, 0)}
                     </span>
                   )}
-                </Button>
+                </div>
               </Link>
             </div>
           </div>
+        </div>
 
-          {/* Navigation Bar */}
-          <nav className="mt-4 border-t pt-4 relative">
-            <div className="flex items-center gap-6">
-              {/* Categories Button - First Item */}
-              <div>
+        {/* Navigation Menu */}
+        <nav className="border-t border-gray-100 bg-gray-50">
+          <div className="container mx-auto px-4 py-2">
+            <div className="flex items-center space-x-6 overflow-x-auto">
+              {/* Categories Toggle */}
+              <div className="flex-shrink-0">
                 <Button 
                   variant="ghost" 
                   className="text-gray-700 hover:text-[#26732d] font-medium flex items-center gap-1 bg-gray-50"
@@ -307,15 +339,19 @@ export default function Header() {
               {navigationItems.map((item) => (
                 <div key={item.name} className="relative group">
                   <Link href={item.path}>
-                    <Button variant="ghost" className="text-gray-700 hover:text-[#26732d] font-medium" data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <Button 
+                      variant="ghost" 
+                      className="text-gray-700 hover:text-[#26732d] font-medium" 
+                      data-testid={`nav-${item.name.toLowerCase().replace(/\s+/g, '-')}`}
+                    >
                       {item.name}
                     </Button>
                   </Link>
                 </div>
               ))}
             </div>
-          </nav>
-        </div>
+          </div>
+        </nav>
       </header>
     </>
   );
