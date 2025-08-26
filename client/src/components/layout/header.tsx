@@ -126,7 +126,7 @@ export default function Header() {
   return (
     <>
       {/* Top Announcement Bar - Fixed at very top */}
-      <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden fixed top-0 left-0 right-0 z-[101]">
+      <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden fixed top-0 left-0 right-0 z-[102]">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
             <div className="flex flex-wrap items-center gap-3">
@@ -178,7 +178,7 @@ export default function Header() {
       </div>
 
       {/* Main Header - Fixed below announcement bar */}
-      <header className="bg-white shadow-md fixed top-[52px] left-0 right-0 z-[100] border-b border-gray-200">
+      <header className="bg-white shadow-md fixed top-[48px] left-0 right-0 z-[101] border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
