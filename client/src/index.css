@@ -86,7 +86,7 @@
 
 body {
   min-height: 100vh !important;
-  padding-top: 0 !important;
+  padding-top: 140px !important; /* Space for fixed header */
 }
 
 :root {
@@ -370,8 +370,10 @@ body {
 
 /* Ensure header stays on top */
 header {
-  position: sticky !important;
+  position: fixed !important;
   top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
   z-index: 100 !important;
 }
 
