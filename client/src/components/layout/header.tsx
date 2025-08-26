@@ -178,7 +178,7 @@ export default function Header() {
       </div>
 
       {/* Main Header - This stays sticky */}
-      <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
+      <header className="bg-white shadow-md sticky top-0 z-[100] border-b border-gray-200">
         <div className="container mx-auto px-4 py-3">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
@@ -319,7 +319,7 @@ export default function Header() {
         </div>
 
         {/* Navigation Menu */}
-        <nav className="border-t border-gray-100 bg-gray-50">
+        <nav className="border-t border-gray-100 bg-gray-50 relative z-[100]">
           <div className="container mx-auto px-4 py-2">
             <div className="flex items-center space-x-6 overflow-x-auto">
               {/* Categories Toggle */}

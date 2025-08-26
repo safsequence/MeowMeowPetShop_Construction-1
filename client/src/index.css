@@ -365,6 +365,14 @@ body {
 /* Prevent layout shifts with sticky header */
 .sticky {
   position: sticky !important;
+  z-index: 100 !important;
+}
+
+/* Ensure header stays on top */
+header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
 }
 
 /* Custom animations */
