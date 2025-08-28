@@ -148,7 +148,7 @@ export default function Header() {
       {/* Top Announcement Bar - Hides on scroll */}
       <div className={`bg-[#38603d] text-white py-2 text-sm overflow-hidden relative transition-all duration-300 ${
         showAnnouncement ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 h-0 py-0'
-      }`}
+      }`}>
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
             <div className="flex flex-wrap items-center gap-3">
