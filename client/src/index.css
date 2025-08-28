@@ -322,14 +322,27 @@ body {
 body {
   margin: 0;
   padding: 0;
+  padding-top: 0 !important;
 }
 
 /* Ensure header stays sticky and visible */
 header {
   position: sticky !important;
   top: 0 !important;
-  z-index: 50 !important;
+  z-index: 1000 !important;
   background: white !important;
+  width: 100% !important;
+}
+
+/* Fix any potential layout issues */
+.min-h-screen {
+  position: relative;
+}
+
+/* Ensure main content doesn't overlap header */
+main {
+  position: relative;
+  z-index: 1;
 }
 
 /* Custom animations */
