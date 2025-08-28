@@ -31,10 +31,24 @@
   animation-delay: 7.5s;
 }
 
+/* Global horizontal scroll prevention */
+html {
+  overflow-x: hidden !important;
+}
+
+body {
+  overflow-x: hidden !important;
+}
+
+* {
+  overflow-x: hidden !important;
+}
+
 /* Custom Scrollbar - Green Background, Yellow Thumb, Hidden on Mobile/Tablet */
 @media (min-width: 1024px) {
   html {
     overflow-y: scroll !important; /* Always show vertical scrollbar on desktop */
+    overflow-x: hidden !important; /* Prevent horizontal scroll on desktop */
     scrollbar-width: thin !important; /* Thin scrollbar for Firefox */
     scrollbar-color: #ffffff #39613d !important; /* White thumb, green track */
   }
@@ -75,6 +89,7 @@
 @media (max-width: 1023px) {
   html {
     overflow-y: auto !important; /* Default scroll behavior */
+    overflow-x: hidden !important; /* Prevent horizontal scroll on mobile/tablet */
     scrollbar-width: none !important; /* Hide scrollbar on Firefox */
   }
 
