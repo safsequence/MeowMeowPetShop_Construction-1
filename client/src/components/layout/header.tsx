@@ -127,7 +127,7 @@ export default function Header() {
   ];
 
   return (
-    <div className="sticky top-0 z-[1000] w-full">
+    <>
       {/* Top Announcement Bar */}
       <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative">
         <div className="container mx-auto px-4">
@@ -181,7 +181,7 @@ export default function Header() {
       </div>
 
       {/* Main Header - Stays sticky and visible */}
-      <header className="bg-white shadow-md border-b border-gray-200 transition-all duration-300 w-full">
+      <header className="bg-white shadow-md sticky top-0 z-[1000] border-b border-gray-200 transition-all duration-300 w-full">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
@@ -356,6 +356,6 @@ export default function Header() {
           </div>
         </nav>
       </header>
-    </div>
+    </>
   );
 }
