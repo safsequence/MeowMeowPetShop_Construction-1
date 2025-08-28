@@ -177,7 +177,7 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Below announcement bar */}
+      {/* Main Header - Stays fixed, never hides */}
       <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
