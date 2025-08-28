@@ -23,7 +23,7 @@ export default function Home() {
       <Header />
       <PersistentSidebar />
 
-      <main className={`flex-1 transition-all duration-300 ${sidebarVisible ? 'ml-64 w-[calc(100%-16rem)]' : 'ml-0 w-full'}`}>
+      <main className={`flex-1 transition-all duration-300 pt-[140px] ${sidebarVisible ? 'ml-64 w-[calc(100%-16rem)]' : 'ml-0 w-full'}`}>
         <div className="space-y-8 md:space-y-12">
           <HeroBanner />
           <div className="px-4 lg:px-6">
