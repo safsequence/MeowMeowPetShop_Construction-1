@@ -96,7 +96,7 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  padding-top: 220px; /* Space for announcement bar (48px) + gap (12px) + header (120px) + nav (40px) */
+  padding-top: 0; /* No extra padding needed */
 }
 
 :root {
