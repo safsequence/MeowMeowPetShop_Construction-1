@@ -31,56 +31,37 @@
   animation-delay: 7.5s;
 }
 
-/* Custom Scrollbar - Green Background, Yellow Thumb, Hidden on Mobile/Tablet */
+/* Simplified scrollbar styling that doesn't interfere with positioning */
 @media (min-width: 1024px) {
-  html {
-    overflow-y: scroll !important; /* Always show vertical scrollbar on desktop */
-    scrollbar-width: thin !important; /* Thin scrollbar for Firefox */
-    scrollbar-color: #ffffff #39613d !important; /* White thumb, green track */
-  }
-
   /* Webkit browsers scrollbar styling - Desktop only */
   ::-webkit-scrollbar {
-    width: 10px !important; /* Thinner scrollbar */
-    background-color: #39613d !important; /* Green background */
+    width: 8px;
+    background-color: #39613d;
   }
 
   ::-webkit-scrollbar-track {
-    background-color: #39613d !important; /* Green track background */
-    border-radius: 0px !important;
+    background-color: #39613d;
   }
 
   ::-webkit-scrollbar-thumb {
-    background-color: #ffffff !important; /* White scrollbar thumb */
-    border-radius: 5px !important;
-    border: 1px solid #39613d !important; /* Green border around white thumb */
-    min-height: 30px !important;
+    background-color: #ffffff;
+    border-radius: 4px;
+    border: 1px solid #39613d;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #f8f9fa !important; /* Light gray on hover */
-  }
-
-  ::-webkit-scrollbar-thumb:active {
-    background-color: #e9ecef !important; /* Slightly darker gray when clicked */
-  }
-
-  /* Scrollbar corner styling */
-  ::-webkit-scrollbar-corner {
-    background-color: #39613d !important; /* Green corner */
+    background-color: #f8f9fa;
   }
 }
 
 /* Hide scrollbar on mobile and tablet */
 @media (max-width: 1023px) {
-  html {
-    overflow-y: auto !important; /* Default scroll behavior */
-    scrollbar-width: none !important; /* Hide scrollbar on Firefox */
-  }
-
-  /* Hide webkit scrollbar on mobile/tablet */
   ::-webkit-scrollbar {
-    display: none !important;
+    display: none;
+  }
+  
+  html {
+    scrollbar-width: none;
   }
 }
 
@@ -337,55 +318,19 @@ body {
   }
 }
 
-/* Hide scrollbars */
-::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: transparent;
-}
-
-/* Hide scrollbars for Firefox */
-html {
-  scrollbar-width: none;
-}
-
-/* Hide scrollbars for all elements */
-* {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
 /* Ensure proper header positioning */
 body {
   margin: 0;
   padding: 0;
 }
 
-/* Prevent layout shifts with sticky header */
-/* .sticky {
+/* Ensure header stays sticky and visible */
+header {
   position: sticky !important;
-  z-index: 100 !important;
-} */
-
-/* Ensure header stays on top */
-/* header {
-  position: fixed !important;
   top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  z-index: 100 !important;
-} */
+  z-index: 50 !important;
+  background: white !important;
+}
 
 /* Custom animations */
 @keyframes fadeIn {
