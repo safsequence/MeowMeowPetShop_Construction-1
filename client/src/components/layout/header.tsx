@@ -124,8 +124,8 @@ export default function Header() {
   ];
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
-      {/* Top Announcement Bar - Fixed at the very top */}
+    <>
+      {/* Top Announcement Bar - Hides on scroll */}
       <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
@@ -177,8 +177,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Stays fixed below announcement bar */}
-      <header className="bg-white shadow-md border-b border-gray-200">
+      {/* Main Header - Stays fixed, announcement bar will hide on scroll */}
+      <header className="bg-white shadow-md sticky top-0 z-50 border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
@@ -353,6 +353,6 @@ export default function Header() {
           </div>
         </nav>
       </header>
-    </div>
+    </>
   );
 }
