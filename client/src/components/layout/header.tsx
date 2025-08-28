@@ -177,8 +177,8 @@ export default function Header() {
         </div>
       </div>
 
-      {/* Main Header - Fixed directly below announcement bar */}
-      <header className="bg-white shadow-md fixed top-[48px] left-0 right-0 z-[998] border-b border-gray-200">
+      {/* Main Header - Fixed with space below announcement bar */}
+      <header className="bg-white shadow-md fixed top-[60px] left-0 right-0 z-[998] border-b border-gray-200">
         <div className="container mx-auto px-4 py-4">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 lg:gap-8">
             {/* Logo + Search */}
