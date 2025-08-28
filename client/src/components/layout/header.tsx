@@ -20,7 +20,6 @@ export default function Header() {
   const [searchResults, setSearchResults] = useState<SearchableProduct[]>([]);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const searchRef = useRef<HTMLDivElement>(null);
   const { user, loading } = useAuth();
   const { toast } = useToast();
@@ -101,23 +100,7 @@ export default function Header() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Hide announcement when scrolling down, show when scrolling up or at top
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setShowAnnouncement(false);
-      } else if (currentScrollY < lastScrollY || currentScrollY < 50) {
-        setShowAnnouncement(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
+  // Keep announcement bar always visible - no scroll hiding behavior
 
   const navigationItems = [
     { name: 'Home', path: '/' },
@@ -145,10 +128,8 @@ export default function Header() {
 
   return (
     <>
-      {/* Top Announcement Bar - Hides on scroll */}
-      <div className={`bg-[#38603d] text-white py-2 text-sm overflow-hidden relative transition-all duration-300 ${
-        showAnnouncement ? 'translate-y-0 opacity-100' : '-translate-y-full opacity-0 h-0 py-0'
-      }`}>
+      {/* Top Announcement Bar */}
+      <div className="bg-[#38603d] text-white py-2 text-sm overflow-hidden relative">
         <div className="container mx-auto px-4">
           <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-2">
             <div className="flex flex-wrap items-center gap-3">
