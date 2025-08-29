@@ -86,9 +86,6 @@ export default function Footer() {
         <div className="border-t border-gray-600 mt-8 pt-8">
           <div className="text-center text-gray-400 text-sm border-t border-gray-600 pt-4">
             <div className="flex items-center justify-center gap-4 mb-2">
-              <div className="flex items-center gap-2">
-              <span className="text-white font-medium text-xs">Follow:</span>
-            </div>
               <p>&copy; 2025 Meow Meow Pet Shop. All rights reserved.</p>
               <img src={logoPath} alt="Meow Meow" className="h-8 w-8" />
             </div>
