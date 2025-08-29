@@ -1,6 +1,16 @@
 import dotenv from "dotenv";
 dotenv.config();
 
+// Validate required environment variables
+if (!process.env.MONGODB_URI) {
+  console.error('❌ MONGODB_URI not found in environment variables!');
+  console.error('Please make sure .env file exists and contains:');
+  console.error('MONGODB_URI=your_mongodb_connection_string_here');
+  process.exit(1);
+}
+
+console.log('✅ Environment configuration validated');
+
 import express, { type Request, Response, NextFunction } from "express";
 import { connectDB } from "./mongodb";
 import { registerRoutes } from "./routes";
