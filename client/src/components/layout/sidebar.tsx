@@ -23,7 +23,7 @@ export default function NavigationSidebar() {
   if (!isVisible) return null;
 
   return (
-    <div className="w-80 bg-white shadow-lg border-r border-gray-200 h-full overflow-y-auto flex-shrink-0">
+    <div className="fixed left-0 top-[120px] w-80 bg-white shadow-lg border-r border-gray-200 h-[calc(100vh-120px)] overflow-y-auto flex-shrink-0 z-30">
       <div className="p-6">
         <h2 className="text-lg font-semibold mb-4 text-gray-800">Categories</h2>
         <nav className="space-y-1">

@@ -21,30 +21,28 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      <div className="flex overflow-hidden">
-        {/* Sidebar as part of layout */}
-        <NavigationSidebar />
+      {/* Fixed Sidebar */}
+      <NavigationSidebar />
+      
+      {/* Main content - adjusted for fixed sidebar */}
+      <main className={`pt-24 transition-all duration-300 ${sidebarVisible ? 'ml-80' : 'ml-0'} overflow-x-hidden`}>
+        <HeroBanner />
+        <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
+          <CategoriesGrid />
+          <FlashSale />
+          <BestsellersCats />
+          <BestsellersDogs />
+          <RepackFood />
+          <FeaturedBrands />
+          <NewlyLaunched />
+          <MembershipBanner />
+          <BlogPreview />
+          <Testimonials />
+        </div>
         
-        {/* Main content - takes remaining space */}
-        <main className="flex-1 pt-24 overflow-x-hidden min-w-0">
-          <HeroBanner />
-          <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
-            <CategoriesGrid />
-            <FlashSale />
-            <BestsellersCats />
-            <BestsellersDogs />
-            <RepackFood />
-            <FeaturedBrands />
-            <NewlyLaunched />
-            <MembershipBanner />
-            <BlogPreview />
-            <Testimonials />
-          </div>
-          
-          {/* Footer as part of main content */}
-          <Footer />
-        </main>
-      </div>
+        {/* Footer as part of main content */}
+        <Footer />
+      </main>
     </div>
   );
 }
