@@ -1,14 +1,84 @@
-import React, { useState } from 'react';
-import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle, Send, Minimize2 } from 'lucide-react';
 import { useCart } from '@/contexts/cart-context';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import { Link } from 'wouter';
 
+interface Message {
+  id: string;
+  text: string;
+  sender: 'user' | 'support';
+  timestamp: Date;
+}
+
 export function FloatingCart() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([
+    {
+      id: '1',
+      text: 'Hello! Welcome to Meow Meow Pet Shop. How can I help you today?',
+      sender: 'support',
+      timestamp: new Date(Date.now() - 5 * 60 * 1000)
+    }
+  ]);
+  const [newMessage, setNewMessage] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
   const { state, removeItem, updateQuantity } = useCart();
   const { items, total, itemCount } = state;
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const handleSendMessage = () => {
+    if (newMessage.trim()) {
+      const userMessage: Message = {
+        id: Date.now().toString(),
+        text: newMessage,
+        sender: 'user',
+        timestamp: new Date()
+      };
+      
+      setMessages(prev => [...prev, userMessage]);
+      setNewMessage('');
+      
+      // Simulate support response
+      setIsTyping(true);
+      setTimeout(() => {
+        setIsTyping(false);
+        const supportMessage: Message = {
+          id: (Date.now() + 1).toString(),
+          text: 'Thank you for your message! Our customer service team will get back to you shortly. Is there anything specific about our pet products I can help you with?',
+          sender: 'support',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, supportMessage]);
+      }, 2000);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const formatTime = (timestamp: Date) => {
+    return timestamp.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  };
 
   const formatPrice = (price: number) => {
     return `৳${price.toFixed(2)}`;
@@ -19,18 +89,17 @@ export function FloatingCart() {
       {/* Floating Action Buttons */}
       <div className="fixed bottom-6 right-6 z-[9999] flex flex-row gap-3">
         {/* Messenger Button */}
-        <Link href="/messenger">
-          <button
-            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
-            data-testid="floating-messenger-button"
-          >
-            <MessageCircle size={24} />
-          </button>
-        </Link>
+        <button
+          onClick={() => setIsChatOpen(!isChatOpen)}
+          className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+          data-testid="floating-messenger-button"
+        >
+          <MessageCircle size={24} />
+        </button>
         
         {/* Cart Button */}
         <button
-          onClick={() => setIsOpen(!isOpen)}
+          onClick={() => setIsCartOpen(!isCartOpen)}
           className="bg-[#26732d] hover:bg-[#1e5d26] text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
           data-testid="floating-cart-button"
         >
@@ -43,13 +112,101 @@ export function FloatingCart() {
         </button>
       </div>
 
+      {/* Floating Chat Box */}
+      {isChatOpen && (
+        <div className="fixed bottom-24 right-6 w-80 h-96 bg-white rounded-lg shadow-2xl z-[9999] flex flex-col">
+          {/* Chat Header */}
+          <div className="flex items-center justify-between p-3 bg-blue-600 text-white rounded-t-lg">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
+                <span className="text-blue-600 font-bold text-sm">M</span>
+              </div>
+              <div>
+                <h3 className="font-bold text-sm">Meow Meow Support</h3>
+                <p className="text-xs text-blue-200">Online</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setIsChatOpen(false)}
+              className="hover:bg-blue-700 p-1 rounded"
+              data-testid="close-chat-button"
+            >
+              <X size={16} />
+            </button>
+          </div>
+
+          {/* Messages Area */}
+          <div className="flex-1 overflow-y-auto p-3 space-y-3">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
+              >
+                <div
+                  className={`max-w-[70%] px-3 py-2 rounded-lg text-sm ${
+                    message.sender === 'user'
+                      ? 'bg-blue-600 text-white rounded-br-sm'
+                      : 'bg-gray-100 text-gray-800 rounded-bl-sm'
+                  }`}
+                >
+                  <p>{message.text}</p>
+                  <span className={`text-xs mt-1 block ${
+                    message.sender === 'user' ? 'text-blue-200' : 'text-gray-500'
+                  }`}>
+                    {formatTime(message.timestamp)}
+                  </span>
+                </div>
+              </div>
+            ))}
+            
+            {/* Typing Indicator */}
+            {isTyping && (
+              <div className="flex justify-start">
+                <div className="bg-gray-100 text-gray-800 rounded-lg rounded-bl-sm px-3 py-2">
+                  <div className="flex space-x-1">
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                    <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Area */}
+          <div className="p-3 border-t">
+            <div className="flex items-center gap-2">
+              <Input
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Type a message..."
+                className="flex-1 text-sm"
+                data-testid="chat-message-input"
+              />
+              <Button
+                onClick={handleSendMessage}
+                disabled={!newMessage.trim()}
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 px-3"
+                data-testid="send-chat-message-button"
+              >
+                <Send size={16} />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Cart Sidebar */}
-      {isOpen && (
+      {isCartOpen && (
         <>
           {/* Overlay */}
           <div 
             className="fixed inset-0 bg-black bg-opacity-50 z-[9998]"
-            onClick={() => setIsOpen(false)}
+            onClick={() => setIsCartOpen(false)}
           />
           
           {/* Cart Panel */}
@@ -62,7 +219,7 @@ export function FloatingCart() {
                   Shopping Cart
                 </h2>
                 <button
-                  onClick={() => setIsOpen(false)}
+                  onClick={() => setIsCartOpen(false)}
                   className="hover:bg-[#1e5d26] p-1 rounded"
                   data-testid="close-cart-button"
                 >
@@ -77,7 +234,7 @@ export function FloatingCart() {
                     <ShoppingCart size={48} className="mx-auto text-gray-300 mb-4" />
                     <p className="text-gray-500">Your cart is empty</p>
                     <Button 
-                      onClick={() => setIsOpen(false)}
+                      onClick={() => setIsCartOpen(false)}
                       className="mt-4 bg-[#26732d] hover:bg-[#1e5d26]"
                     >
                       Continue Shopping
@@ -141,7 +298,7 @@ export function FloatingCart() {
                     <Link href="/cart">
                       <Button 
                         className="w-full bg-[#26732d] hover:bg-[#1e5d26]"
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => setIsCartOpen(false)}
                         data-testid="view-cart-button"
                       >
                         View Cart
