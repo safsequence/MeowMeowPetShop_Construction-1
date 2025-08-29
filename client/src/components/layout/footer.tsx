@@ -82,29 +82,8 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Trust Badges & Payment Methods */}
+        {/* Footer Bottom */}
         <div className="border-t border-gray-600 mt-8 pt-8">
-          <div className="grid md:grid-cols-2 gap-8 mb-6">
-            <div className="text-center md:text-left">
-              <h4 className="font-bold text-meow-yellow mb-4">Trust & Security</h4>
-              <div className="flex justify-center md:justify-start space-x-4 flex-wrap mb-4">
-                <div className="bg-green-100 text-green-800 px-3 py-2 rounded-lg text-sm font-medium">🔒 100% Secure</div>
-                <div className="bg-blue-100 text-blue-800 px-3 py-2 rounded-lg text-sm font-medium">🛡️ SSL Protected</div>
-                <div className="bg-yellow-100 text-yellow-800 px-3 py-2 rounded-lg text-sm font-medium">⭐ Trusted by 10K+</div>
-              </div>
-            </div>
-            <div className="text-center md:text-right">
-              <h4 className="font-bold text-meow-yellow mb-4">We Accept</h4>
-              <div className="flex justify-center md:justify-end space-x-3 flex-wrap">
-                <div className="bg-white text-black px-3 py-1 rounded text-sm font-medium">bKash</div>
-                <div className="bg-white text-black px-3 py-1 rounded text-sm font-medium">Nagad</div>
-                <div className="bg-white text-black px-3 py-1 rounded text-sm font-medium">Rocket</div>
-                <div className="bg-white text-black px-3 py-1 rounded text-sm font-medium">VISA</div>
-                <div className="bg-white text-black px-3 py-1 rounded text-sm font-medium">MasterCard</div>
-                <div className="bg-white text-black px-3 py-1 rounded text-sm font-medium">Cash on Delivery</div>
-              </div>
-            </div>
-          </div>
           <div className="text-center text-gray-400 text-sm border-t border-gray-600 pt-4">
             <div className="flex items-center justify-center gap-4 mb-2">
               <div className="flex items-center gap-2">
