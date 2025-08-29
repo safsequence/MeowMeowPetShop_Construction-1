@@ -45,34 +45,36 @@ export default function FeaturedBrands() {
         <div className="mb-6 text-center px-4">
           <h3 className="text-2xl font-bold text-[#26732d]">FEATURED BRANDS</h3>
         </div>
-        <div className="flex justify-start md:justify-center items-center gap-4 md:gap-6 lg:gap-8 overflow-x-auto scrollbar-hide pb-2 pl-4 pr-4">
-          {brands.map((brand, index) => (
-            <Link
-              key={index}
-              href={
-                brand.slug.startsWith("/")
-                  ? brand.slug
-                  : `/brands/${brand.slug}`
-              }
-              className="flex-shrink-0 cursor-pointer hover:opacity-80 transition-all duration-300 group hover:scale-105"
-            >
-              <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-28 md:h-20 lg:w-32 lg:h-22 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
-                <img
-                  src={brand.logo}
-                  alt={`${brand.name} logo`}
-                  className="w-full h-full object-contain p-2"
-                  style={{
-                    imageRendering: "auto",
-                  }}
-                  onError={(e) => {
-                    // Fallback to a placeholder if image fails to load
-                    const target = e.target as HTMLImageElement;
-                    target.src = `https://via.placeholder.com/150x100/f3f4f6/374151?text=${encodeURIComponent(brand.name)}`;
-                  }}
-                />
-              </div>
-            </Link>
-          ))}
+        <div className="overflow-x-auto scrollbar-hide pb-2">
+          <div className="flex justify-center items-center gap-4 md:gap-6 lg:gap-8 min-w-max px-4">
+            {brands.map((brand, index) => (
+              <Link
+                key={index}
+                href={
+                  brand.slug.startsWith("/")
+                    ? brand.slug
+                    : `/brands/${brand.slug}`
+                }
+                className="flex-shrink-0 cursor-pointer hover:opacity-80 transition-all duration-300 group hover:scale-105"
+              >
+                <div className="w-20 h-16 sm:w-24 sm:h-18 md:w-28 md:h-20 lg:w-32 lg:h-22 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-100 group-hover:shadow-md transition-shadow">
+                  <img
+                    src={brand.logo}
+                    alt={`${brand.name} logo`}
+                    className="w-full h-full object-contain p-2"
+                    style={{
+                      imageRendering: "auto",
+                    }}
+                    onError={(e) => {
+                      // Fallback to a placeholder if image fails to load
+                      const target = e.target as HTMLImageElement;
+                      target.src = `https://via.placeholder.com/150x100/f3f4f6/374151?text=${encodeURIComponent(brand.name)}`;
+                    }}
+                  />
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>
