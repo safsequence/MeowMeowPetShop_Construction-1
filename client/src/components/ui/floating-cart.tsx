@@ -181,7 +181,7 @@ export function FloatingCart() {
                 onChange={(e) => setNewMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Type a message..."
-                className="flex-1 text-sm"
+                className="flex-1 text-sm text-gray-900 bg-white"
                 data-testid="chat-message-input"
               />
               <Button
