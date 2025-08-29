@@ -17,7 +17,7 @@ export function FloatingCart() {
   return (
     <>
       {/* Floating Cart Button */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-50">
+      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-[9999]">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="bg-[#26732d] hover:bg-[#1e5d26] text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
@@ -37,12 +37,12 @@ export function FloatingCart() {
         <>
           {/* Overlay */}
           <div 
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black bg-opacity-50 z-[9998]"
             onClick={() => setIsOpen(false)}
           />
           
           {/* Cart Panel */}
-          <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-50 transform transition-transform duration-300">
+          <div className="fixed right-0 top-0 h-full w-96 bg-white shadow-2xl z-[9999] transform transition-transform duration-300">
             <div className="flex flex-col h-full">
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b bg-[#26732d] text-white">
