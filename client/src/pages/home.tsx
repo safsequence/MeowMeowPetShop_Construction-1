@@ -39,10 +39,12 @@ export default function Home() {
           <BlogPreview />
           <Testimonials />
         </div>
-        
-        {/* Footer as part of main content */}
-        <Footer />
       </main>
+      
+      {/* Footer - Full width, overlays sidebar */}
+      <div className="relative z-30 w-full">
+        <Footer />
+      </div>
     </div>
   );
 }
