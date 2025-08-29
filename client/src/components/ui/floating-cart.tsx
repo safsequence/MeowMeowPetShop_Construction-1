@@ -188,7 +188,7 @@ export function FloatingCart() {
                 onClick={handleSendMessage}
                 disabled={!newMessage.trim()}
                 size="sm"
-                className="bg-[#ffde59] hover:bg-[#f5d442] text-black px-3"
+                className="bg-[#ffde59] hover:bg-[#f5d442] text-white px-3"
                 data-testid="send-chat-message-button"
               >
                 <Send size={16} />
