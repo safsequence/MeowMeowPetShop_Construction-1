@@ -25,7 +25,7 @@ export default function Home() {
       <NavigationSidebar />
       
       {/* Main content - adjusted for fixed sidebar */}
-      <main className={`pt-24 transition-all duration-300 ${sidebarVisible ? 'ml-80' : 'ml-0'} overflow-x-hidden`}>
+      <main className={`transition-all duration-300 ${sidebarVisible ? 'ml-80' : 'ml-0'} overflow-x-hidden`}>
         <HeroBanner />
         <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
           <CategoriesGrid />

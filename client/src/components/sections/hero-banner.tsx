@@ -4,7 +4,7 @@ import { ShoppingBag } from 'lucide-react';
 
 export default function HeroBanner() {
   return (
-    <section className="relative overflow-hidden bg-white">
+    <section className="relative overflow-hidden bg-white mt-[120px]">
       {/* Responsive Banner Image */}
       <div className="relative w-full">
         <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px]">
