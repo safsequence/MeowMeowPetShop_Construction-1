@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-300 mb-4">Your trusted partner for premium pet food and accessories in Savar, Bangladesh. We care for your pets like family.</p>
             <div className="flex space-x-4">
-              <a href="https://facebook.com/meow.meow.pet.shop1" className="text-meow-yellow hover:text-yellow-300 transition-colors">
+              <a href="https://facebook.com/meow.meow.pet.shop1" target="_blank" rel="noopener noreferrer" className="text-meow-yellow hover:text-yellow-300 transition-colors">
                 <Facebook size={20} />
               </a>
               <a href="#" className="text-meow-yellow hover:text-yellow-300 transition-colors">

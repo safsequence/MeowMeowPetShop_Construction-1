@@ -169,7 +169,7 @@ export default function Header() {
 
             <div className="flex items-center gap-2">
               <span className="text-white font-medium text-xs">Follow:</span>
-              <a href="https://facebook.com/meow.meow.pet.shop1" className="text-white hover:text-black transition-colors p-1 rounded">
+              <a href="https://facebook.com/meow.meow.pet.shop1" target="_blank" rel="noopener noreferrer" className="text-white hover:text-black transition-colors p-1 rounded">
                 <Facebook size={14} />
               </a>
               <a href="#" className="text-white hover:text-black transition-colors p-1 rounded">
