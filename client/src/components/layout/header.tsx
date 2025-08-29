@@ -135,7 +135,7 @@ export default function Header() {
             <div className="flex flex-wrap items-center gap-3">
               <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs">
                 <Phone size={12} className="mr-1" />
-                <span>+880-1234-567890</span>
+                <span>01405-045023</span>
               </div>
               <div className="flex items-center bg-[#2d4f31] px-3 py-1 rounded-full text-xs cursor-pointer hover:bg-[#224228] transition-colors">
                 <Truck size={12} className="mr-1" />
@@ -169,7 +169,7 @@ export default function Header() {
 
             <div className="flex items-center gap-2">
               <span className="text-white font-medium text-xs">Follow:</span>
-              <a href="#" className="text-white hover:text-black transition-colors p-1 rounded">
+              <a href="https://facebook.com/meow.meow.pet.shop1" className="text-white hover:text-black transition-colors p-1 rounded">
                 <Facebook size={14} />
               </a>
               <a href="#" className="text-white hover:text-black transition-colors p-1 rounded">

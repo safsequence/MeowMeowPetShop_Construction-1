@@ -17,7 +17,7 @@ export default function Footer() {
             </div>
             <p className="text-gray-300 mb-4">Your trusted partner for premium pet food and accessories in Savar, Bangladesh. We care for your pets like family.</p>
             <div className="flex space-x-4">
-              <a href="#" className="text-meow-yellow hover:text-yellow-300 transition-colors">
+              <a href="https://facebook.com/meow.meow.pet.shop1" className="text-meow-yellow hover:text-yellow-300 transition-colors">
                 <Facebook size={20} />
               </a>
               <a href="#" className="text-meow-yellow hover:text-yellow-300 transition-colors">
@@ -26,7 +26,7 @@ export default function Footer() {
               <a href="#" className="text-meow-yellow hover:text-yellow-300 transition-colors">
                 <Youtube size={20} />
               </a>
-              <a href="#" className="text-meow-yellow hover:text-yellow-300 transition-colors">
+              <a href="https://wa.me/8801838511583" className="text-meow-yellow hover:text-yellow-300 transition-colors">
                 <MessageCircle size={20} />
               </a>
             </div>
@@ -68,11 +68,11 @@ export default function Footer() {
               </div>
               <div className="flex items-center">
                 <Phone size={16} className="mr-3 text-meow-yellow" />
-                <span className="text-gray-300">+880-1234-567890</span>
+                <span className="text-gray-300">01405-045023</span>
               </div>
               <div className="flex items-center">
                 <Mail size={16} className="mr-3 text-meow-yellow" />
-                <span className="text-gray-300">info@meowmeowpetshop.com</span>
+                <span className="text-gray-300">meowmeowpetshop1gmail.com</span>
               </div>
               <div className="flex items-center">
                 <Clock size={16} className="mr-3 text-meow-yellow" />
