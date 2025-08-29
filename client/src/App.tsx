@@ -42,6 +42,7 @@ import CheckoutPage from "@/pages/checkout";
 import InvoicePage from "@/pages/invoice";
 import ProfilePage from "@/pages/profile";
 import { SidebarProvider } from "@/contexts/sidebar-context";
+import { FloatingCart } from "@/components/ui/floating-cart";
 
 function Router() {
   return (
@@ -96,6 +97,7 @@ function App() {
             <SidebarProvider>
               <div className="min-h-screen bg-white">
                 <Router />
+                <FloatingCart />
                 <Toaster />
               </div>
             </SidebarProvider>
