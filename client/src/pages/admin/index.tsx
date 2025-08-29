@@ -1671,6 +1671,7 @@ export default function AdminPage() {
                       <Textarea 
                         placeholder="Enter announcement message..." 
                         rows={3} 
+                        className="text-gray-900 bg-white border-gray-300 placeholder:text-gray-500"
                         {...field} 
                       />
                     </FormControl>
