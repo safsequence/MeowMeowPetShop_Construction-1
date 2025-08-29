@@ -22,7 +22,7 @@ export default function PersistentSidebar() {
   if (!isVisible) return null;
 
   return (
-    <aside className="fixed left-0 top-0 h-full w-64 bg-white border-r border-gray-200 z-50 overflow-y-auto shadow-lg pt-[140px]">
+    <aside className="fixed left-0 top-[140px] h-[calc(100vh-140px)] w-64 bg-white border-r border-gray-200 z-40 overflow-y-auto shadow-lg">
       <div className="p-4">
         <div className="flex items-center justify-between mb-3">
           <h3 className="font-bold text-[#26732d] flex items-center text-sm">

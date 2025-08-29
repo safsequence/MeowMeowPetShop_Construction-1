@@ -12,17 +12,26 @@ import NewlyLaunched from "@/components/sections/newly-launched";
 import MembershipBanner from "@/components/sections/membership-banner";
 import BlogPreview from "@/components/sections/blog-preview";
 import Testimonials from "@/components/sections/testimonials";
+import { useSidebar } from "@/contexts/sidebar-context";
 
 export default function Home() {
+  const { isVisible: sidebarVisible, toggle: toggleSidebar } = useSidebar();
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      
-      {/* Overlay Sidebar - doesn't affect layout */}
       <PersistentSidebar />
 
-      {/* Main content - fixed layout like other pages */}
-      <main className="pt-24">
+      {/* Backdrop overlay when sidebar is open */}
+      {sidebarVisible && (
+        <div 
+          className="fixed inset-0 bg-black/20 z-30 transition-opacity duration-300"
+          onClick={toggleSidebar}
+        />
+      )}
+
+      {/* Main content that shrinks when sidebar opens */}
+      <main className={`pt-24 transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
         <HeroBanner />
         <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
           <CategoriesGrid />
@@ -38,7 +47,10 @@ export default function Home() {
         </div>
       </main>
 
-      <Footer />
+      {/* Footer also shrinks with sidebar */}
+      <div className={`transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
+        <Footer />
+      </div>
     </div>
   );
 }
