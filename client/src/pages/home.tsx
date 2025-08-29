@@ -12,17 +12,17 @@ import NewlyLaunched from "@/components/sections/newly-launched";
 import MembershipBanner from "@/components/sections/membership-banner";
 import BlogPreview from "@/components/sections/blog-preview";
 import Testimonials from "@/components/sections/testimonials";
-import { useSidebar } from "@/contexts/sidebar-context";
 
 export default function Home() {
-  const { isVisible: sidebarVisible } = useSidebar();
-
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white">
       <Header />
+      
+      {/* Overlay Sidebar - doesn't affect layout */}
       <PersistentSidebar />
 
-      <main className={`pt-24 transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
+      {/* Main content - fixed layout like other pages */}
+      <main className="pt-24">
         <HeroBanner />
         <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
           <CategoriesGrid />
@@ -38,9 +38,7 @@ export default function Home() {
         </div>
       </main>
 
-      <div className={`transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 }
