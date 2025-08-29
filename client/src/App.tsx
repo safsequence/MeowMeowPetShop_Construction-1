@@ -15,6 +15,12 @@ import CatFoodPage from "@/pages/cat-food";
 import DogFoodPage from "@/pages/dog-food";
 import CatToysPage from "@/pages/cat-toys";
 import CatLitterPage from "@/pages/cat-litter";
+import CatCarePage from "@/pages/cat-care";
+import ClothingBedsCarrierPage from "@/pages/clothing-beds-carrier";
+import CatAccessoriesPage from "@/pages/cat-accessories";
+import DogAccessoriesPage from "@/pages/dog-accessories";
+import RabbitPage from "@/pages/rabbit";
+import BirdPage from "@/pages/bird";
 import ReflexPage from "@/pages/reflex";
 import BlogPage from "@/pages/blog";
 import NekkoPage from "@/pages/brands/nekko";
@@ -48,6 +54,12 @@ function Router() {
         <Route path="/dog-food" component={DogFoodPage} />
         <Route path="/cat-toys" component={CatToysPage} />
         <Route path="/cat-litter" component={CatLitterPage} />
+        <Route path="/cat-care" component={CatCarePage} />
+        <Route path="/cat-accessories" component={CatAccessoriesPage} />
+        <Route path="/clothing-beds-carrier" component={ClothingBedsCarrierPage} />
+        <Route path="/dog-accessories" component={DogAccessoriesPage} />
+        <Route path="/rabbit" component={RabbitPage} />
+        <Route path="/bird" component={BirdPage} />
         <Route path="/brands/reflex" component={ReflexPage} />
         <Route path="/brands/nekko" component={NekkoPage} />
         <Route path="/brands/purina" component={PurinaPage} />
