@@ -116,17 +116,17 @@ export function FloatingCart() {
       {isChatOpen && (
         <div className="fixed bottom-24 right-6 w-80 h-96 bg-white rounded-lg shadow-2xl z-[9999] flex flex-col">
           {/* Chat Header */}
-          <div className="flex items-center justify-between p-3 bg-[#ffde59] text-black rounded-t-lg">
+          <div className="flex items-center justify-between p-3 bg-[#26732d] text-white rounded-t-lg">
             <div className="flex items-center gap-2">
               <img src="/logo.png" alt="Meow Meow Logo" className="w-8 h-8 rounded-full" />
               <div>
                 <h3 className="font-bold text-sm">Meow Meow Support</h3>
-                <p className="text-xs text-gray-700">Online</p>
+                <p className="text-xs text-green-200">Online</p>
               </div>
             </div>
             <button
               onClick={() => setIsChatOpen(false)}
-              className="hover:bg-[#f5d442] p-1 rounded"
+              className="hover:bg-[#1e5d26] p-1 rounded"
               data-testid="close-chat-button"
             >
               <X size={16} />
