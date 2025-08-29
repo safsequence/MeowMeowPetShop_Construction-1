@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Heart, Plus, Minus, Package, Star, ShoppingCart, Filter } from 'lucide-react';
+import { Heart, Plus, Minus, Package, Star, ShoppingCart, Filter, Home, ArrowLeft } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 
@@ -103,14 +103,27 @@ export default function BulkProducts() {
       {/* Header */}
       <div className="bg-white border-b">
         <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-[#26732d] mb-4 flex items-center justify-center gap-3">
-              <Package size={40} className="text-[#26732d]" />
-              Bulk Products - Save More!
-            </h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover our complete collection of repack and bulk food products. Perfect for multiple pets or long-term savings.
-            </p>
+          <div className="relative">
+            {/* Go Home Button */}
+            <div className="absolute left-0 top-0">
+              <a 
+                href="/" 
+                className="inline-flex items-center gap-2 px-4 py-2 bg-[#26732d] text-white rounded-lg hover:bg-[#1e5d26] transition-colors"
+              >
+                <Home size={18} />
+                Go Home
+              </a>
+            </div>
+            
+            <div className="text-center">
+              <h1 className="text-4xl font-bold text-[#26732d] mb-4 flex items-center justify-center gap-3">
+                <Package size={40} className="text-[#26732d]" />
+                Bulk Products - Save More!
+              </h1>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+                Discover our complete collection of repack and bulk food products. Perfect for multiple pets or long-term savings.
+              </p>
+            </div>
           </div>
         </div>
       </div>
