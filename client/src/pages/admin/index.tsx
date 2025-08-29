@@ -1284,7 +1284,7 @@ export default function AdminPage() {
                     <FormItem>
                       <FormLabel>Product Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter product name" {...field} />
+                        <Input placeholder="Enter product name" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1297,7 +1297,7 @@ export default function AdminPage() {
                     <FormItem>
                       <FormLabel>Price (৳)</FormLabel>
                       <FormControl>
-                        <Input placeholder="0" {...field} />
+                        <Input placeholder="0" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1315,6 +1315,8 @@ export default function AdminPage() {
                       <Textarea 
                         placeholder="Enter product description" 
                         rows={3} 
+                        className="text-gray-900 bg-white border-gray-300 placeholder:text-gray-500"
+                        style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                         {...field} 
                       />
                     </FormControl>
@@ -1382,6 +1384,8 @@ export default function AdminPage() {
                         <Input 
                           type="number" 
                           placeholder="0" 
+                          className="text-gray-900 bg-white border-gray-300"
+                          style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                           {...field}
                           onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                         />
@@ -1400,7 +1404,7 @@ export default function AdminPage() {
                     <FormItem>
                       <FormLabel>Original Price (৳) - Optional</FormLabel>
                       <FormControl>
-                        <Input placeholder="0" {...field} />
+                        <Input placeholder="0" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1413,7 +1417,7 @@ export default function AdminPage() {
                     <FormItem>
                       <FormLabel>Tags (comma separated)</FormLabel>
                       <FormControl>
-                        <Input placeholder="premium, adult, dry food" {...field} />
+                        <Input placeholder="premium, adult, dry food" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1570,6 +1574,8 @@ export default function AdminPage() {
                   value={editingBlog.title}
                   onChange={(e) => setEditingBlog({...editingBlog, title: e.target.value})}
                   placeholder="Enter blog title"
+                  className="text-gray-900 bg-white border-gray-300"
+                  style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                 />
               </div>
               
@@ -1580,6 +1586,8 @@ export default function AdminPage() {
                   value={editingBlog.excerpt}
                   onChange={(e) => setEditingBlog({...editingBlog, excerpt: e.target.value})}
                   placeholder="Brief description of the blog post"
+                  className="text-gray-900 bg-white border-gray-300"
+                  style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                 />
               </div>
 
@@ -1591,6 +1599,8 @@ export default function AdminPage() {
                   onChange={(e) => setEditingBlog({...editingBlog, content: e.target.value})}
                   placeholder="Write your blog content here..."
                   rows={8}
+                  className="text-gray-900 bg-white border-gray-300 placeholder:text-gray-500"
+                  style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                 />
               </div>
 
@@ -1602,6 +1612,8 @@ export default function AdminPage() {
                     value={editingBlog.category}
                     onChange={(e) => setEditingBlog({...editingBlog, category: e.target.value})}
                     placeholder="Pet Care"
+                    className="text-gray-900 bg-white border-gray-300"
+                    style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                   />
                 </div>
                 <div>
@@ -1611,6 +1623,8 @@ export default function AdminPage() {
                     value={editingBlog.author}
                     onChange={(e) => setEditingBlog({...editingBlog, author: e.target.value})}
                     placeholder="Author name"
+                    className="text-gray-900 bg-white border-gray-300"
+                    style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                   />
                 </div>
                 <div>
@@ -1671,7 +1685,8 @@ export default function AdminPage() {
                       <Textarea 
                         placeholder="Enter announcement message..." 
                         rows={3} 
-                        className="text-gray-900 bg-white border-gray-300 placeholder:text-gray-500"
+                        className="text-gray-900 bg-white border-gray-300 placeholder:text-gray-500 !text-gray-900 !bg-white"
+                        style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                         {...field} 
                       />
                     </FormControl>
