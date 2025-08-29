@@ -91,7 +91,7 @@ export function FloatingCart() {
         {/* Messenger Button */}
         <button
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+          className="bg-[#ffde59] hover:bg-[#f5d442] text-black rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
           data-testid="floating-messenger-button"
         >
           <MessageCircle size={24} />
@@ -116,19 +116,17 @@ export function FloatingCart() {
       {isChatOpen && (
         <div className="fixed bottom-24 right-6 w-80 h-96 bg-white rounded-lg shadow-2xl z-[9999] flex flex-col">
           {/* Chat Header */}
-          <div className="flex items-center justify-between p-3 bg-blue-600 text-white rounded-t-lg">
+          <div className="flex items-center justify-between p-3 bg-[#ffde59] text-black rounded-t-lg">
             <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                <span className="text-blue-600 font-bold text-sm">M</span>
-              </div>
+              <img src="/logo.png" alt="Meow Meow Logo" className="w-8 h-8 rounded-full" />
               <div>
                 <h3 className="font-bold text-sm">Meow Meow Support</h3>
-                <p className="text-xs text-blue-200">Online</p>
+                <p className="text-xs text-gray-700">Online</p>
               </div>
             </div>
             <button
               onClick={() => setIsChatOpen(false)}
-              className="hover:bg-blue-700 p-1 rounded"
+              className="hover:bg-[#f5d442] p-1 rounded"
               data-testid="close-chat-button"
             >
               <X size={16} />
@@ -145,13 +143,13 @@ export function FloatingCart() {
                 <div
                   className={`max-w-[70%] px-3 py-2 rounded-lg text-sm ${
                     message.sender === 'user'
-                      ? 'bg-blue-600 text-white rounded-br-sm'
+                      ? 'bg-[#ffde59] text-black rounded-br-sm'
                       : 'bg-gray-100 text-gray-800 rounded-bl-sm'
                   }`}
                 >
                   <p>{message.text}</p>
                   <span className={`text-xs mt-1 block ${
-                    message.sender === 'user' ? 'text-blue-200' : 'text-gray-500'
+                    message.sender === 'user' ? 'text-gray-700' : 'text-gray-500'
                   }`}>
                     {formatTime(message.timestamp)}
                   </span>
@@ -190,7 +188,7 @@ export function FloatingCart() {
                 onClick={handleSendMessage}
                 disabled={!newMessage.trim()}
                 size="sm"
-                className="bg-blue-600 hover:bg-blue-700 px-3"
+                className="bg-[#ffde59] hover:bg-[#f5d442] text-black px-3"
                 data-testid="send-chat-message-button"
               >
                 <Send size={16} />
