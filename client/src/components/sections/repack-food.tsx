@@ -13,9 +13,9 @@ export default function RepackFood() {
 
   // Initialize quantities when products are loaded
   useEffect(() => {
-    if (products.length > 0) {
+    if ((products as any[]).length > 0) {
       const initialQuantities: { [key: string]: number } = {};
-      products.forEach((product: any) => {
+      (products as any[]).forEach((product: any) => {
         initialQuantities[product.id || product._id] = 1;
       });
       setQuantities(initialQuantities);
@@ -81,7 +81,7 @@ export default function RepackFood() {
           </a>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {products.map((product: any) => {
+          {(products as any[]).map((product: any) => {
             const productId = product.id || product._id;
             const savings = calculateSavings(product.price, product.originalPrice);
             const badge = getBadgeFromTags(product.tags);

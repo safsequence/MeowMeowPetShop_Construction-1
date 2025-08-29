@@ -1,8 +1,19 @@
 import { Cat } from 'lucide-react';
 import ProductCard from '@/components/ui/product-card';
+import { useQuery } from '@tanstack/react-query';
 
 export default function BestsellersCats() {
-  const products: any[] = [];
+  const { data: allProducts = [], isLoading } = useQuery({
+    queryKey: ['/api/products'],
+  });
+
+  // Filter products that are bestsellers and cat-related
+  const products = (allProducts as any[]).filter((product: any) => 
+    product.isBestseller && 
+    (product.category?.toLowerCase().includes('cat') || 
+     product.categoryName?.toLowerCase().includes('cat') ||
+     product.tags?.some((tag: string) => tag.toLowerCase().includes('cat')))
+  );
 
   return (
     <section className="section-spacing bg-gray-50">
@@ -11,17 +22,35 @@ export default function BestsellersCats() {
           <Cat size={32} className="text-[#26732d]" />
           Bestsellers for Cats
         </h2>
-        <div className="responsive-grid">
-          {products.map((product, index) => (
-            <div 
-              key={product.id} 
-              className="hover-lift animate-fade-in"
-              style={{ animationDelay: `${index * 0.1}s` }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="responsive-grid">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="bg-white rounded-lg shadow-md h-80 animate-pulse">
+                <div className="bg-gray-200 h-48 rounded-t-lg"></div>
+                <div className="p-4 space-y-2">
+                  <div className="bg-gray-200 h-4 rounded"></div>
+                  <div className="bg-gray-200 h-4 w-3/4 rounded"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : products.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-600">No bestselling cat products available.</p>
+          </div>
+        ) : (
+          <div className="responsive-grid">
+            {products.map((product: any, index: number) => (
+              <div 
+                key={product.id || product._id} 
+                className="hover-lift animate-fade-in"
+                style={{ animationDelay: `${index * 0.1}s` }}
+              >
+                <ProductCard product={product} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
