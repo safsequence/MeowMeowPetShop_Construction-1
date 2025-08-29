@@ -1,6 +1,6 @@
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
-import PersistentSidebar from "@/components/layout/persistent-sidebar";
+import NavigationSidebar from "@/components/layout/sidebar";
 import HeroBanner from "@/components/sections/hero-banner";
 import CategoriesGrid from "@/components/sections/categories-grid";
 import FlashSale from "@/components/sections/flash-sale";
@@ -15,41 +15,35 @@ import Testimonials from "@/components/sections/testimonials";
 import { useSidebar } from "@/contexts/sidebar-context";
 
 export default function Home() {
-  const { isVisible: sidebarVisible, toggle: toggleSidebar } = useSidebar();
+  const { isVisible: sidebarVisible } = useSidebar();
 
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <PersistentSidebar />
-
-      {/* Backdrop overlay when sidebar is open */}
-      {sidebarVisible && (
-        <div 
-          className="fixed inset-0 bg-black/20 z-30 transition-opacity duration-300"
-          onClick={toggleSidebar}
-        />
-      )}
-
-      {/* Main content that shrinks when sidebar opens */}
-      <main className={`pt-24 transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
-        <HeroBanner />
-        <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
-          <CategoriesGrid />
-          <FlashSale />
-          <BestsellersCats />
-          <BestsellersDogs />
-          <RepackFood />
-          <FeaturedBrands />
-          <NewlyLaunched />
-          <MembershipBanner />
-          <BlogPreview />
-          <Testimonials />
-        </div>
-      </main>
-
-      {/* Footer also shrinks with sidebar */}
-      <div className={`transition-all duration-300 ${sidebarVisible ? 'ml-64' : 'ml-0'}`}>
-        <Footer />
+      
+      <div className="flex">
+        {/* Sidebar as part of layout */}
+        <NavigationSidebar />
+        
+        {/* Main content */}
+        <main className={`flex-1 pt-24 transition-all duration-300 ${sidebarVisible ? '' : 'ml-0'}`}>
+          <HeroBanner />
+          <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
+            <CategoriesGrid />
+            <FlashSale />
+            <BestsellersCats />
+            <BestsellersDogs />
+            <RepackFood />
+            <FeaturedBrands />
+            <NewlyLaunched />
+            <MembershipBanner />
+            <BlogPreview />
+            <Testimonials />
+          </div>
+          
+          {/* Footer as part of main content */}
+          <Footer />
+        </main>
       </div>
     </div>
   );
