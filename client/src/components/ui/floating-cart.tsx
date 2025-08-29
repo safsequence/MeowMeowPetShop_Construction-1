@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ShoppingCart, X, Plus, Minus, Trash2 } from 'lucide-react';
+import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle } from 'lucide-react';
 import { useCart } from '@/contexts/cart-context';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -16,8 +16,19 @@ export function FloatingCart() {
 
   return (
     <>
-      {/* Floating Cart Button */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-[9999]">
+      {/* Floating Action Buttons */}
+      <div className="fixed bottom-6 right-6 z-[9999] flex flex-col gap-3">
+        {/* Messenger Button */}
+        <Link href="/messenger">
+          <button
+            className="bg-blue-600 hover:bg-blue-700 text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+            data-testid="floating-messenger-button"
+          >
+            <MessageCircle size={24} />
+          </button>
+        </Link>
+        
+        {/* Cart Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="bg-[#26732d] hover:bg-[#1e5d26] text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"

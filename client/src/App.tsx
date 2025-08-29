@@ -41,6 +41,7 @@ import CartPage from "@/pages/cart";
 import CheckoutPage from "@/pages/checkout";
 import InvoicePage from "@/pages/invoice";
 import ProfilePage from "@/pages/profile";
+import MessengerPage from "@/pages/messenger";
 import { SidebarProvider } from "@/contexts/sidebar-context";
 import { FloatingCart } from "@/components/ui/floating-cart";
 
@@ -82,6 +83,7 @@ function Router() {
         <Route path="/checkout" component={CheckoutPage} />
         <Route path="/invoice/:invoiceId" component={InvoicePage} />
         <Route path="/profile" component={ProfilePage} />
+        <Route path="/messenger" component={MessengerPage} />
         <Route component={NotFoundPage} />
       </Switch>
     </>
