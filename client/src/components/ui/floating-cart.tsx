@@ -91,7 +91,7 @@ export function FloatingCart() {
         {/* Messenger Button */}
         <button
           onClick={() => setIsChatOpen(!isChatOpen)}
-          className="bg-[#ffde59] hover:bg-[#f5d442] text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
+          className="bg-[#26732d] hover:bg-[#1e5d26] text-white rounded-full p-3 shadow-lg transition-all duration-300 hover:scale-110"
           data-testid="floating-messenger-button"
         >
           <MessageCircle size={24} />
