@@ -21,12 +21,12 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
       
-      <div className="flex">
+      <div className="flex overflow-hidden">
         {/* Sidebar as part of layout */}
         <NavigationSidebar />
         
-        {/* Main content */}
-        <main className={`flex-1 pt-24 transition-all duration-300 ${sidebarVisible ? '' : 'ml-0'}`}>
+        {/* Main content - takes remaining space */}
+        <main className="flex-1 pt-24 overflow-x-hidden min-w-0">
           <HeroBanner />
           <div className="px-4 lg:px-6 space-y-8 md:space-y-12">
             <CategoriesGrid />
