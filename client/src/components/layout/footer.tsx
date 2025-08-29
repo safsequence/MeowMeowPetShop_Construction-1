@@ -83,8 +83,8 @@ export default function Footer() {
         </div>
 
         {/* Footer Bottom */}
-        <div className="border-t border-gray-600 mt-8 pt-8">
-          <div className="text-center text-gray-400 text-sm border-t border-gray-600 pt-4">
+        <div className="mt-8 pt-8">
+          <div className="text-center text-gray-400 text-sm pt-4">
             <p>&copy; 2025 Meow Meow Pet Shop. All rights reserved.</p>
           </div>
         </div>
