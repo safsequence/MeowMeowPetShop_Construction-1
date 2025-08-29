@@ -23,10 +23,10 @@ export default function NavigationSidebar() {
 
   return (
     <>
-      {/* Backdrop */}
+      {/* Backdrop - Only covers content below header */}
       {isVisible && (
         <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-40" 
+          className="fixed left-0 top-[120px] right-0 bottom-0 bg-black bg-opacity-50 z-30" 
           onClick={onClose}
         />
       )}
