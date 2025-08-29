@@ -45,7 +45,7 @@ export default function FeaturedBrands() {
         <div className="mb-6 text-center">
           <h3 className="text-2xl font-bold text-[#26732d]">FEATURED BRANDS</h3>
         </div>
-        <div className="flex justify-center items-center gap-4 md:gap-6 lg:gap-8 overflow-x-auto pb-2">
+        <div className="flex justify-center items-center gap-4 md:gap-6 lg:gap-8 overflow-x-auto scrollbar-hide pb-2">
           {brands.map((brand, index) => (
             <Link
               key={index}
