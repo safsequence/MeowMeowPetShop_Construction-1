@@ -1283,9 +1283,9 @@ export default function AdminPage() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Product Name</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Product Name</FormLabel>
                       <FormControl>
-                        <Input placeholder="Enter product name" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
+                        <Input placeholder="Enter product name" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1296,9 +1296,9 @@ export default function AdminPage() {
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Price (৳)</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Price (৳)</FormLabel>
                       <FormControl>
-                        <Input placeholder="0" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
+                        <Input placeholder="Enter price" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1311,13 +1311,12 @@ export default function AdminPage() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Description</FormLabel>
+                    <FormLabel className="text-gray-700 font-medium">Description</FormLabel>
                     <FormControl>
                       <Textarea 
                         placeholder="Enter product description" 
                         rows={3} 
                         className="text-gray-900 bg-white border-gray-300 placeholder:text-gray-500"
-                        style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                         {...field} 
                       />
                     </FormControl>
@@ -1332,7 +1331,7 @@ export default function AdminPage() {
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Category</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Category</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -1356,7 +1355,7 @@ export default function AdminPage() {
                   name="brandId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Brand</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Brand</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -1380,13 +1379,12 @@ export default function AdminPage() {
                   name="stockQuantity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Stock</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Stock Quantity</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
-                          placeholder="0" 
+                          placeholder="Enter stock quantity" 
                           className="text-gray-900 bg-white border-gray-300"
-                          style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                           {...field}
                           onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
                         />
@@ -1403,9 +1401,9 @@ export default function AdminPage() {
                   name="originalPrice"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Original Price (৳) - Optional</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Original Price (৳) - Optional</FormLabel>
                       <FormControl>
-                        <Input placeholder="0" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
+                        <Input placeholder="Enter original price (if on sale)" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1416,9 +1414,9 @@ export default function AdminPage() {
                   name="tags"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Tags (comma separated)</FormLabel>
+                      <FormLabel className="text-gray-700 font-medium">Tags (comma separated)</FormLabel>
                       <FormControl>
-                        <Input placeholder="premium, adult, dry food" className="text-gray-900 bg-white border-gray-300" style={{ color: '#1f2937', backgroundColor: '#ffffff' }} {...field} />
+                        <Input placeholder="premium, adult, dry food" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -1431,7 +1429,7 @@ export default function AdminPage() {
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Product Image</FormLabel>
+                    <FormLabel className="text-gray-700 font-medium">Product Image</FormLabel>
                     <FormControl>
                       <ImageUpload
                         value={field.value}
