@@ -1716,8 +1716,8 @@ export default function AdminPage() {
               <DialogFooter>
                 <Button 
                   type="button" 
-                  variant="outline" 
-                  className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                  variant="secondary" 
+                  className="bg-gray-100 text-gray-900 border-gray-300 hover:bg-gray-200"
                   onClick={() => setShowAnnouncementDialog(false)}
                 >
                   Cancel
