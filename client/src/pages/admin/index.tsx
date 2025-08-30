@@ -517,18 +517,16 @@ export default function AdminPage() {
               </Select>
               <div className="flex border rounded-lg">
                 <Button
-                  variant={viewMode === 'list' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('list')}
-                  className="rounded-r-none bg-white border-gray-300"
+                  className={`rounded-r-none border ${viewMode === 'list' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
                 >
                   <List className="w-4 h-4" />
                 </Button>
                 <Button
-                  variant={viewMode === 'grid' ? 'default' : 'outline'}
                   size="sm"
                   onClick={() => setViewMode('grid')}
-                  className="rounded-l-none bg-white border-gray-300"
+                  className={`rounded-l-none border ${viewMode === 'grid' ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-50'}`}
                 >
                   <Grid className="w-4 h-4" />
                 </Button>
