@@ -1531,6 +1531,7 @@ export default function AdminPage() {
                 <Button 
                   type="button" 
                   variant="outline" 
+                  className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                   onClick={() => setShowProductDialog(false)}
                 >
                   Cancel
@@ -1643,7 +1644,7 @@ export default function AdminPage() {
           )}
 
           <DialogFooter>
-            <Button variant="outline" onClick={() => setShowBlogDialog(false)}>
+            <Button variant="outline" className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50" onClick={() => setShowBlogDialog(false)}>
               Cancel
             </Button>
             <Button onClick={handleSaveBlog} className="bg-purple-600 hover:bg-purple-700">
@@ -1716,6 +1717,7 @@ export default function AdminPage() {
                 <Button 
                   type="button" 
                   variant="outline" 
+                  className="bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
                   onClick={() => setShowAnnouncementDialog(false)}
                 >
                   Cancel
