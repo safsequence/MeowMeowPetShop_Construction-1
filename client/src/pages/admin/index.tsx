@@ -1283,7 +1283,7 @@ export default function AdminPage() {
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Product Name</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Product Name</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter product name" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
@@ -1296,7 +1296,7 @@ export default function AdminPage() {
                   name="price"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Price (৳)</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Price (৳)</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter price" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
@@ -1311,7 +1311,7 @@ export default function AdminPage() {
                 name="description"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">Description</FormLabel>
+                    <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Product Description</FormLabel>
                     <FormControl>
                       <Textarea 
                         placeholder="Enter product description" 
@@ -1331,7 +1331,7 @@ export default function AdminPage() {
                   name="categoryId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Category</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Category</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -1355,7 +1355,7 @@ export default function AdminPage() {
                   name="brandId"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Brand</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Brand</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
                           <SelectTrigger>
@@ -1379,11 +1379,11 @@ export default function AdminPage() {
                   name="stockQuantity"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Stock Quantity</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Stock Quantity</FormLabel>
                       <FormControl>
                         <Input 
                           type="number" 
-                          placeholder="Enter stock quantity" 
+                          placeholder="0" 
                           className="text-gray-900 bg-white border-gray-300"
                           {...field}
                           onChange={(e) => field.onChange(parseInt(e.target.value) || 0)}
@@ -1401,7 +1401,7 @@ export default function AdminPage() {
                   name="originalPrice"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Original Price (৳) - Optional</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Original Price (৳) - Optional</FormLabel>
                       <FormControl>
                         <Input placeholder="Enter original price (if on sale)" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
@@ -1414,7 +1414,7 @@ export default function AdminPage() {
                   name="tags"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel className="text-gray-700 font-medium">Tags (comma separated)</FormLabel>
+                      <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Tags (comma separated)</FormLabel>
                       <FormControl>
                         <Input placeholder="premium, adult, dry food" className="text-gray-900 bg-white border-gray-300" {...field} />
                       </FormControl>
@@ -1429,7 +1429,7 @@ export default function AdminPage() {
                 name="image"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-gray-700 font-medium">Product Image</FormLabel>
+                    <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Product Image</FormLabel>
                     <FormControl>
                       <ImageUpload
                         value={field.value}
