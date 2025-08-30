@@ -582,8 +582,8 @@ export default function AdminPage() {
                                 {(categories as any[]).find((c: any) => c.id === product.categoryId)?.name || product.category}
                               </Badge>
                             </td>
-                            <td className="px-4 py-4 font-medium">৳{product.price}</td>
-                            <td className="px-4 py-4">{product.stockQuantity || product.stock || 0}</td>
+                            <td className="px-4 py-4 font-medium text-gray-900">৳{product.price}</td>
+                            <td className="px-4 py-4 text-gray-900">{product.stockQuantity || product.stock || 0}</td>
                             <td className="px-4 py-4">
                               <div className="flex flex-wrap gap-1">
                                 {product.isActive !== false && (
@@ -967,8 +967,8 @@ export default function AdminPage() {
                                 {(categories as any[]).find((c: any) => c.id === product.categoryId)?.name || product.category}
                               </Badge>
                             </td>
-                            <td className="px-4 py-4 font-medium">৳{product.price}</td>
-                            <td className="px-4 py-4">{product.stockQuantity || product.stock || 0}</td>
+                            <td className="px-4 py-4 font-medium text-gray-900">৳{product.price}</td>
+                            <td className="px-4 py-4 text-gray-900">{product.stockQuantity || product.stock || 0}</td>
                             <td className="px-4 py-4">
                               <div className="flex flex-wrap gap-1">
                                 {product.isActive !== false && (
