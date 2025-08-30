@@ -1336,9 +1336,9 @@ export default function AdminPage() {
                             <SelectValue placeholder="Select category" className="text-gray-900" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-white border-gray-300">
                           {categories.map((category: any) => (
-                            <SelectItem key={category.id} value={category.id}>
+                            <SelectItem key={category.id} value={category.id} className="text-gray-900 hover:bg-gray-100">
                               {category.name}
                             </SelectItem>
                           ))}
@@ -1360,9 +1360,9 @@ export default function AdminPage() {
                             <SelectValue placeholder="Select brand" className="text-gray-900" />
                           </SelectTrigger>
                         </FormControl>
-                        <SelectContent>
+                        <SelectContent className="bg-white border-gray-300">
                           {brands.map((brand: any) => (
-                            <SelectItem key={brand.id} value={brand.id}>
+                            <SelectItem key={brand.id} value={brand.id} className="text-gray-900 hover:bg-gray-100">
                               {brand.name}
                             </SelectItem>
                           ))}
@@ -1628,12 +1628,12 @@ export default function AdminPage() {
                 <div>
                   <Label htmlFor="blog-status">Status</Label>
                   <Select value={editingBlog.status} onValueChange={(value) => setEditingBlog({...editingBlog, status: value as any})}>
-                    <SelectTrigger>
-                      <SelectValue />
+                    <SelectTrigger className="bg-white text-gray-900 border-gray-300">
+                      <SelectValue className="text-gray-900" />
                     </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="draft">Draft</SelectItem>
-                      <SelectItem value="published">Published</SelectItem>
+                    <SelectContent className="bg-white border-gray-300">
+                      <SelectItem value="draft" className="text-gray-900 hover:bg-gray-100">Draft</SelectItem>
+                      <SelectItem value="published" className="text-gray-900 hover:bg-gray-100">Published</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
