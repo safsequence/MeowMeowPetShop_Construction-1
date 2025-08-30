@@ -607,15 +607,16 @@ export default function AdminPage() {
                               <div className="flex items-center justify-end space-x-2">
                                 <Button
                                   size="sm"
-                                  variant="ghost"
+                                  variant="outline"
+                                  className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700"
                                   onClick={() => handleEditProduct(product)}
                                 >
                                   <Edit className="w-4 h-4" />
                                 </Button>
                                 <Button
                                   size="sm"
-                                  variant="ghost"
-                                  className="text-red-600 hover:text-red-900"
+                                  variant="outline"
+                                  className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900"
                                   onClick={() => handleDeleteProduct(product.id)}
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -645,13 +646,13 @@ export default function AdminPage() {
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-gray-500">Stock: {product.stock}</span>
                           <div className="flex space-x-1">
-                            <Button size="sm" variant="ghost" onClick={() => {
+                            <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => {
                               setEditingProduct(product);
                               setShowProductDialog(true);
                             }}>
                               <Edit className="w-4 h-4" />
                             </Button>
-                            <Button size="sm" variant="ghost" className="text-red-600" onClick={() => handleDeleteProduct(product.id)}>
+                            <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900" onClick={() => handleDeleteProduct(product.id)}>
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -989,14 +990,14 @@ export default function AdminPage() {
                             </td>
                             <td className="px-4 py-4 text-right">
                               <div className="flex justify-end space-x-2">
-                                <Button size="sm" variant="ghost" onClick={() => handleEditProduct(product)}>
+                                <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => handleEditProduct(product)}>
                                   <Edit className="w-4 h-4" />
                                 </Button>
                                 <Button 
                                   size="sm" 
-                                  variant="ghost" 
+                                  variant="outline" 
                                   onClick={() => handleDeleteProduct(product.id)}
-                                  className="text-red-600 hover:text-red-700"
+                                  className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
@@ -1147,7 +1148,7 @@ export default function AdminPage() {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="ghost" onClick={() => {
+                        <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => {
                           setEditingAnnouncement(announcement);
                           announcementForm.reset({
                             text: announcement.text,
@@ -1159,8 +1160,8 @@ export default function AdminPage() {
                         </Button>
                         <Button 
                           size="sm" 
-                          variant="ghost" 
-                          className="text-red-600" 
+                          variant="outline" 
+                          className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900" 
                           onClick={() => deleteAnnouncementMutation.mutate(announcement._id)}
                           disabled={deleteAnnouncementMutation.isPending}
                         >
@@ -1240,13 +1241,13 @@ export default function AdminPage() {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="ghost" onClick={() => {
+                        <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => {
                           setEditingBlog(blog);
                           setShowBlogDialog(true);
                         }}>
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="ghost" className="text-red-600" onClick={() => handleDeleteBlog(blog.id)}>
+                        <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900" onClick={() => handleDeleteBlog(blog.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
