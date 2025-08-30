@@ -90,12 +90,12 @@ export default function AdminPage() {
   // Function to parse bold text formatting
   const parseAnnouncementText = (text: string) => {
     if (!text) return text;
-    
+
     // Replace **text** with bold
     let parsed = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
     // Replace *text* with bold
     parsed = parsed.replace(/\*([^*]+)\*/g, '<strong>$1</strong>');
-    
+
     return parsed;
   };
 
@@ -398,7 +398,7 @@ export default function AdminPage() {
 
   const handleSaveBlog = () => {
     if (!editingBlog) return;
-    
+
     if (editingBlog.id === 'new') {
       const newBlog = { ...editingBlog, id: Date.now().toString() };
       setBlogPosts([...blogPosts, newBlog]);
@@ -407,7 +407,7 @@ export default function AdminPage() {
       setBlogPosts(blogPosts.map(b => b.id === editingBlog.id ? editingBlog : b));
       toast({ title: 'Success', description: 'Blog post updated successfully!' });
     }
-    
+
     setEditingBlog(null);
     setShowBlogDialog(false);
   };
@@ -608,7 +608,7 @@ export default function AdminPage() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700"
+                                  className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700"
                                   onClick={() => handleEditProduct(product)}
                                 >
                                   <Edit className="w-4 h-4" />
@@ -616,7 +616,7 @@ export default function AdminPage() {
                                 <Button
                                   size="sm"
                                   variant="outline"
-                                  className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900"
+                                  className="text-red-600 border-red-200 bg-red-50 hover:bg-red-100 hover:text-red-900"
                                   onClick={() => handleDeleteProduct(product.id)}
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -646,13 +646,13 @@ export default function AdminPage() {
                         <div className="flex justify-between items-center">
                           <span className="text-sm text-gray-500">Stock: {product.stock}</span>
                           <div className="flex space-x-1">
-                            <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => {
+                            <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700" onClick={() => {
                               setEditingProduct(product);
                               setShowProductDialog(true);
                             }}>
                               <Edit className="w-4 h-4" />
                             </Button>
-                            <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900" onClick={() => handleDeleteProduct(product.id)}>
+                            <Button size="sm" variant="outline" className="text-red-600 border-red-200 bg-red-50 hover:bg-red-100 hover:text-red-900" onClick={() => handleDeleteProduct(product.id)}>
                               <Trash2 className="w-4 h-4" />
                             </Button>
                           </div>
@@ -990,14 +990,14 @@ export default function AdminPage() {
                             </td>
                             <td className="px-4 py-4 text-right">
                               <div className="flex justify-end space-x-2">
-                                <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => handleEditProduct(product)}>
+                                <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700" onClick={() => handleEditProduct(product)}>
                                   <Edit className="w-4 h-4" />
                                 </Button>
                                 <Button 
                                   size="sm" 
                                   variant="outline" 
                                   onClick={() => handleDeleteProduct(product.id)}
-                                  className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900"
+                                  className="text-red-600 border-red-200 bg-red-50 hover:bg-red-100 hover:text-red-900"
                                 >
                                   <Trash2 className="w-4 h-4" />
                                 </Button>
@@ -1148,7 +1148,7 @@ export default function AdminPage() {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => {
+                        <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700" onClick={() => {
                           setEditingAnnouncement(announcement);
                           announcementForm.reset({
                             text: announcement.text,
@@ -1161,7 +1161,7 @@ export default function AdminPage() {
                         <Button 
                           size="sm" 
                           variant="outline" 
-                          className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900" 
+                          className="text-red-600 border-red-200 bg-red-50 hover:bg-red-100 hover:text-red-900" 
                           onClick={() => deleteAnnouncementMutation.mutate(announcement._id)}
                           disabled={deleteAnnouncementMutation.isPending}
                         >
@@ -1241,13 +1241,13 @@ export default function AdminPage() {
                         </div>
                       </div>
                       <div className="flex space-x-2">
-                        <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700" onClick={() => {
+                        <Button size="sm" variant="outline" className="text-blue-600 border-blue-200 bg-blue-50 hover:bg-blue-100 hover:text-blue-700" onClick={() => {
                           setEditingBlog(blog);
                           setShowBlogDialog(true);
                         }}>
                           <Edit className="w-4 h-4" />
                         </Button>
-                        <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50 hover:text-red-900" onClick={() => handleDeleteBlog(blog.id)}>
+                        <Button size="sm" variant="outline" className="text-red-600 border-red-200 bg-red-50 hover:bg-red-100 hover:text-red-900" onClick={() => handleDeleteBlog(blog.id)}>
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
@@ -1271,7 +1271,7 @@ export default function AdminPage() {
               {editingProduct ? 'Update product information' : 'Create a new product for your store'}
             </DialogDescription>
           </DialogHeader>
-          
+
           <Form {...form}>
             <form 
               onSubmit={form.handleSubmit(editingProduct ? handleUpdateProduct : handleCreateProduct)} 
@@ -1565,7 +1565,7 @@ export default function AdminPage() {
               {editingBlog?.id === 'new' ? 'Create a new blog post' : 'Update blog post'}
             </DialogDescription>
           </DialogHeader>
-          
+
           {editingBlog && (
             <div className="space-y-4">
               <div>
@@ -1579,7 +1579,7 @@ export default function AdminPage() {
                   style={{ color: '#1f2937', backgroundColor: '#ffffff' }}
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="blog-excerpt">Excerpt</Label>
                 <Input
@@ -1667,7 +1667,7 @@ export default function AdminPage() {
               {editingAnnouncement ? 'Update announcement' : 'Create a new announcement for the top bar'}
             </DialogDescription>
           </DialogHeader>
-          
+
           <Form {...announcementForm}>
             <form onSubmit={announcementForm.handleSubmit((data) => {
               if (editingAnnouncement) {
