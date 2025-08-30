@@ -1332,8 +1332,8 @@ export default function AdminPage() {
                       <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Category</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select category" />
+                          <SelectTrigger className="bg-white text-gray-900 border-gray-300">
+                            <SelectValue placeholder="Select category" className="text-gray-900" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
@@ -1356,8 +1356,8 @@ export default function AdminPage() {
                       <FormLabel className="text-gray-900 font-semibold text-sm mb-2 block">Brand</FormLabel>
                       <Select onValueChange={field.onChange} value={field.value}>
                         <FormControl>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select brand" />
+                          <SelectTrigger className="bg-white text-gray-900 border-gray-300">
+                            <SelectValue placeholder="Select brand" className="text-gray-900" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
